@@ -161,10 +161,54 @@ function App() {
       )
     },
     {
+      field: 'campaignName',
+      headerName: 'Название кампании',
+      width: 250,
+      sortable: true,
+      renderCell: (params) => (
+        <Typography 
+          variant="body2" 
+          sx={{ 
+            color: params.value ? 'text.primary' : 'text.disabled',
+            fontStyle: params.value ? 'normal' : 'italic',
+            fontWeight: params.value ? 'bold' : 'normal'
+          }}
+        >
+          {params.value || 'Не найдено'}
+        </Typography>
+      )
+    },
+    {
       field: 'videoName',
       headerName: 'Название видео',
       width: 300,
       sortable: true
+    },
+    {
+      field: 'smsText',
+      headerName: 'Текст SMS',
+      width: 350,
+      sortable: true,
+      renderCell: (params) => (
+        <Typography 
+          variant="body2" 
+          sx={{ 
+            color: params.value ? 'text.primary' : 'text.disabled',
+            fontStyle: params.value ? 'normal' : 'italic',
+            fontSize: '0.875rem',
+            lineHeight: 1.3,
+            maxHeight: '60px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical'
+          }}
+          title={params.value}
+        >
+          {params.value || 'Не найден'}
+        </Typography>
+      )
     },
     {
       field: 'timeSec',
@@ -253,7 +297,7 @@ function App() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            SMS Dashboard - Аналитика рассылок (только врачи)
+            SMS Dashboard - Аналитика рассылок с данными кампаний
           </Typography>
           <Button
             color="inherit"
@@ -286,6 +330,7 @@ function App() {
             />
             {data.length > 0 && (() => {
               const stats = dataUtils.getUserDataStats(data);
+              const campaignStats = dataUtils.getCampaignDataStats(data);
               return (
                 <>
                   <Chip 
@@ -298,6 +343,12 @@ function App() {
                     label={`Покрытие: ${stats.coveragePercent}%`} 
                     size="small" 
                     color={stats.coveragePercent >= 70 ? "success" : stats.coveragePercent >= 40 ? "warning" : "error"}
+                    variant="outlined"
+                  />
+                  <Chip 
+                    label={`С данными кампаний: ${campaignStats.withCampaignData}`} 
+                    size="small" 
+                    color="info" 
                     variant="outlined"
                   />
                 </>
