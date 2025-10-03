@@ -129,6 +129,8 @@ function App() {
       field: 'workplace',
       headerName: 'Место работы',
       width: 250,
+      minWidth: 200,
+      maxWidth: 350,
       sortable: true,
       renderCell: (params) => (
         <Typography 
@@ -164,6 +166,8 @@ function App() {
       field: 'campaignName',
       headerName: 'Название кампании',
       width: 250,
+      minWidth: 200,
+      maxWidth: 350,
       sortable: true,
       renderCell: (params) => (
         <Typography 
@@ -187,7 +191,10 @@ function App() {
     {
       field: 'smsText',
       headerName: 'Текст SMS',
-      width: 350,
+      width: 400,
+      minWidth: 300,
+      maxWidth: 500,
+      flex: 1,
       sortable: true,
       renderCell: (params) => (
         <Typography 
@@ -196,15 +203,10 @@ function App() {
             color: params.value ? 'text.primary' : 'text.disabled',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem',
-            lineHeight: 1.3,
-            maxHeight: '60px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical'
+            lineHeight: 1.4,
+            whiteSpace: 'pre-wrap',
+            wordWrap: 'break-word'
           }}
-          title={params.value}
         >
           {params.value || 'Не найден'}
         </Typography>
@@ -377,15 +379,30 @@ function App() {
 
           {contentTypes.map((type, index) => (
             <TabPanel key={type} value={selectedTab} index={index}>
-              <Box sx={{ height: 600, width: '100%' }}>
+              <Box sx={{ height: '70vh', width: '100%' }}>
                 <DataGrid
                   rows={filteredData}
                   columns={columns}
-                  pageSize={50}
-                  rowsPerPageOptions={[25, 50, 100]}
                   disableSelectionOnClick
+                  hideFooterPagination={true}
+                  hideFooter={false}
+                  footerHeight={40}
                   components={{
                     Toolbar: GridToolbar,
+                  }}
+                  slots={{
+                    footer: () => (
+                      <Box sx={{ 
+                        display: 'flex', 
+                        justifyContent: 'center', 
+                        alignItems: 'center', 
+                        height: '40px',
+                        fontSize: '0.875rem',
+                        color: 'text.secondary'
+                      }}>
+                        Всего записей: {filteredData.length}
+                      </Box>
+                    )
                   }}
                   componentsProps={{
                     toolbar: {
@@ -470,13 +487,30 @@ function App() {
                   }}
                   sx={{
                     '& .MuiDataGrid-cell': {
-                      fontSize: '0.875rem'
+                      fontSize: '0.875rem',
+                      alignItems: 'flex-start',
+                      paddingTop: '8px',
+                      paddingBottom: '8px'
                     },
                     '& .MuiDataGrid-columnHeader': {
                       fontSize: '0.875rem',
                       fontWeight: 600
+                    },
+                    '& .MuiDataGrid-row': {
+                      minHeight: 'auto !important',
+                      maxHeight: 'none !important'
+                    },
+                    '& .MuiDataGrid-cell--textLeft': {
+                      alignItems: 'flex-start'
+                    },
+                    '& .MuiDataGrid-cell--textRight': {
+                      alignItems: 'flex-start'
+                    },
+                    '& .MuiDataGrid-cell--textCenter': {
+                      alignItems: 'flex-start'
                     }
                   }}
+                  getRowHeight={() => 'auto'}
                 />
               </Box>
             </TabPanel>

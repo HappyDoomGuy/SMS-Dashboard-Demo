@@ -7,8 +7,9 @@ export const apiService = {
   // Fetch SMS data from Google Sheets via CSV export
   async getData() {
     try {
-      // CSV export URL for public sheets
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=0`;
+      // CSV export URL for public sheets with cache busting
+      const timestamp = new Date().getTime();
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=0&t=${timestamp}`;
       const response = await fetch(csvUrl, {
         method: 'GET',
         headers: {
@@ -45,6 +46,17 @@ export const apiService = {
       }
       
       console.log(`Loaded ${data.length} SMS records from Google Sheets`);
+      
+      // Debug: Show date range
+      if (data.length > 0) {
+        const dates = data.map(item => item['Дата и время']).filter(date => date);
+        if (dates.length > 0) {
+          dates.sort();
+          console.log(`Date range: ${dates[0]} to ${dates[dates.length - 1]}`);
+          console.log(`Latest 5 records:`, dates.slice(-5));
+        }
+      }
+      
       return data;
     } catch (error) {
       console.error('Error fetching SMS data from Google Sheets:', error);
@@ -55,8 +67,9 @@ export const apiService = {
   // Fetch users data from PhC 2025 database
   async getUsersData() {
     try {
-      // CSV export URL for users database
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${USERS_SPREADSHEET_ID}/export?format=csv&gid=0`;
+      // CSV export URL for users database with cache busting
+      const timestamp = new Date().getTime();
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${USERS_SPREADSHEET_ID}/export?format=csv&gid=0&t=${timestamp}`;
       const response = await fetch(csvUrl, {
         method: 'GET',
         headers: {
@@ -103,8 +116,9 @@ export const apiService = {
   // Fetch campaigns data from SMS campaigns log
   async getCampaignsData() {
     try {
-      // CSV export URL for campaigns database
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${CAMPAIGNS_SPREADSHEET_ID}/export?format=csv&gid=754461975`;
+      // CSV export URL for campaigns database with cache busting
+      const timestamp = new Date().getTime();
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${CAMPAIGNS_SPREADSHEET_ID}/export?format=csv&gid=754461975&t=${timestamp}`;
       const response = await fetch(csvUrl, {
         method: 'GET',
         headers: {
