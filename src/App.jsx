@@ -77,21 +77,54 @@ function App() {
 
   // Helper function to parse date string
   const parseDate = (dateString) => {
-    if (!dateString) return new Date(0);
+    if (!dateString || dateString.trim() === '') return new Date(0);
     
-    // Try to parse various date formats
-    let date = new Date(dateString);
+    // Clean the string
+    const cleanDate = dateString.trim();
     
-    // If parsing failed, try to handle Russian date format
-    if (isNaN(date.getTime())) {
-      // Handle format like "17.09.2024 14:30:00"
-      const match = dateString.match(/(\d{2})\.(\d{2})\.(\d{4})\s+(\d{2}):(\d{2}):(\d{2})/);
+    // Try different date formats
+    let date = null;
+    
+    // Format 1: DD.MM.YYYY HH:MM:SS (Russian format)
+    let match = cleanDate.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})/);
+    if (match) {
+      const [, day, month, year, hour, minute, second] = match;
+      date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
+    }
+    
+    // Format 2: DD.MM.YYYY (date only)
+    if (!date || isNaN(date.getTime())) {
+      match = cleanDate.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
       if (match) {
-        const [, day, month, year, hour, minute, second] = match;
-        date = new Date(year, month - 1, day, hour, minute, second);
+        const [, day, month, year] = match;
+        date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
       }
     }
     
+    // Format 3: YYYY-MM-DD HH:MM:SS (ISO format)
+    if (!date || isNaN(date.getTime())) {
+      match = cleanDate.match(/(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})/);
+      if (match) {
+        const [, year, month, day, hour, minute, second] = match;
+        date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
+      }
+    }
+    
+    // Format 4: YYYY-MM-DD (ISO date only)
+    if (!date || isNaN(date.getTime())) {
+      match = cleanDate.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+      if (match) {
+        const [, year, month, day] = match;
+        date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      }
+    }
+    
+    // Fallback: try native Date parsing
+    if (!date || isNaN(date.getTime())) {
+      date = new Date(cleanDate);
+    }
+    
+    // If still invalid, return epoch
     return isNaN(date.getTime()) ? new Date(0) : date;
   };
 
@@ -109,11 +142,31 @@ function App() {
   // Debug: Log sorting info
   React.useEffect(() => {
     if (filteredData.length > 0) {
-      const dates = filteredData.slice(0, 5).map(item => item.date);
-      const lastDates = filteredData.slice(-5).map(item => item.date);
-      console.log('First 5 dates (newest):', dates);
-      console.log('Last 5 dates (oldest):', lastDates);
+      const first5 = filteredData.slice(0, 5);
+      const last5 = filteredData.slice(-5);
+      
+      console.log('=== SORTING DEBUG ===');
       console.log(`Total filtered records: ${filteredData.length}`);
+      
+      console.log('First 5 dates (should be newest):');
+      first5.forEach((item, index) => {
+        const parsed = parseDate(item.date);
+        console.log(`${index + 1}. "${item.date}" -> ${parsed.toISOString()} (${parsed.getTime()})`);
+      });
+      
+      console.log('Last 5 dates (should be oldest):');
+      last5.forEach((item, index) => {
+        const parsed = parseDate(item.date);
+        console.log(`${filteredData.length - 4 + index}. "${item.date}" -> ${parsed.toISOString()} (${parsed.getTime()})`);
+      });
+      
+      // Check if sorting is actually working
+      const timestamps = filteredData.map(item => parseDate(item.date).getTime());
+      const isSorted = timestamps.every((time, index) => 
+        index === 0 || time <= timestamps[index - 1]
+      );
+      console.log(`Is sorted correctly (newest first): ${isSorted}`);
+      console.log('==================');
     }
   }, [filteredData]);
 
@@ -124,7 +177,27 @@ function App() {
       headerName: 'Дата и время',
       width: 180,
       sortable: true,
-      sort: 'desc'
+      sort: 'desc',
+      sortComparator: (v1, v2) => {
+        const date1 = parseDate(v1);
+        const date2 = parseDate(v2);
+        return date2.getTime() - date1.getTime(); // newest first
+      },
+      renderCell: (params) => {
+        const parsed = parseDate(params.value);
+        const isValid = parsed.getTime() > 0;
+        return (
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              color: isValid ? 'text.primary' : 'text.disabled',
+              fontFamily: 'monospace'
+            }}
+          >
+            {isValid ? parsed.toLocaleString('ru-RU') : params.value || 'Неверная дата'}
+          </Typography>
+        );
+      }
     },
     {
       field: 'phone',
