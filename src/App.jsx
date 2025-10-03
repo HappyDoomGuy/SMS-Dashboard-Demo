@@ -136,7 +136,7 @@ function App() {
     // Sort by date descending (newest first)
     const dateA = parseDate(a.date);
     const dateB = parseDate(b.date);
-    return dateB - dateA;
+    return dateA - dateB; // Changed: A - B for newest first
   });
 
   // Debug: Log sorting info
@@ -163,7 +163,7 @@ function App() {
       // Check if sorting is actually working
       const timestamps = filteredData.map(item => parseDate(item.date).getTime());
       const isSorted = timestamps.every((time, index) => 
-        index === 0 || time <= timestamps[index - 1]
+        index === 0 || time >= timestamps[index - 1] // Changed: >= for newest first
       );
       console.log(`Is sorted correctly (newest first): ${isSorted}`);
       console.log('==================');
@@ -181,7 +181,7 @@ function App() {
       sortComparator: (v1, v2) => {
         const date1 = parseDate(v1);
         const date2 = parseDate(v2);
-        return date2.getTime() - date1.getTime(); // newest first
+        return date1.getTime() - date2.getTime(); // Changed: newest first
       },
       renderCell: (params) => {
         const parsed = parseDate(params.value);
