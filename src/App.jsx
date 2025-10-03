@@ -39,6 +39,7 @@ function App() {
   const [data, setData] = useState([]);
   const [contentTypes, setContentTypes] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [sortModel, setSortModel] = useState([{ field: 'date', sort: 'desc' }]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastUpdate, setLastUpdate] = useState(null);
@@ -70,6 +71,8 @@ function App() {
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
+    // Reset sorting to default (newest first) when changing tabs
+    setSortModel([{ field: 'date', sort: 'desc' }]);
   };
 
   // Helper function to parse date string
@@ -120,7 +123,8 @@ function App() {
       field: 'date',
       headerName: 'Дата и время',
       width: 180,
-      sortable: true
+      sortable: true,
+      sort: 'desc'
     },
     {
       field: 'phone',
@@ -432,6 +436,16 @@ function App() {
                       sortModel: [{ field: 'date', sort: 'desc' }]
                     }
                   }}
+                  sortModel={sortModel}
+                  onSortModelChange={(model) => {
+                    // Always ensure date column is sorted desc by default
+                    if (model.length === 0) {
+                      setSortModel([{ field: 'date', sort: 'desc' }]);
+                    } else {
+                      setSortModel(model);
+                    }
+                  }}
+                  disableMultipleColumnsSorting={false}
                   components={{
                     Toolbar: GridToolbar,
                   }}
