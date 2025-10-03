@@ -72,10 +72,47 @@ function App() {
     setSelectedTab(newValue);
   };
 
-  // Filter data by selected content type
-  const filteredData = contentTypes.length > 0 
+  // Helper function to parse date string
+  const parseDate = (dateString) => {
+    if (!dateString) return new Date(0);
+    
+    // Try to parse various date formats
+    let date = new Date(dateString);
+    
+    // If parsing failed, try to handle Russian date format
+    if (isNaN(date.getTime())) {
+      // Handle format like "17.09.2024 14:30:00"
+      const match = dateString.match(/(\d{2})\.(\d{2})\.(\d{4})\s+(\d{2}):(\d{2}):(\d{2})/);
+      if (match) {
+        const [, day, month, year, hour, minute, second] = match;
+        date = new Date(year, month - 1, day, hour, minute, second);
+      }
+    }
+    
+    return isNaN(date.getTime()) ? new Date(0) : date;
+  };
+
+  // Filter data by selected content type and sort by date (newest first)
+  const filteredData = (contentTypes.length > 0 
     ? data.filter(item => item.contentType === contentTypes[selectedTab])
-    : data;
+    : data
+  ).sort((a, b) => {
+    // Sort by date descending (newest first)
+    const dateA = parseDate(a.date);
+    const dateB = parseDate(b.date);
+    return dateB - dateA;
+  });
+
+  // Debug: Log sorting info
+  React.useEffect(() => {
+    if (filteredData.length > 0) {
+      const dates = filteredData.slice(0, 5).map(item => item.date);
+      const lastDates = filteredData.slice(-5).map(item => item.date);
+      console.log('First 5 dates (newest):', dates);
+      console.log('Last 5 dates (oldest):', lastDates);
+      console.log(`Total filtered records: ${filteredData.length}`);
+    }
+  }, [filteredData]);
 
   // DataGrid columns configuration
   const columns = [
@@ -387,6 +424,14 @@ function App() {
                   hideFooterPagination={true}
                   hideFooter={false}
                   footerHeight={40}
+                  sortingMode="client"
+                  filterMode="client"
+                  disableVirtualization={true}
+                  initialState={{
+                    sorting: {
+                      sortModel: [{ field: 'date', sort: 'desc' }]
+                    }
+                  }}
                   components={{
                     Toolbar: GridToolbar,
                   }}
