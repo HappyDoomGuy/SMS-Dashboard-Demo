@@ -20,6 +20,7 @@ import { apiService, dataUtils } from './services/api';
 import StatisticsCards from './components/StatisticsCards';
 import CampaignsTable from './components/CampaignsTable';
 import ViewsDynamicsChart from './components/ViewsDynamicsChart';
+import ClientsStatisticsTable from './components/ClientsStatisticsTable';
 import config, { getCoverageColor } from './config';
 
 function TabPanel({ children, value, index, ...other }) {
@@ -570,7 +571,7 @@ function App() {
           
           {contentTypes.map((type, index) => (
             <TabPanel key={type} value={selectedTab} index={index}>
-              <Box sx={{ height: '70vh', width: '100%' }}>
+              <Box sx={{ height: '65vh', width: '100%' }}>
                 <DataGrid
                   rows={filteredData}
                   columns={columns}
@@ -749,6 +750,14 @@ function App() {
             </TabPanel>
           ))}
         </Paper>
+
+        {/* Clients Statistics Table */}
+        {filteredData.length > 0 && (
+          <ClientsStatisticsTable 
+            data={filteredData} 
+            currentContentType={contentTypes[selectedTab]} 
+          />
+        )}
       </Container>
     </Box>
   );
