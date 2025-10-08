@@ -109,12 +109,19 @@ const StatisticsCards = ({ data, currentContentType }) => {
   const totalTimeFormatted = formatTime(totalSeconds);
   
   // Calculate SMS views based on content type using config multipliers
-  const smsViewed = Math.round(
-    data.reduce((sum, item) => {
-      const multiplier = getSmsMultiplier(item.contentType);
-      return sum + multiplier;
-    }, 0)
-  );
+  // Sum first (keep as float), then round at the end
+  const smsViewedFloat = data.reduce((sum, item) => {
+    const multiplier = getSmsMultiplier(item.contentType);
+    return sum + multiplier;
+  }, 0);
+  const smsViewed = Math.round(smsViewedFloat);
+  
+  // Debug
+  console.log(`=== GLOBAL SMS VIEWED (${currentContentType}) ===`);
+  console.log(`Total page views: ${pageViews}`);
+  console.log(`Multiplier for ${currentContentType}: ${getSmsMultiplier(currentContentType)}`);
+  console.log(`Total SMS viewed: ${smsViewed}`);
+  console.log('========================================');
   
   // SMS sent count - calculate directly from campaigns table for current content type
   // Get all campaigns from the original campaigns data

@@ -31,62 +31,95 @@ const CampaignsTable = ({ data, currentContentType }) => {
   // Group data by campaign name
   const campaignStats = new Map();
   
+  // Process each row from campaigns table
   relevantCampaigns.forEach(campaign => {
     const campaignName = campaign['Название кампании'] || '';
     const distId = campaign['ID дистрибуции'] || '';
     const contactCount = parseInt(campaign['Кол-во обычных контактов']) || 0;
+    const campaignDate = campaign['Дата и время'] || '';
     
     if (!campaignStats.has(campaignName)) {
       // Initialize stats for this campaign name
       campaignStats.set(campaignName, {
         campaignName,
-        distributionIds: new Set(),
         latestDate: null,
         smsSent: 0,
         smsViewed: 0,
-        pageViews: 0
+        pageViews: 0,
+        processedDistIds: new Set()
       });
     }
     
     const stats = campaignStats.get(campaignName);
     
-    // Add distribution ID if not already counted
-    if (!stats.distributionIds.has(distId)) {
-      stats.distributionIds.add(distId);
-      
-      // Add SMS sent for this distribution ID
-      stats.smsSent += contactCount;
+    // Sum SMS sent from ALL rows with this campaign name
+    stats.smsSent += contactCount;
+    
+    // Update latest date from campaigns table
+    if (campaignDate) {
+      const date = new Date(campaignDate);
+      if (!isNaN(date.getTime())) {
+        if (!stats.latestDate || date > stats.latestDate) {
+          stats.latestDate = date;
+        }
+      }
+    }
+    
+    // Process each distribution ID only once for views counting
+    if (!stats.processedDistIds.has(distId)) {
+      stats.processedDistIds.add(distId);
       
       // Get all views for this distribution ID
       const campaignViews = data.filter(item => item.distributionType === distId);
       
-      // Update latest date
-      const dates = campaignViews.map(item => new Date(item.date)).filter(d => !isNaN(d.getTime()));
-      if (dates.length > 0) {
-        const maxDate = new Date(Math.max(...dates));
-        if (!stats.latestDate || maxDate > stats.latestDate) {
-          stats.latestDate = maxDate;
-        }
-      }
-      
       // Add page views
       stats.pageViews += campaignViews.length;
       
-      // Calculate SMS viewed (with multiplier)
+      // Calculate SMS viewed (with multiplier, keep as float for now)
       const multiplier = getSmsMultiplier(currentContentType);
-      stats.smsViewed += Math.round(campaignViews.length * multiplier);
+      stats.smsViewed += (campaignViews.length * multiplier); // Don't round yet
     }
   });
   
   // Convert to array for DataGrid
-  const rows = Array.from(campaignStats.values()).map((item, index) => ({
+  const rowsBeforeRounding = Array.from(campaignStats.values()).map((item, index) => ({
     id: index + 1,
     campaignName: item.campaignName,
     latestDate: item.latestDate ? item.latestDate.toLocaleString('ru-RU') : '',
     smsSent: item.smsSent,
-    smsViewed: item.smsViewed,
+    smsViewedFloat: item.smsViewed, // Keep float value
+    smsViewed: 0, // Will be calculated
     pageViews: item.pageViews
   }));
+  
+  // Calculate total SMS viewed (sum of floats, then round)
+  const totalSmsViewedFloat = rowsBeforeRounding.reduce((sum, row) => sum + row.smsViewedFloat, 0);
+  const totalSmsViewedRounded = Math.round(totalSmsViewedFloat);
+  
+  // Distribute the rounded total proportionally
+  let remaining = totalSmsViewedRounded;
+  const rows = rowsBeforeRounding.map((row, index) => {
+    if (index === rowsBeforeRounding.length - 1) {
+      // Last row gets the remainder
+      row.smsViewed = remaining;
+    } else {
+      // Proportional rounding
+      row.smsViewed = Math.round(row.smsViewedFloat);
+      remaining -= row.smsViewed;
+    }
+    delete row.smsViewedFloat;
+    return row;
+  });
+  
+  // Debug: Log campaign stats
+  const totalSmsViewedInTable = rows.reduce((sum, row) => sum + row.smsViewed, 0);
+  const totalSmsViewedBeforeRounding = Array.from(campaignStats.values()).reduce((sum, item) => sum + item.smsViewed, 0);
+  console.log(`=== CAMPAIGNS TABLE (${currentContentType}) ===`);
+  console.log('Campaigns:', rows.map(r => ({ name: r.campaignName, smsViewed: r.smsViewed })));
+  console.log(`Total SMS viewed (before rounding): ${totalSmsViewedBeforeRounding}`);
+  console.log(`Total SMS viewed in table (after rounding): ${totalSmsViewedInTable}`);
+  console.log(`Total records in data: ${data.length}`);
+  console.log('===============================');
   
   // Define columns
   const columns = [
