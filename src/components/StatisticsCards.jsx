@@ -14,18 +14,47 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
   <Card 
     sx={{ 
       height: '100%',
-      background: `linear-gradient(135deg, ${color}15 0%, ${color}05 100%)`,
-      border: `1px solid ${color}30`,
-      transition: 'transform 0.2s, box-shadow 0.2s',
+      background: 'rgba(255, 255, 255, 0.95)',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255, 255, 255, 0.8)',
+      borderRadius: 3,
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      position: 'relative',
+      overflow: 'hidden',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '4px',
+        background: `linear-gradient(90deg, ${color} 0%, ${color}dd 100%)`
+      },
       '&:hover': {
-        transform: 'translateY(-4px)',
-        boxShadow: `0 8px 16px ${color}20`
+        transform: 'translateY(-8px)',
+        boxShadow: `0 12px 28px ${color}30`,
+        borderColor: `${color}40`
       }
     }}
   >
     <CardContent>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <Icon sx={{ fontSize: 40, color: color, mr: 2, opacity: 0.8 }} />
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, mt: 1 }}>
+        <Box 
+          sx={{ 
+            width: 56,
+            height: 56,
+            borderRadius: 2,
+            background: `linear-gradient(135deg, ${color}20 0%, ${color}10 100%)`,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mr: 2,
+            flexShrink: 0
+          }}
+        >
+          <Icon sx={{ fontSize: 32, color: color }} />
+        </Box>
         <Box sx={{ flex: 1 }}>
           <Typography 
             variant="caption" 
@@ -33,7 +62,8 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
               color: 'text.secondary',
               fontWeight: 600,
               textTransform: 'uppercase',
-              letterSpacing: 0.5
+              letterSpacing: 1,
+              fontSize: '0.7rem'
             }}
           >
             {title}
@@ -41,9 +71,12 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
           <Typography 
             variant="h4" 
             sx={{ 
-              fontWeight: 700,
-              color: color,
-              lineHeight: 1.2
+              fontWeight: 800,
+              background: `linear-gradient(135deg, ${color} 0%, ${color}cc 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              lineHeight: 1.2,
+              fontSize: '2rem'
             }}
           >
             {value}
