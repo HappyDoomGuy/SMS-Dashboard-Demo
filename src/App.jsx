@@ -511,7 +511,10 @@ function App() {
 
         {/* Statistics Cards */}
         {filteredData.length > 0 && (
-          <StatisticsCards data={filteredData} />
+          <StatisticsCards 
+            data={filteredData} 
+            currentContentType={contentTypes[selectedTab]} 
+          />
         )}
 
         {/* Data Table */}

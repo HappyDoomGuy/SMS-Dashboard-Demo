@@ -68,7 +68,7 @@ const formatTime = (seconds) => {
   }
 };
 
-const StatisticsCards = ({ data }) => {
+const StatisticsCards = ({ data, currentContentType }) => {
   // Calculate statistics
   const pageViews = data.length;
   
@@ -84,22 +84,32 @@ const StatisticsCards = ({ data }) => {
     }, 0)
   );
   
-  // SMS sent count - calculate directly from campaigns table
+  // SMS sent count - calculate directly from campaigns table for current content type
   // Get all campaigns from the original campaigns data
   const allCampaigns = apiService.getFilteredCampaigns();
   
-  // Filter campaigns by source (Delta Medical) and content type (Донормил, Пимафуцин)
+  // Get unique distribution IDs for current content type from data
+  const currentDistributionIds = new Set(
+    data
+      .filter(item => item.contentType === currentContentType)
+      .map(item => item.distributionType)
+      .filter(id => id)
+  );
+  
+  // Filter campaigns by:
+  // 1. Allowed source (Delta Medical)
+  // 2. Distribution ID matches current content type
   const relevantCampaigns = allCampaigns.filter(campaign => {
     const source = campaign['Название таблицы (Источник)'] || '';
-    const campaignName = (campaign['Название кампании'] || '').toLowerCase();
+    const distId = campaign['ID дистрибуции'] || '';
     
     // Check if campaign is from allowed source
     if (!isAllowedCampaignSource(source)) {
       return false;
     }
     
-    // Check if campaign name contains Донормил or Пимафуцин
-    return campaignName.includes('донормил') || campaignName.includes('пимафуцин');
+    // Check if this distribution ID is used by current content type
+    return currentDistributionIds.has(distId);
   });
   
   // Sum contact counts from relevant campaigns (unique campaigns only)
@@ -109,13 +119,14 @@ const StatisticsCards = ({ data }) => {
   }, 0);
   
   // Debug: Log details
-  console.log('=== SMS SENT DEBUG ===');
+  console.log(`=== SMS SENT DEBUG (${currentContentType}) ===`);
+  console.log('Distribution IDs for current type:', Array.from(currentDistributionIds));
   console.log('Relevant campaigns:', relevantCampaigns.map(c => ({
     name: c['Название кампании'],
     distributionId: c['ID дистрибуции'],
     count: parseInt(c['Кол-во обычных контактов']) || 0
   })));
-  console.log(`Total SMS sent: ${smsSent}`);
+  console.log(`Total SMS sent for ${currentContentType}: ${smsSent}`);
   console.log('===================');
   
   // Average view percentage (excluding 0%)
