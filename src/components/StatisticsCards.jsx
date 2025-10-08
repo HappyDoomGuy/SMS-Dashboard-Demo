@@ -86,13 +86,22 @@ const StatisticsCards = ({ data }) => {
   );
   
   // SMS sent count from campaign data (only for Донормил and Пимафуцин)
-  const smsSent = data
-    .filter(item => item.contentType === 'Донормил' || item.contentType === 'Пимафуцин')
-    .reduce((sum, item) => {
-      // Get contact count from campaign data
-      const contactCount = item.contactCount || 0;
-      return sum + contactCount;
-    }, 0);
+  // We need to get unique distribution IDs first, then sum their contact counts
+  const uniqueDistributions = new Map();
+  
+  data.forEach(item => {
+    // Only count for Донормил and Пимафуцин content types
+    if (item.contentType === 'Донормил' || item.contentType === 'Пимафуцин') {
+      const distId = item.distributionType;
+      if (distId && !uniqueDistributions.has(distId)) {
+        // Store the contact count for this distribution ID (only once)
+        uniqueDistributions.set(distId, item.contactCount || 0);
+      }
+    }
+  });
+  
+  // Sum all unique contact counts
+  const smsSent = Array.from(uniqueDistributions.values()).reduce((sum, count) => sum + count, 0);
   
   // Average view percentage (excluding 0%)
   const nonZeroViews = data.filter(item => (item.viewPercent || 0) > 0);
