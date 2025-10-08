@@ -18,6 +18,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { apiService, dataUtils } from './services/api';
 import StatisticsCards from './components/StatisticsCards';
+import CampaignsTable from './components/CampaignsTable';
 import config, { getCoverageColor } from './config';
 
 function TabPanel({ children, value, index, ...other }) {
@@ -528,6 +529,14 @@ function App() {
         {/* Statistics Cards */}
         {filteredData.length > 0 && (
           <StatisticsCards 
+            data={filteredData} 
+            currentContentType={contentTypes[selectedTab]} 
+          />
+        )}
+
+        {/* Campaigns Table */}
+        {filteredData.length > 0 && (
+          <CampaignsTable 
             data={filteredData} 
             currentContentType={contentTypes[selectedTab]} 
           />
