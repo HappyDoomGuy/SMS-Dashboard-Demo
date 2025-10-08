@@ -39,7 +39,24 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
     }}
   >
     <CardContent>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, mt: 1 }}>
+      {/* Title at the top */}
+      <Typography 
+        variant="caption" 
+        sx={{ 
+          color: 'text.secondary',
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          letterSpacing: 1,
+          fontSize: '0.7rem',
+          display: 'block',
+          mb: 2
+        }}
+      >
+        {title}
+      </Typography>
+      
+      {/* Icon and Value */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Box 
           sx={{ 
             width: 56,
@@ -49,39 +66,24 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            mr: 2,
             flexShrink: 0
           }}
         >
           <Icon sx={{ fontSize: 32, color: color }} />
         </Box>
-        <Box sx={{ flex: 1 }}>
-          <Typography 
-            variant="caption" 
-            sx={{ 
-              color: 'text.secondary',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: 1,
-              fontSize: '0.7rem'
-            }}
-          >
-            {title}
-          </Typography>
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              fontWeight: 800,
-              background: `linear-gradient(135deg, ${color} 0%, ${color}cc 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              lineHeight: 1.2,
-              fontSize: '2rem'
-            }}
-          >
-            {value}
-          </Typography>
-        </Box>
+        <Typography 
+          variant="h4" 
+          sx={{ 
+            fontWeight: 800,
+            background: `linear-gradient(135deg, ${color} 0%, ${color}cc 100%)`,
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            lineHeight: 1.2,
+            fontSize: '2rem'
+          }}
+        >
+          {value}
+        </Typography>
       </Box>
     </CardContent>
   </Card>
