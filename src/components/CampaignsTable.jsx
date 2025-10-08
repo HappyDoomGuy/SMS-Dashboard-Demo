@@ -37,31 +37,55 @@ const CampaignsTable = ({ data, currentContentType }) => {
     const contactCount = parseInt(campaign['Кол-во обычных контактов']) || 0;
     
     if (!campaignStats.has(campaignName)) {
+      // Initialize stats for this campaign name
+      campaignStats.set(campaignName, {
+        campaignName,
+        distributionIds: new Set(),
+        latestDate: null,
+        smsSent: 0,
+        smsViewed: 0,
+        pageViews: 0
+      });
+    }
+    
+    const stats = campaignStats.get(campaignName);
+    
+    // Add distribution ID if not already counted
+    if (!stats.distributionIds.has(distId)) {
+      stats.distributionIds.add(distId);
+      
+      // Add SMS sent for this distribution ID
+      stats.smsSent += contactCount;
+      
       // Get all views for this distribution ID
       const campaignViews = data.filter(item => item.distributionType === distId);
       
-      // Get latest date for this campaign
+      // Update latest date
       const dates = campaignViews.map(item => new Date(item.date)).filter(d => !isNaN(d.getTime()));
-      const latestDate = dates.length > 0 ? new Date(Math.max(...dates)) : null;
+      if (dates.length > 0) {
+        const maxDate = new Date(Math.max(...dates));
+        if (!stats.latestDate || maxDate > stats.latestDate) {
+          stats.latestDate = maxDate;
+        }
+      }
+      
+      // Add page views
+      stats.pageViews += campaignViews.length;
       
       // Calculate SMS viewed (with multiplier)
       const multiplier = getSmsMultiplier(currentContentType);
-      const smsViewed = Math.round(campaignViews.length * multiplier);
-      
-      campaignStats.set(campaignName, {
-        campaignName,
-        latestDate: latestDate ? latestDate.toLocaleString('ru-RU') : '',
-        smsSent: contactCount,
-        smsViewed: smsViewed,
-        pageViews: campaignViews.length
-      });
+      stats.smsViewed += Math.round(campaignViews.length * multiplier);
     }
   });
   
   // Convert to array for DataGrid
   const rows = Array.from(campaignStats.values()).map((item, index) => ({
     id: index + 1,
-    ...item
+    campaignName: item.campaignName,
+    latestDate: item.latestDate ? item.latestDate.toLocaleString('ru-RU') : '',
+    smsSent: item.smsSent,
+    smsViewed: item.smsViewed,
+    pageViews: item.pageViews
   }));
   
   // Define columns
