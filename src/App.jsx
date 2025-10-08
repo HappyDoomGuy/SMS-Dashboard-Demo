@@ -553,6 +553,12 @@ function App() {
             boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
           }}
         >
+          <Box sx={{ p: 2, borderBottom: '1px solid #e9ecef' }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: '#212529' }}>
+              Лог просмотров
+            </Typography>
+          </Box>
+          
           {contentTypes.map((type, index) => (
             <TabPanel key={type} value={selectedTab} index={index}>
               <Box sx={{ height: '70vh', width: '100%' }}>

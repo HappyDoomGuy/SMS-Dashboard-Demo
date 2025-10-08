@@ -190,7 +190,7 @@ const CampaignsTable = ({ data, currentContentType }) => {
           sortingMode="client"
           initialState={{
             sorting: {
-              sortModel: [{ field: 'latestDate', sort: 'desc' }]
+              sortModel: [{ field: 'campaignName', sort: 'asc' }]
             }
           }}
           localeText={{
