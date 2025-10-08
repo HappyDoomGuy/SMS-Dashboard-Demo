@@ -4,7 +4,8 @@ import {
   Visibility as VisibilityIcon,
   Timer as TimerIcon,
   Message as MessageIcon,
-  BarChart as BarChartIcon
+  BarChart as BarChartIcon,
+  Send as SendIcon
 } from '@mui/icons-material';
 
 const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
@@ -84,6 +85,13 @@ const StatisticsCards = ({ data }) => {
     otherCount * 1 // default multiplier for other types
   );
   
+  // SMS sent count from campaign data
+  const smsSent = data.reduce((sum, item) => {
+    // Get contact count from campaign data
+    const contactCount = item.contactCount || 0;
+    return sum + contactCount;
+  }, 0);
+  
   // Average view percentage (excluding 0%)
   const nonZeroViews = data.filter(item => (item.viewPercent || 0) > 0);
   const avgViewPercent = nonZeroViews.length > 0
@@ -97,7 +105,7 @@ const StatisticsCards = ({ data }) => {
           item 
           xs={12} 
           sm={6} 
-          md={3}
+          md={2.4}
         >
           <StatisticCard
             title="Просмотров страниц"
@@ -111,7 +119,21 @@ const StatisticsCards = ({ data }) => {
           item 
           xs={12} 
           sm={6} 
-          md={3}
+          md={2.4}
+        >
+          <StatisticCard
+            title="Отправлено СМС"
+            value={smsSent.toLocaleString('ru-RU')}
+            icon={SendIcon}
+            color="#00897b"
+          />
+        </Grid>
+        
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={2.4}
         >
           <StatisticCard
             title="Общее время просмотров"
@@ -125,7 +147,7 @@ const StatisticsCards = ({ data }) => {
           item 
           xs={12} 
           sm={6} 
-          md={3}
+          md={2.4}
         >
           <StatisticCard
             title="Просмотрено СМС"
@@ -139,7 +161,7 @@ const StatisticsCards = ({ data }) => {
           item 
           xs={12} 
           sm={6} 
-          md={3}
+          md={2.4}
         >
           <StatisticCard
             title="Средний % просмотра"
