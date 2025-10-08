@@ -223,10 +223,14 @@ export const apiService = {
       });
 
       // Create campaign lookup map by distribution ID
+      // Filter: only include campaigns from Delta Medical
       const campaignMap = new Map();
       campaignsData.forEach(campaign => {
+        const source = campaign['Название таблицы (Источник)'] || '';
         const distributionId = campaign['ID дистрибуции'];
-        if (distributionId) {
+        
+        // Only include campaigns from Delta Medical
+        if (distributionId && source.trim() === 'Delta Medical') {
           campaignMap.set(distributionId, campaign);
         }
       });
@@ -273,25 +277,33 @@ export const apiService = {
           };
         })
         .filter(record => {
-          // Exclude records where user has specialty "Не врач"
-          // If no user data found, include the record (anonymous viewing)
-          if (!record.hasUserData) {
-            return true;
+          // Filter 1: Only include records with campaign data from Delta Medical
+          // If no campaign data found, exclude the record
+          if (!record.hasCampaignData) {
+            return false;
           }
           
-          // Filter out "Не врач" specialty
-          const specialty = record.specialty ? record.specialty.toLowerCase().trim() : '';
-          const excludeKeywords = ['не врач', 'неврач', 'не врач.', 'не врач!'];
+          // Filter 2: Exclude records where user has specialty "Не врач"
+          // If no user data found, include the record (anonymous viewing)
+          if (record.hasUserData) {
+            const specialty = record.specialty ? record.specialty.toLowerCase().trim() : '';
+            const excludeKeywords = ['не врач', 'неврач', 'не врач.', 'не врач!'];
+            
+            if (excludeKeywords.some(keyword => specialty.includes(keyword))) {
+              return false;
+            }
+          }
           
-          return !excludeKeywords.some(keyword => specialty.includes(keyword));
+          return true;
         });
 
       const excludedCount = smsData.length - combinedData.length;
-      const withCampaignData = combinedData.filter(record => record.hasCampaignData).length;
+      const deltaMedicalCampaigns = campaignsData.filter(c => c['Название таблицы (Источник)']?.trim() === 'Delta Medical').length;
+      
       console.log(`Combined ${smsData.length} SMS records with ${usersData.length} users and ${campaignsData.length} campaigns`);
-      console.log(`Filtered out ${excludedCount} records with "Не врач" specialty`);
-      console.log(`Records with campaign data: ${withCampaignData} of ${combinedData.length}`);
-      console.log(`Final dataset: ${combinedData.length} records`);
+      console.log(`Delta Medical campaigns: ${deltaMedicalCampaigns} of ${campaignsData.length}`);
+      console.log(`Filtered out ${excludedCount} records (no Delta Medical campaign or "Не врач")`);
+      console.log(`Final dataset: ${combinedData.length} records (only Delta Medical)`);
       return combinedData;
     } catch (error) {
       console.error('Error fetching combined data:', error);
