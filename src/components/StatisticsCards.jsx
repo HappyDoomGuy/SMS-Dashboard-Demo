@@ -7,7 +7,8 @@ import {
   BarChart as BarChartIcon,
   Send as SendIcon
 } from '@mui/icons-material';
-import config, { getSmsMultiplier, getViewPercentColor } from '../config';
+import config, { getSmsMultiplier, getViewPercentColor, isAllowedCampaignSource } from '../config';
+import { apiService } from '../services/api';
 
 const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
   <Card 
@@ -83,23 +84,39 @@ const StatisticsCards = ({ data }) => {
     }, 0)
   );
   
-  // SMS sent count from campaign data (only for Донормил and Пимафуцин)
-  // We need to get unique distribution IDs first, then sum their contact counts
-  const uniqueDistributions = new Map();
+  // SMS sent count - calculate directly from campaigns table
+  // Get all campaigns from the original campaigns data
+  const allCampaigns = apiService.getFilteredCampaigns();
   
-  data.forEach(item => {
-    // Only count for Донормил and Пимафуцин content types
-    if (item.contentType === 'Донормил' || item.contentType === 'Пимафуцин') {
-      const distId = item.distributionType;
-      if (distId && !uniqueDistributions.has(distId)) {
-        // Store the contact count for this distribution ID (only once)
-        uniqueDistributions.set(distId, item.contactCount || 0);
-      }
+  // Filter campaigns by source (Delta Medical) and content type (Донормил, Пимафуцин)
+  const relevantCampaigns = allCampaigns.filter(campaign => {
+    const source = campaign['Название таблицы (Источник)'] || '';
+    const campaignName = (campaign['Название кампании'] || '').toLowerCase();
+    
+    // Check if campaign is from allowed source
+    if (!isAllowedCampaignSource(source)) {
+      return false;
     }
+    
+    // Check if campaign name contains Донормил or Пимафуцин
+    return campaignName.includes('донормил') || campaignName.includes('пимафуцин');
   });
   
-  // Sum all unique contact counts
-  const smsSent = Array.from(uniqueDistributions.values()).reduce((sum, count) => sum + count, 0);
+  // Sum contact counts from relevant campaigns (unique campaigns only)
+  const smsSent = relevantCampaigns.reduce((sum, campaign) => {
+    const count = parseInt(campaign['Кол-во обычных контактов']) || 0;
+    return sum + count;
+  }, 0);
+  
+  // Debug: Log details
+  console.log('=== SMS SENT DEBUG ===');
+  console.log('Relevant campaigns:', relevantCampaigns.map(c => ({
+    name: c['Название кампании'],
+    distributionId: c['ID дистрибуции'],
+    count: parseInt(c['Кол-во обычных контактов']) || 0
+  })));
+  console.log(`Total SMS sent: ${smsSent}`);
+  console.log('===================');
   
   // Average view percentage (excluding 0%)
   const nonZeroViews = data.filter(item => (item.viewPercent || 0) > 0);

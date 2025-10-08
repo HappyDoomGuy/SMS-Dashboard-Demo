@@ -7,6 +7,9 @@ const USERS_SPREADSHEET_ID = config.dataSources.usersDatabase.spreadsheetId;
 const CAMPAIGNS_SPREADSHEET_ID = config.dataSources.campaignsLog.spreadsheetId;
 const CAMPAIGNS_SHEET_ID = config.dataSources.campaignsLog.sheetId;
 
+// Store campaigns data globally for statistics
+let globalCampaignsData = [];
+
 export const apiService = {
   // Fetch SMS data from Google Sheets via CSV export
   async getData() {
@@ -210,6 +213,9 @@ export const apiService = {
         this.getCampaignsData()
       ]);
 
+      // Store campaigns data globally for statistics
+      globalCampaignsData = campaignsData;
+
       // Create phone lookup map
       const phoneMap = new Map();
       usersData.forEach(user => {
@@ -310,6 +316,11 @@ export const apiService = {
       console.error('Error fetching combined data:', error);
       throw error;
     }
+  },
+
+  // Get filtered campaigns data for statistics
+  getFilteredCampaigns() {
+    return globalCampaignsData;
   }
 };
 
