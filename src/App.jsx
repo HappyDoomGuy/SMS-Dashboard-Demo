@@ -18,6 +18,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { apiService, dataUtils } from './services/api';
 import StatisticsCards from './components/StatisticsCards';
+import config, { getCoverageColor } from './config';
 
 function TabPanel({ children, value, index, ...other }) {
   return (
@@ -401,7 +402,7 @@ function App() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            SMS Dashboard - Delta Medical
+            {config.company.displayName}
           </Typography>
           <Button
             color="inherit"
@@ -446,7 +447,7 @@ function App() {
                   <Chip 
                     label={`Покрытие: ${stats.coveragePercent}%`} 
                     size="small" 
-                    color={stats.coveragePercent >= 70 ? "success" : stats.coveragePercent >= 40 ? "warning" : "error"}
+                    color={getCoverageColor(stats.coveragePercent)}
                     variant="outlined"
                   />
                   <Chip 

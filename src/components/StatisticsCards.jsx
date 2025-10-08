@@ -7,6 +7,7 @@ import {
   BarChart as BarChartIcon,
   Send as SendIcon
 } from '@mui/icons-material';
+import config, { getSmsMultiplier, getViewPercentColor } from '../config';
 
 const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
   <Card 
@@ -74,15 +75,12 @@ const StatisticsCards = ({ data }) => {
   const totalSeconds = data.reduce((sum, item) => sum + (item.timeSec || 0), 0);
   const totalTimeFormatted = formatTime(totalSeconds);
   
-  // Calculate SMS views based on content type
-  const pimaCount = data.filter(item => item.contentType === 'Пимафуцин').length;
-  const donormilCount = data.filter(item => item.contentType === 'Донормил').length;
-  const otherCount = pageViews - pimaCount - donormilCount;
-  
+  // Calculate SMS views based on content type using config multipliers
   const smsViewed = Math.round(
-    pimaCount * 1.44 + 
-    donormilCount * 4.6 + 
-    otherCount * 1 // default multiplier for other types
+    data.reduce((sum, item) => {
+      const multiplier = getSmsMultiplier(item.contentType);
+      return sum + multiplier;
+    }, 0)
   );
   
   // SMS sent count from campaign data (only for Донормил and Пимафуцин)
@@ -122,7 +120,7 @@ const StatisticsCards = ({ data }) => {
             title="Просмотров страниц"
             value={pageViews.toLocaleString('ru-RU')}
             icon={VisibilityIcon}
-            color="#1976d2"
+            color={config.colors.statistics.pageViews}
           />
         </Grid>
         
@@ -136,7 +134,7 @@ const StatisticsCards = ({ data }) => {
             title="Отправлено СМС"
             value={smsSent.toLocaleString('ru-RU')}
             icon={SendIcon}
-            color="#00897b"
+            color={config.colors.statistics.smsSent}
           />
         </Grid>
         
@@ -150,7 +148,7 @@ const StatisticsCards = ({ data }) => {
             title="Общее время просмотров"
             value={totalTimeFormatted}
             icon={TimerIcon}
-            color="#9c27b0"
+            color={config.colors.statistics.totalTime}
           />
         </Grid>
         
@@ -164,7 +162,7 @@ const StatisticsCards = ({ data }) => {
             title="Просмотрено СМС"
             value={smsViewed.toLocaleString('ru-RU')}
             icon={MessageIcon}
-            color="#f57c00"
+            color={config.colors.statistics.smsViewed}
           />
         </Grid>
         
@@ -178,7 +176,7 @@ const StatisticsCards = ({ data }) => {
             title="Средний % просмотра"
             value={`${avgViewPercent}%`}
             icon={BarChartIcon}
-            color={avgViewPercent >= 70 ? '#2e7d32' : avgViewPercent >= 50 ? '#ed6c02' : '#d32f2f'}
+            color={getViewPercentColor(avgViewPercent)}
           />
         </Grid>
       </Grid>

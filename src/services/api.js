@@ -1,7 +1,11 @@
 // Direct Google Sheets data service
-const SPREADSHEET_ID = '1iIm0hx5bDEqvd3kpJBBbv_FgdpI6qxM-0pDGvl6bWJY'; // SMS данные
-const USERS_SPREADSHEET_ID = '13hEDBGU-nzz0ak8D_JNBzGeOy5lgSRy__kpJTXbk9ZA'; // База пользователей PhC 2025
-const CAMPAIGNS_SPREADSHEET_ID = '1wtiGT4vn5o4icOKnON8a-Orwhz87nGV1qA2Xu6lpuss'; // Лог рассылок
+import config, { isAllowedCampaignSource, shouldExcludeUser } from '../config';
+
+// Get spreadsheet IDs from config
+const SPREADSHEET_ID = config.dataSources.smsData.spreadsheetId;
+const USERS_SPREADSHEET_ID = config.dataSources.usersDatabase.spreadsheetId;
+const CAMPAIGNS_SPREADSHEET_ID = config.dataSources.campaignsLog.spreadsheetId;
+const CAMPAIGNS_SHEET_ID = config.dataSources.campaignsLog.sheetId;
 
 export const apiService = {
   // Fetch SMS data from Google Sheets via CSV export
@@ -118,7 +122,7 @@ export const apiService = {
     try {
       // CSV export URL for campaigns database with cache busting
       const timestamp = new Date().getTime();
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${CAMPAIGNS_SPREADSHEET_ID}/export?format=csv&gid=754461975&t=${timestamp}`;
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${CAMPAIGNS_SPREADSHEET_ID}/export?format=csv&gid=${CAMPAIGNS_SHEET_ID}&t=${timestamp}`;
       const response = await fetch(csvUrl, {
         method: 'GET',
         headers: {
@@ -229,8 +233,8 @@ export const apiService = {
         const source = campaign['Название таблицы (Источник)'] || '';
         const distributionId = campaign['ID дистрибуции'];
         
-        // Only include campaigns from Delta Medical
-        if (distributionId && source.trim() === 'Delta Medical') {
+        // Only include campaigns from allowed sources (e.g., Delta Medical)
+        if (distributionId && isAllowedCampaignSource(source)) {
           campaignMap.set(distributionId, campaign);
         }
       });
@@ -286,10 +290,7 @@ export const apiService = {
           // Filter 2: Exclude records where user has specialty "Не врач"
           // If no user data found, include the record (anonymous viewing)
           if (record.hasUserData) {
-            const specialty = record.specialty ? record.specialty.toLowerCase().trim() : '';
-            const excludeKeywords = ['не врач', 'неврач', 'не врач.', 'не врач!'];
-            
-            if (excludeKeywords.some(keyword => specialty.includes(keyword))) {
+            if (shouldExcludeUser(record.specialty)) {
               return false;
             }
           }
@@ -298,10 +299,10 @@ export const apiService = {
         });
 
       const excludedCount = smsData.length - combinedData.length;
-      const deltaMedicalCampaigns = campaignsData.filter(c => c['Название таблицы (Источник)']?.trim() === 'Delta Medical').length;
+      const allowedCampaigns = campaignsData.filter(c => isAllowedCampaignSource(c['Название таблицы (Источник)'])).length;
       
       console.log(`Combined ${smsData.length} SMS records with ${usersData.length} users and ${campaignsData.length} campaigns`);
-      console.log(`Delta Medical campaigns: ${deltaMedicalCampaigns} of ${campaignsData.length}`);
+      console.log(`Allowed campaigns (${config.company.name}): ${allowedCampaigns} of ${campaignsData.length}`);
       console.log(`Filtered out ${excludedCount} records (no Delta Medical campaign or "Не врач")`);
       console.log(`Final dataset: ${combinedData.length} records (only Delta Medical)`);
       return combinedData;
