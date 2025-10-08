@@ -28,7 +28,7 @@ function TabPanel({ children, value, index, ...other }) {
       aria-labelledby={`tab-${index}`}
       sx={{
         opacity: value === index ? 1 : 0,
-        transition: 'opacity 0.3s ease-in-out',
+        transition: 'opacity 0.15s ease-in-out',
         display: value === index ? 'block' : 'none'
       }}
       {...other}
@@ -77,9 +77,12 @@ function App() {
   };
 
   const handleTabChange = (event, newValue) => {
-    setSelectedTab(newValue);
-    // Reset sorting to default (newest first) when changing tabs
-    setSortModel([{ field: 'date', sort: 'desc' }]);
+    // Use startTransition for non-blocking UI update
+    React.startTransition(() => {
+      setSelectedTab(newValue);
+      // Reset sorting to default (newest first) when changing tabs
+      setSortModel([{ field: 'date', sort: 'desc' }]);
+    });
   };
 
   // Helper function to parse date string
@@ -148,39 +151,15 @@ function App() {
     });
   }, [data, contentTypes, selectedTab]);
 
-  // Debug: Log sorting info
-  React.useEffect(() => {
-    if (filteredData.length > 0) {
-      const first5 = filteredData.slice(0, 5);
-      const last5 = filteredData.slice(-5);
-      
-      console.log('=== SORTING DEBUG ===');
-      console.log(`Total filtered records: ${filteredData.length}`);
-      
-      console.log('First 5 dates (should be newest):');
-      first5.forEach((item, index) => {
-        const parsed = parseDate(item.date);
-        console.log(`${index + 1}. "${item.date}" -> ${parsed.toISOString()} (${parsed.getTime()})`);
-      });
-      
-      console.log('Last 5 dates (should be oldest):');
-      last5.forEach((item, index) => {
-        const parsed = parseDate(item.date);
-        console.log(`${filteredData.length - 4 + index}. "${item.date}" -> ${parsed.toISOString()} (${parsed.getTime()})`);
-      });
-      
-      // Check if sorting is actually working
-      const timestamps = filteredData.map(item => parseDate(item.date).getTime());
-      const isSorted = timestamps.every((time, index) => 
-        index === 0 || time >= timestamps[index - 1] // Changed: >= for newest first
-      );
-      console.log(`Is sorted correctly (newest first): ${isSorted}`);
-      console.log('==================');
-    }
-  }, [filteredData]);
+  // Debug: Log sorting info (disabled for performance)
+  // React.useEffect(() => {
+  //   if (filteredData.length > 0) {
+  //     console.log(`Total filtered records: ${filteredData.length}`);
+  //   }
+  // }, [filteredData]);
 
-  // DataGrid columns configuration
-  const columns = [
+  // DataGrid columns configuration (memoized for performance)
+  const columns = React.useMemo(() => [
     {
       field: 'date',
       headerName: 'Дата и время',
@@ -400,7 +379,7 @@ function App() {
       width: 150,
       sortable: true
     }
-  ];
+  ], []); // Empty deps - columns don't change
 
   if (loading) {
     return (
@@ -548,7 +527,7 @@ function App() {
                   footerHeight={40}
                   sortingMode="client"
                   filterMode="client"
-                  disableVirtualization={true}
+                  disableVirtualization={false}
                   initialState={{
                     sorting: {
                       sortModel: [{ field: 'date', sort: 'desc' }]

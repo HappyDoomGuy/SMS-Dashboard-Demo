@@ -81,7 +81,7 @@ const StatisticsCards = ({ data }) => {
 
   React.useEffect(() => {
     setIsVisible(false);
-    const timer = setTimeout(() => setIsVisible(true), 50);
+    const timer = setTimeout(() => setIsVisible(true), 10); // Reduced delay for faster response
     return () => clearTimeout(timer);
   }, [data.length]); // Re-trigger animation when data changes
 
@@ -114,8 +114,8 @@ const StatisticsCards = ({ data }) => {
       sx={{ 
         mb: 3,
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(-20px)',
-        transition: 'opacity 0.4s ease, transform 0.4s ease'
+        transform: isVisible ? 'translateY(0)' : 'translateY(-10px)',
+        transition: 'opacity 0.2s ease, transform 0.2s ease'
       }}
     >
       <Grid container spacing={2}>
@@ -127,8 +127,8 @@ const StatisticsCards = ({ data }) => {
           sx={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.5s ease, transform 0.5s ease',
-            transitionDelay: '0.1s'
+            transition: 'opacity 0.25s ease, transform 0.25s ease',
+            transitionDelay: '0.05s'
           }}
         >
           <StatisticCard
@@ -148,8 +148,8 @@ const StatisticsCards = ({ data }) => {
           sx={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.5s ease, transform 0.5s ease',
-            transitionDelay: '0.2s'
+            transition: 'opacity 0.25s ease, transform 0.25s ease',
+            transitionDelay: '0.1s'
           }}
         >
           <StatisticCard
@@ -169,8 +169,8 @@ const StatisticsCards = ({ data }) => {
           sx={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.5s ease, transform 0.5s ease',
-            transitionDelay: '0.3s'
+            transition: 'opacity 0.25s ease, transform 0.25s ease',
+            transitionDelay: '0.15s'
           }}
         >
           <StatisticCard
@@ -190,8 +190,8 @@ const StatisticsCards = ({ data }) => {
           sx={{
             opacity: isVisible ? 1 : 0,
             transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.5s ease, transform 0.5s ease',
-            transitionDelay: '0.4s'
+            transition: 'opacity 0.25s ease, transform 0.25s ease',
+            transitionDelay: '0.2s'
           }}
         >
           <StatisticCard
