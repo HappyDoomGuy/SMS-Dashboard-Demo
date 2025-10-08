@@ -475,29 +475,51 @@ function App() {
           </Box>
         )}
 
+        {/* Global Tabs Navigation */}
+        <Paper sx={{ width: '100%', mb: 3 }}>
+          <Tabs
+            value={selectedTab}
+            onChange={handleTabChange}
+            aria-label="content type tabs"
+            variant="fullWidth"
+            sx={{
+              borderBottom: 1,
+              borderColor: 'divider',
+              '& .MuiTab-root': {
+                fontSize: '1rem',
+                fontWeight: 600,
+                textTransform: 'none',
+                minHeight: 64
+              }
+            }}
+          >
+            {contentTypes.map((type, index) => (
+              <Tab
+                key={type}
+                label={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      {type}
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      {data.filter(item => item.contentType === type).length} записей
+                    </Typography>
+                  </Box>
+                }
+                id={`tab-${index}`}
+                aria-controls={`tabpanel-${index}`}
+              />
+            ))}
+          </Tabs>
+        </Paper>
+
         {/* Statistics Cards */}
         {filteredData.length > 0 && (
           <StatisticsCards data={filteredData} />
         )}
 
+        {/* Data Table */}
         <Paper sx={{ width: '100%' }}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs
-              value={selectedTab}
-              onChange={handleTabChange}
-              aria-label="content type tabs"
-            >
-              {contentTypes.map((type, index) => (
-                <Tab
-                  key={type}
-                  label={type}
-                  id={`tab-${index}`}
-                  aria-controls={`tabpanel-${index}`}
-                />
-              ))}
-            </Tabs>
-          </Box>
-
           {contentTypes.map((type, index) => (
             <TabPanel key={type} value={selectedTab} index={index}>
               <Box sx={{ height: '70vh', width: '100%' }}>
