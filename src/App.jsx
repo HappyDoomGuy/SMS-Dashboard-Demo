@@ -11,11 +11,13 @@ import {
   Alert,
   Toolbar,
   Button,
-  Chip
+  Chip,
+  Grid
 } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { apiService, dataUtils } from './services/api';
+import StatisticsCards from './components/StatisticsCards';
 
 function TabPanel({ children, value, index, ...other }) {
   return (
@@ -471,6 +473,11 @@ function App() {
               );
             })()}
           </Box>
+        )}
+
+        {/* Statistics Cards */}
+        {filteredData.length > 0 && (
+          <StatisticsCards data={filteredData} />
         )}
 
         <Paper sx={{ width: '100%' }}>
