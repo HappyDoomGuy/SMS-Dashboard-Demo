@@ -179,7 +179,7 @@ function App() {
           <Typography 
             variant="body2" 
             sx={{ 
-              color: isValid ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.3)'
+              color: isValid ? 'text.primary' : 'text.disabled'
             }}
           >
             {isValid ? parsed.toLocaleString('ru-RU') : params.value || 'Неверная дата'}
@@ -202,7 +202,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.3)',
+            color: params.value ? 'text.primary' : 'text.disabled',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -219,7 +219,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.3)',
+            color: params.value ? 'text.primary' : 'text.disabled',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -238,7 +238,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.3)',
+            color: params.value ? 'text.primary' : 'text.disabled',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem'
           }}
@@ -256,7 +256,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.3)',
+            color: params.value ? 'text.primary' : 'text.disabled',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -275,7 +275,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.3)',
+            color: params.value ? 'text.primary' : 'text.disabled',
             fontStyle: params.value ? 'normal' : 'italic',
             fontWeight: params.value ? 'bold' : 'normal'
           }}
@@ -302,7 +302,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.85)' : 'rgba(255, 255, 255, 0.3)',
+            color: params.value ? 'text.primary' : 'text.disabled',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem',
             lineHeight: 1.4,
@@ -402,8 +402,9 @@ function App() {
         position="static" 
         elevation={0}
         sx={{
-          background: '#16213e',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
+          background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
         }}
       >
         <Toolbar sx={{ py: 2 }}>
@@ -414,7 +415,10 @@ function App() {
               flexGrow: 1,
               fontWeight: 700,
               letterSpacing: 0.5,
-              color: '#ffffff'
+              background: 'linear-gradient(45deg, #fff 30%, rgba(255,255,255,0.8) 90%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              textShadow: '0 2px 10px rgba(0,0,0,0.1)'
             }}
           >
             {config.company.displayName}
@@ -430,11 +434,12 @@ function App() {
               py: 1,
               fontWeight: 600,
               textTransform: 'none',
-              background: 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              background: 'rgba(255, 255, 255, 0.15)',
+              backdropFilter: 'blur(10px)',
               '&:hover': {
-                background: 'rgba(255, 255, 255, 0.15)',
-                borderColor: 'rgba(255, 255, 255, 0.3)'
+                background: 'rgba(255, 255, 255, 0.25)',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
               },
               transition: 'all 0.3s ease'
             }}
@@ -457,9 +462,9 @@ function App() {
               mb: 3, 
               p: 2.5,
               borderRadius: 3,
-              background: '#16213e',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
               display: 'flex', 
               alignItems: 'center', 
               gap: 1.5, 
@@ -469,7 +474,7 @@ function App() {
             <Typography 
               variant="body2" 
               sx={{ 
-                color: 'rgba(255, 255, 255, 0.7)',
+                color: 'text.secondary',
                 fontWeight: 500
               }}
             >
@@ -479,10 +484,9 @@ function App() {
               label={`Записей: ${data.length}`} 
               size="small" 
               sx={{
-                background: '#2d3561',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 color: 'white',
                 fontWeight: 600,
-                border: '1px solid rgba(255, 255, 255, 0.1)',
                 '& .MuiChip-label': { px: 2 }
               }}
             />
@@ -495,10 +499,9 @@ function App() {
                     label={`С данными: ${stats.withUserData}`} 
                     size="small" 
                     sx={{
-                      background: '#2d3561',
+                      background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
                       color: 'white',
-                      fontWeight: 600,
-                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                      fontWeight: 600
                     }}
                   />
                   <Chip 
@@ -506,23 +509,21 @@ function App() {
                     size="small" 
                     sx={{
                       background: stats.coveragePercent >= 70 
-                        ? '#2ecc71'
+                        ? 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)'
                         : stats.coveragePercent >= 40
-                        ? '#f39c12'
-                        : '#e74c3c',
+                        ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+                        : 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
                       color: 'white',
-                      fontWeight: 600,
-                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                      fontWeight: 600
                     }}
                   />
                   <Chip 
                     label={`Кампаний: ${campaignStats.withCampaignData}`} 
                     size="small" 
                     sx={{
-                      background: '#2d3561',
+                      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
                       color: 'white',
-                      fontWeight: 600,
-                      border: '1px solid rgba(255, 255, 255, 0.1)'
+                      fontWeight: 600
                     }}
                   />
                 </>
@@ -538,9 +539,10 @@ function App() {
             mb: 3,
             borderRadius: 3,
             overflow: 'hidden',
-            background: '#0f3460',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)'
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.8)'
           }}
         >
           <Tabs
@@ -555,20 +557,21 @@ function App() {
                 textTransform: 'none',
                 minHeight: 80,
                 transition: 'all 0.3s ease',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: 'rgba(0, 0, 0, 0.6)',
                 '&:hover': {
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: 'rgba(255, 255, 255, 0.9)'
+                  background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+                  transform: 'translateY(-2px)',
+                  color: '#667eea'
                 },
                 '&.Mui-selected': {
-                  color: '#ffffff',
+                  color: '#667eea',
                   fontWeight: 700
                 }
               },
               '& .MuiTabs-indicator': {
-                height: 3,
-                borderRadius: '3px 3px 0 0',
-                background: '#e84393',
+                height: 4,
+                borderRadius: '4px 4px 0 0',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
               }
             }}
@@ -607,9 +610,10 @@ function App() {
             width: '100%',
             borderRadius: 3,
             overflow: 'hidden',
-            background: '#0f3460',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)'
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+            border: '1px solid rgba(255, 255, 255, 0.8)'
           }}
         >
           {contentTypes.map((type, index) => (
@@ -748,25 +752,24 @@ function App() {
                       alignItems: 'flex-start',
                       paddingTop: '12px',
                       paddingBottom: '12px',
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-                      color: 'rgba(255, 255, 255, 0.85)'
+                      borderBottom: '1px solid rgba(224, 224, 224, 0.4)'
                     },
                     '& .MuiDataGrid-columnHeader': {
                       fontSize: '0.875rem',
                       fontWeight: 700,
-                      background: '#16213e',
-                      color: 'rgba(255, 255, 255, 0.9)',
-                      borderBottom: '2px solid rgba(255, 255, 255, 0.1)'
+                      background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+                      color: '#667eea',
+                      borderBottom: '2px solid #667eea'
                     },
                     '& .MuiDataGrid-row': {
                       minHeight: 'auto !important',
                       maxHeight: 'none !important',
                       '&:hover': {
-                        background: 'rgba(255, 255, 255, 0.05)',
+                        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%)',
                         cursor: 'pointer'
                       },
                       '&:nth-of-type(even)': {
-                        background: 'rgba(0, 0, 0, 0.15)'
+                        background: 'rgba(0, 0, 0, 0.01)'
                       }
                     },
                     '& .MuiDataGrid-cell--textLeft': {
@@ -780,25 +783,12 @@ function App() {
                     },
                     '& .MuiDataGrid-toolbarContainer': {
                       padding: '16px',
-                      background: '#16213e',
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-                      '& .MuiButton-root': {
-                        color: 'rgba(255, 255, 255, 0.7)',
-                        '&:hover': {
-                          background: 'rgba(255, 255, 255, 0.05)'
-                        }
-                      },
-                      '& .MuiInputBase-root': {
-                        color: 'rgba(255, 255, 255, 0.85)',
-                        '& input': {
-                          color: 'rgba(255, 255, 255, 0.85)'
-                        }
-                      }
+                      background: 'rgba(102, 126, 234, 0.02)',
+                      borderBottom: '1px solid rgba(224, 224, 224, 0.3)'
                     },
                     '& .MuiDataGrid-footerContainer': {
-                      borderTop: '2px solid rgba(255, 255, 255, 0.08)',
-                      background: '#16213e',
-                      color: 'rgba(255, 255, 255, 0.7)'
+                      borderTop: '2px solid rgba(102, 126, 234, 0.1)',
+                      background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%)'
                     }
                   }}
                   getRowHeight={() => 'auto'}

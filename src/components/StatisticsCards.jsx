@@ -14,10 +14,11 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
   <Card 
     sx={{ 
       height: '100%',
-      background: '#0f3460',
-      border: `1px solid rgba(255, 255, 255, 0.08)`,
+      background: 'rgba(255, 255, 255, 0.95)',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255, 255, 255, 0.8)',
       borderRadius: 3,
-      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
+      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
       position: 'relative',
       overflow: 'hidden',
@@ -27,14 +28,13 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
         top: 0,
         left: 0,
         right: 0,
-        height: '3px',
-        background: color
+        height: '4px',
+        background: `linear-gradient(90deg, ${color} 0%, ${color}dd 100%)`
       },
       '&:hover': {
-        transform: 'translateY(-4px)',
-        boxShadow: `0 8px 24px rgba(0, 0, 0, 0.5)`,
-        borderColor: `rgba(255, 255, 255, 0.12)`,
-        background: '#16213e'
+        transform: 'translateY(-8px)',
+        boxShadow: `0 12px 28px ${color}30`,
+        borderColor: `${color}40`
       }
     }}
   >
@@ -43,7 +43,7 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
       <Typography 
         variant="caption" 
         sx={{ 
-          color: 'rgba(255, 255, 255, 0.6)',
+          color: 'text.secondary',
           fontWeight: 600,
           textTransform: 'uppercase',
           letterSpacing: 1,
@@ -75,7 +75,9 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
           variant="h4" 
           sx={{ 
             fontWeight: 800,
-            color: '#ffffff',
+            background: `linear-gradient(135deg, ${color} 0%, ${color}cc 100%)`,
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
             lineHeight: 1.2,
             fontSize: '2rem'
           }}
