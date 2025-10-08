@@ -85,20 +85,15 @@ const StatisticsCards = ({ data }) => {
     otherCount * 1 // default multiplier for other types
   );
   
-  // SMS sent count from campaign data
-  // Filter by campaign name containing content type name (Донормил or Пимафуцин)
-  // Group by unique distribution IDs to avoid duplicates
+  // SMS sent count from campaign data (only for Донормил and Пимафуцин)
+  // We need to get unique distribution IDs first, then sum their contact counts
   const uniqueDistributions = new Map();
   
   data.forEach(item => {
-    const campaignName = (item.campaignName || '').toLowerCase();
-    const contentType = (item.contentType || '').toLowerCase();
-    
-    // Check if campaign name contains the content type name
-    // This allows automatic inclusion of new products
-    if (campaignName.includes(contentType) && item.distributionType) {
+    // Only count for Донормил and Пимафуцин content types
+    if (item.contentType === 'Донормил' || item.contentType === 'Пимафуцин') {
       const distId = item.distributionType;
-      if (!uniqueDistributions.has(distId)) {
+      if (distId && !uniqueDistributions.has(distId)) {
         // Store the contact count for this distribution ID (only once)
         uniqueDistributions.set(distId, item.contactCount || 0);
       }
