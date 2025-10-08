@@ -179,8 +179,7 @@ function App() {
           <Typography 
             variant="body2" 
             sx={{ 
-              color: isValid ? 'text.primary' : 'text.disabled',
-              fontFamily: 'monospace'
+              color: isValid ? 'text.primary' : 'text.disabled'
             }}
           >
             {isValid ? parsed.toLocaleString('ru-RU') : params.value || 'Неверная дата'}
