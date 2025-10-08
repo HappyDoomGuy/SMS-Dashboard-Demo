@@ -21,11 +21,16 @@ import StatisticsCards from './components/StatisticsCards';
 
 function TabPanel({ children, value, index, ...other }) {
   return (
-    <div
+    <Box
       role="tabpanel"
       hidden={value !== index}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
+      sx={{
+        opacity: value === index ? 1 : 0,
+        transition: 'opacity 0.3s ease-in-out',
+        display: value === index ? 'block' : 'none'
+      }}
       {...other}
     >
       {value === index && (
@@ -33,7 +38,7 @@ function TabPanel({ children, value, index, ...other }) {
           {children}
         </Box>
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -131,15 +136,17 @@ function App() {
   };
 
   // Filter data by selected content type and sort by date (newest first)
-  const filteredData = (contentTypes.length > 0 
-    ? data.filter(item => item.contentType === contentTypes[selectedTab])
-    : data
-  ).sort((a, b) => {
-    // Sort by date descending (newest first)
-    const dateA = parseDate(a.date);
-    const dateB = parseDate(b.date);
-    return dateA - dateB; // Changed: A - B for newest first
-  });
+  const filteredData = React.useMemo(() => {
+    return (contentTypes.length > 0 
+      ? data.filter(item => item.contentType === contentTypes[selectedTab])
+      : data
+    ).sort((a, b) => {
+      // Sort by date descending (newest first)
+      const dateA = parseDate(a.date);
+      const dateB = parseDate(b.date);
+      return dateA - dateB; // Changed: A - B for newest first
+    });
+  }, [data, contentTypes, selectedTab]);
 
   // Debug: Log sorting info
   React.useEffect(() => {
@@ -489,7 +496,16 @@ function App() {
                 fontSize: '1rem',
                 fontWeight: 600,
                 textTransform: 'none',
-                minHeight: 64
+                minHeight: 64,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  transform: 'translateY(-2px)'
+                }
+              },
+              '& .MuiTabs-indicator': {
+                height: 3,
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
               }
             }}
           >

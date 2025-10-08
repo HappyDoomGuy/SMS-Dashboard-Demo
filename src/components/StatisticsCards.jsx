@@ -77,6 +77,14 @@ const formatTime = (seconds) => {
 };
 
 const StatisticsCards = ({ data }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsVisible(false);
+    const timer = setTimeout(() => setIsVisible(true), 50);
+    return () => clearTimeout(timer);
+  }, [data.length]); // Re-trigger animation when data changes
+
   // Calculate statistics
   const pageViews = data.length;
   
@@ -102,9 +110,27 @@ const StatisticsCards = ({ data }) => {
     : 0;
 
   return (
-    <Box sx={{ mb: 3 }}>
+    <Box 
+      sx={{ 
+        mb: 3,
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(-20px)',
+        transition: 'opacity 0.4s ease, transform 0.4s ease'
+      }}
+    >
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={3}
+          sx={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.5s ease, transform 0.5s ease',
+            transitionDelay: '0.1s'
+          }}
+        >
           <StatisticCard
             title="Просмотров страниц"
             value={pageViews.toLocaleString('ru-RU')}
@@ -114,7 +140,18 @@ const StatisticsCards = ({ data }) => {
           />
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={3}
+          sx={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.5s ease, transform 0.5s ease',
+            transitionDelay: '0.2s'
+          }}
+        >
           <StatisticCard
             title="Общее время"
             value={totalTimeFormatted}
@@ -124,7 +161,18 @@ const StatisticsCards = ({ data }) => {
           />
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={3}
+          sx={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.5s ease, transform 0.5s ease',
+            transitionDelay: '0.3s'
+          }}
+        >
           <StatisticCard
             title="Просмотрено СМС"
             value={smsViewed.toLocaleString('ru-RU')}
@@ -134,7 +182,18 @@ const StatisticsCards = ({ data }) => {
           />
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={3}
+          sx={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.5s ease, transform 0.5s ease',
+            transitionDelay: '0.4s'
+          }}
+        >
           <StatisticCard
             title="Средний % просмотра"
             value={`${avgViewPercent}%`}
