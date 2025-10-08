@@ -402,9 +402,8 @@ function App() {
         position="static" 
         elevation={0}
         sx={{
-          background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%)',
-          backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+          background: '#ffffff',
+          borderBottom: '1px solid #e9ecef'
         }}
       >
         <Toolbar sx={{ py: 2 }}>
@@ -415,33 +414,41 @@ function App() {
               flexGrow: 1,
               fontWeight: 700,
               letterSpacing: 0.5,
-              background: 'linear-gradient(45deg, #fff 30%, rgba(255,255,255,0.8) 90%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: '0 2px 10px rgba(0,0,0,0.1)'
+              color: '#212529'
             }}
           >
             {config.company.displayName}
           </Typography>
+          {lastUpdate && (
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                color: '#6c757d',
+                mr: 2,
+                fontWeight: 500
+              }}
+            >
+              Обновлено: {lastUpdate.toLocaleString('ru-RU')}
+            </Typography>
+          )}
           <Button
-            color="inherit"
             startIcon={<RefreshIcon />}
             onClick={loadData}
             disabled={loading}
+            variant="outlined"
             sx={{
               borderRadius: 2,
               px: 3,
               py: 1,
               fontWeight: 600,
               textTransform: 'none',
-              background: 'rgba(255, 255, 255, 0.15)',
-              backdropFilter: 'blur(10px)',
+              borderColor: '#dee2e6',
+              color: '#495057',
               '&:hover': {
-                background: 'rgba(255, 255, 255, 0.25)',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                borderColor: '#adb5bd',
+                background: '#f8f9fa'
               },
-              transition: 'all 0.3s ease'
+              transition: 'all 0.2s ease'
             }}
           >
             Обновить
@@ -456,93 +463,17 @@ function App() {
           </Alert>
         )}
 
-        {lastUpdate && (
-          <Box 
-            sx={{ 
-              mb: 3, 
-              p: 2.5,
-              borderRadius: 3,
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: 1.5, 
-              flexWrap: 'wrap'
-            }}
-          >
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: 'text.secondary',
-                fontWeight: 500
-              }}
-            >
-              Последнее обновление: {lastUpdate.toLocaleString('ru-RU')}
-            </Typography>
-            <Chip 
-              label={`Записей: ${data.length}`} 
-              size="small" 
-              sx={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                fontWeight: 600,
-                '& .MuiChip-label': { px: 2 }
-              }}
-            />
-            {data.length > 0 && (() => {
-              const stats = dataUtils.getUserDataStats(data);
-              const campaignStats = dataUtils.getCampaignDataStats(data);
-              return (
-                <>
-                  <Chip 
-                    label={`С данными: ${stats.withUserData}`} 
-                    size="small" 
-                    sx={{
-                      background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
-                      color: 'white',
-                      fontWeight: 600
-                    }}
-                  />
-                  <Chip 
-                    label={`Покрытие: ${stats.coveragePercent}%`} 
-                    size="small" 
-                    sx={{
-                      background: stats.coveragePercent >= 70 
-                        ? 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)'
-                        : stats.coveragePercent >= 40
-                        ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
-                        : 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                      color: 'white',
-                      fontWeight: 600
-                    }}
-                  />
-                  <Chip 
-                    label={`Кампаний: ${campaignStats.withCampaignData}`} 
-                    size="small" 
-                    sx={{
-                      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                      color: 'white',
-                      fontWeight: 600
-                    }}
-                  />
-                </>
-              );
-            })()}
-          </Box>
-        )}
 
         {/* Global Tabs Navigation */}
         <Paper 
           sx={{ 
             width: '100%', 
             mb: 3,
-            borderRadius: 3,
+            borderRadius: 2,
             overflow: 'hidden',
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-            border: '1px solid rgba(255, 255, 255, 0.8)'
+            background: '#ffffff',
+            border: '1px solid #e9ecef',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
           }}
         >
           <Tabs
@@ -555,23 +486,21 @@ function App() {
                 fontSize: '1rem',
                 fontWeight: 600,
                 textTransform: 'none',
-                minHeight: 80,
-                transition: 'all 0.3s ease',
-                color: 'rgba(0, 0, 0, 0.6)',
+                minHeight: 72,
+                transition: 'all 0.2s ease',
+                color: '#6c757d',
                 '&:hover': {
-                  background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
-                  transform: 'translateY(-2px)',
-                  color: '#667eea'
+                  background: '#f8f9fa',
+                  color: '#495057'
                 },
                 '&.Mui-selected': {
-                  color: '#667eea',
+                  color: '#212529',
                   fontWeight: 700
                 }
               },
               '& .MuiTabs-indicator': {
-                height: 4,
-                borderRadius: '4px 4px 0 0',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                height: 3,
+                background: '#495057',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
               }
             }}
@@ -608,12 +537,11 @@ function App() {
         <Paper 
           sx={{ 
             width: '100%',
-            borderRadius: 3,
+            borderRadius: 2,
             overflow: 'hidden',
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-            border: '1px solid rgba(255, 255, 255, 0.8)'
+            background: '#ffffff',
+            border: '1px solid #e9ecef',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
           }}
         >
           {contentTypes.map((type, index) => (
@@ -757,15 +685,15 @@ function App() {
                     '& .MuiDataGrid-columnHeader': {
                       fontSize: '0.875rem',
                       fontWeight: 700,
-                      background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
-                      color: '#667eea',
-                      borderBottom: '2px solid #667eea'
+                      background: '#f8f9fa',
+                      color: '#495057',
+                      borderBottom: '2px solid #dee2e6'
                     },
                     '& .MuiDataGrid-row': {
                       minHeight: 'auto !important',
                       maxHeight: 'none !important',
                       '&:hover': {
-                        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%)',
+                        background: '#f8f9fa',
                         cursor: 'pointer'
                       },
                       '&:nth-of-type(even)': {
@@ -783,12 +711,12 @@ function App() {
                     },
                     '& .MuiDataGrid-toolbarContainer': {
                       padding: '16px',
-                      background: 'rgba(102, 126, 234, 0.02)',
-                      borderBottom: '1px solid rgba(224, 224, 224, 0.3)'
+                      background: '#f8f9fa',
+                      borderBottom: '1px solid #e9ecef'
                     },
                     '& .MuiDataGrid-footerContainer': {
-                      borderTop: '2px solid rgba(102, 126, 234, 0.1)',
-                      background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%)'
+                      borderTop: '2px solid #e9ecef',
+                      background: '#f8f9fa'
                     }
                   }}
                   getRowHeight={() => 'auto'}

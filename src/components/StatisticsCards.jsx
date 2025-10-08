@@ -14,12 +14,11 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
   <Card 
     sx={{ 
       height: '100%',
-      background: 'rgba(255, 255, 255, 0.95)',
-      backdropFilter: 'blur(10px)',
-      border: '1px solid rgba(255, 255, 255, 0.8)',
-      borderRadius: 3,
-      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      background: '#ffffff',
+      border: '1px solid #e9ecef',
+      borderRadius: 2,
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+      transition: 'all 0.2s ease',
       position: 'relative',
       overflow: 'hidden',
       '&::before': {
@@ -28,32 +27,32 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
         top: 0,
         left: 0,
         right: 0,
-        height: '4px',
-        background: `linear-gradient(90deg, ${color} 0%, ${color}dd 100%)`
+        height: '3px',
+        background: color
       },
       '&:hover': {
-        transform: 'translateY(-8px)',
-        boxShadow: `0 12px 28px ${color}30`,
-        borderColor: `${color}40`
+        transform: 'translateY(-2px)',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+        borderColor: '#dee2e6'
       }
     }}
   >
     <CardContent>
       {/* Title at the top */}
-      <Typography 
-        variant="caption" 
-        sx={{ 
-          color: 'text.secondary',
-          fontWeight: 600,
-          textTransform: 'uppercase',
-          letterSpacing: 1,
-          fontSize: '0.7rem',
-          display: 'block',
-          mb: 2
-        }}
-      >
-        {title}
-      </Typography>
+          <Typography 
+            variant="caption" 
+            sx={{ 
+              color: '#6c757d',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: 1.2,
+              fontSize: '0.7rem',
+              display: 'block',
+              mb: 2.5
+            }}
+          >
+            {title}
+          </Typography>
       
       {/* Icon and Value */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -62,7 +61,7 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
             width: 56,
             height: 56,
             borderRadius: 2,
-            background: `linear-gradient(135deg, ${color}20 0%, ${color}10 100%)`,
+            background: `${color}15`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -75,9 +74,7 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
           variant="h4" 
           sx={{ 
             fontWeight: 800,
-            background: `linear-gradient(135deg, ${color} 0%, ${color}cc 100%)`,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            color: '#212529',
             lineHeight: 1.2,
             fontSize: '2rem'
           }}
