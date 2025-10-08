@@ -138,20 +138,7 @@ const StatisticsCards = ({ data, currentContentType }) => {
   return (
     <Box sx={{ mb: 3 }}>
       <Grid container spacing={2}>
-        <Grid 
-          item 
-          xs={12} 
-          sm={6} 
-          md={2.4}
-        >
-          <StatisticCard
-            title="Просмотров страниц"
-            value={pageViews.toLocaleString('ru-RU')}
-            icon={VisibilityIcon}
-            color={config.colors.statistics.pageViews}
-          />
-        </Grid>
-        
+        {/* 1. Отправлено СМС */}
         <Grid 
           item 
           xs={12} 
@@ -166,20 +153,7 @@ const StatisticsCards = ({ data, currentContentType }) => {
           />
         </Grid>
         
-        <Grid 
-          item 
-          xs={12} 
-          sm={6} 
-          md={2.4}
-        >
-          <StatisticCard
-            title="Общее время просмотров"
-            value={totalTimeFormatted}
-            icon={TimerIcon}
-            color={config.colors.statistics.totalTime}
-          />
-        </Grid>
-        
+        {/* 2. Просмотрено СМС */}
         <Grid 
           item 
           xs={12} 
@@ -194,6 +168,37 @@ const StatisticsCards = ({ data, currentContentType }) => {
           />
         </Grid>
         
+        {/* 3. Просмотров страниц */}
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={2.4}
+        >
+          <StatisticCard
+            title="Просмотров страниц"
+            value={pageViews.toLocaleString('ru-RU')}
+            icon={VisibilityIcon}
+            color={config.colors.statistics.pageViews}
+          />
+        </Grid>
+        
+        {/* 4. Время просмотров */}
+        <Grid 
+          item 
+          xs={12} 
+          sm={6} 
+          md={2.4}
+        >
+          <StatisticCard
+            title="Время просмотров"
+            value={totalTimeFormatted}
+            icon={TimerIcon}
+            color={config.colors.statistics.totalTime}
+          />
+        </Grid>
+        
+        {/* 5. Средний % просмотра */}
         <Grid 
           item 
           xs={12} 
