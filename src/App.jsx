@@ -19,6 +19,7 @@ import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { apiService, dataUtils } from './services/api';
 import StatisticsCards from './components/StatisticsCards';
 import CampaignsTable from './components/CampaignsTable';
+import ViewsDynamicsChart from './components/ViewsDynamicsChart';
 import config, { getCoverageColor } from './config';
 
 function TabPanel({ children, value, index, ...other }) {
@@ -537,6 +538,14 @@ function App() {
         {/* Campaigns Table */}
         {filteredData.length > 0 && (
           <CampaignsTable 
+            data={filteredData} 
+            currentContentType={contentTypes[selectedTab]} 
+          />
+        )}
+
+        {/* Views Dynamics Chart */}
+        {filteredData.length > 0 && (
+          <ViewsDynamicsChart 
             data={filteredData} 
             currentContentType={contentTypes[selectedTab]} 
           />

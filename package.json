@@ -10,19 +10,20 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.9",
+    "@mui/material": "^5.11.10",
+    "@mui/x-data-grid": "^6.0.2",
+    "cors": "^2.8.5",
+    "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "googleapis": "^126.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
-    "googleapis": "^126.0.1",
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "@mui/material": "^5.11.10",
-    "@mui/icons-material": "^5.11.9",
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@mui/x-data-grid": "^6.0.2",
-    "date-fns": "^2.29.3"
+    "recharts": "^3.2.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
