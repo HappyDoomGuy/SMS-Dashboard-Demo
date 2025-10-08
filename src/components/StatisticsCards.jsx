@@ -45,17 +45,6 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
           >
             {value}
           </Typography>
-          {subtitle && (
-            <Typography 
-              variant="caption" 
-              sx={{ 
-                color: 'text.secondary',
-                fontSize: '0.75rem'
-              }}
-            >
-              {subtitle}
-            </Typography>
-          )}
         </Box>
       </Box>
     </CardContent>
@@ -77,14 +66,6 @@ const formatTime = (seconds) => {
 };
 
 const StatisticsCards = ({ data }) => {
-  const [isVisible, setIsVisible] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsVisible(false);
-    const timer = setTimeout(() => setIsVisible(true), 10); // Reduced delay for faster response
-    return () => clearTimeout(timer);
-  }, [data.length]); // Re-trigger animation when data changes
-
   // Calculate statistics
   const pageViews = data.length;
   
@@ -110,31 +91,17 @@ const StatisticsCards = ({ data }) => {
     : 0;
 
   return (
-    <Box 
-      sx={{ 
-        mb: 3,
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(-10px)',
-        transition: 'opacity 0.2s ease, transform 0.2s ease'
-      }}
-    >
+    <Box sx={{ mb: 3 }}>
       <Grid container spacing={2}>
         <Grid 
           item 
           xs={12} 
           sm={6} 
           md={3}
-          sx={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.25s ease, transform 0.25s ease',
-            transitionDelay: '0.05s'
-          }}
         >
           <StatisticCard
             title="Просмотров страниц"
             value={pageViews.toLocaleString('ru-RU')}
-            subtitle="Всего записей"
             icon={VisibilityIcon}
             color="#1976d2"
           />
@@ -145,17 +112,10 @@ const StatisticsCards = ({ data }) => {
           xs={12} 
           sm={6} 
           md={3}
-          sx={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.25s ease, transform 0.25s ease',
-            transitionDelay: '0.1s'
-          }}
         >
           <StatisticCard
-            title="Общее время"
+            title="Общее время просмотров"
             value={totalTimeFormatted}
-            subtitle={`${totalSeconds.toLocaleString('ru-RU')} секунд`}
             icon={TimerIcon}
             color="#9c27b0"
           />
@@ -166,17 +126,10 @@ const StatisticsCards = ({ data }) => {
           xs={12} 
           sm={6} 
           md={3}
-          sx={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.25s ease, transform 0.25s ease',
-            transitionDelay: '0.15s'
-          }}
         >
           <StatisticCard
             title="Просмотрено СМС"
             value={smsViewed.toLocaleString('ru-RU')}
-            subtitle={`Пимафуцин ×1.44, Донормил ×4.6`}
             icon={MessageIcon}
             color="#f57c00"
           />
@@ -187,17 +140,10 @@ const StatisticsCards = ({ data }) => {
           xs={12} 
           sm={6} 
           md={3}
-          sx={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition: 'opacity 0.25s ease, transform 0.25s ease',
-            transitionDelay: '0.2s'
-          }}
         >
           <StatisticCard
             title="Средний % просмотра"
             value={`${avgViewPercent}%`}
-            subtitle={`Из ${nonZeroViews.length} активных просмотров`}
             icon={BarChartIcon}
             color={avgViewPercent >= 70 ? '#2e7d32' : avgViewPercent >= 50 ? '#ed6c02' : '#d32f2f'}
           />
