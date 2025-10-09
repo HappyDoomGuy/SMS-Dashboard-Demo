@@ -185,8 +185,7 @@ const CampaignsTable = ({ data, currentContentType }) => {
           rows={rows}
           columns={columns}
           disableSelectionOnClick
-          hideFooterPagination={true}
-          hideFooter={false}
+          hideFooter={true}
           sortingMode="client"
           initialState={{
             sorting: {

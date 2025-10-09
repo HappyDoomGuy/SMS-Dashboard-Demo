@@ -130,7 +130,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
       sortable: true,
       type: 'number',
       renderCell: (params) => (
-        <Typography variant="body2" sx={{ fontWeight: 600 }}>
+        <Typography variant="body2">
           {params.value}
         </Typography>
       )
@@ -141,7 +141,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
       width: 150,
       sortable: true,
       renderCell: (params) => (
-        <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
+        <Typography variant="body2">
           {params.value}
         </Typography>
       )
@@ -171,8 +171,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
           rows={rows}
           columns={columns}
           disableSelectionOnClick
-          hideFooterPagination={true}
-          hideFooter={false}
+          hideFooter={true}
           sortingMode="client"
           initialState={{
             sorting: {
