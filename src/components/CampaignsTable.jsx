@@ -1,8 +1,41 @@
 import React from 'react';
-import { Paper, Typography, Box } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { Paper, Typography, Box, Button } from '@mui/material';
+import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { FileDownload as FileDownloadIcon } from '@mui/icons-material';
 import { getSmsMultiplier, isAllowedCampaignSource } from '../config';
 import { apiService } from '../services/api';
+import { exportDataGridToExcel } from '../utils/exportToExcel';
+
+function CampaignsToolbar({ rows, columns, contentType }) {
+  const handleExport = () => {
+    const filename = `${contentType}_статистика_по_кампаниям_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}`;
+    exportDataGridToExcel(rows, columns, filename);
+  };
+
+  return (
+    <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      <Button
+        startIcon={<FileDownloadIcon />}
+        onClick={handleExport}
+        size="small"
+        sx={{
+          textTransform: 'none',
+          fontWeight: 600
+        }}
+      >
+        Экспорт в Excel
+      </Button>
+      <Box sx={{ flexGrow: 1 }} />
+      <GridToolbarQuickFilter 
+        debounceMs={500}
+        sx={{ minWidth: 200 }}
+      />
+    </GridToolbarContainer>
+  );
+}
 
 const CampaignsTable = ({ data, currentContentType }) => {
   // Get all campaigns from the original campaigns data
@@ -192,10 +225,26 @@ const CampaignsTable = ({ data, currentContentType }) => {
               sortModel: [{ field: 'campaignName', sort: 'desc' }]
             }
           }}
+          slots={{
+            toolbar: () => (
+              <CampaignsToolbar 
+                rows={rows} 
+                columns={columns} 
+                contentType={currentContentType}
+              />
+            ),
+          }}
           localeText={{
             noRowsLabel: 'Нет кампаний',
             noResultsOverlayLabel: 'Кампании не найдены.',
             toolbarQuickFilterPlaceholder: 'Поиск...',
+            toolbarDensity: 'Плотность',
+            toolbarDensityLabel: 'Плотность',
+            toolbarDensityCompact: 'Компактная',
+            toolbarDensityStandard: 'Стандартная',
+            toolbarDensityComfortable: 'Комфортная',
+            toolbarColumns: 'Колонки',
+            toolbarFilters: 'Фильтры',
           }}
           sx={{
             border: 'none',

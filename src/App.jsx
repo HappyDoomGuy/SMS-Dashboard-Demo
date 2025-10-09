@@ -14,14 +14,15 @@ import {
   Chip,
   Grid
 } from '@mui/material';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { Refresh as RefreshIcon } from '@mui/icons-material';
+import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { Refresh as RefreshIcon, FileDownload as FileDownloadIcon } from '@mui/icons-material';
 import { apiService, dataUtils } from './services/api';
 import StatisticsCards from './components/StatisticsCards';
 import CampaignsTable from './components/CampaignsTable';
 import ViewsDynamicsChart from './components/ViewsDynamicsChart';
 import ClientsStatisticsTable from './components/ClientsStatisticsTable';
 import config, { getCoverageColor } from './config';
+import { exportDataGridToExcel } from './utils/exportToExcel';
 
 function TabPanel({ children, value, index, ...other }) {
   return (
@@ -43,6 +44,37 @@ function TabPanel({ children, value, index, ...other }) {
         </Box>
       )}
     </Box>
+  );
+}
+
+function CustomToolbar({ rows, columns, contentType }) {
+  const handleExport = () => {
+    const filename = `${contentType}_лог_просмотров_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}`;
+    exportDataGridToExcel(rows, columns, filename);
+  };
+
+  return (
+    <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      <Button
+        startIcon={<FileDownloadIcon />}
+        onClick={handleExport}
+        size="small"
+        sx={{
+          textTransform: 'none',
+          fontWeight: 600
+        }}
+      >
+        Экспорт в Excel
+      </Button>
+      <Box sx={{ flexGrow: 1 }} />
+      <GridToolbarQuickFilter 
+        debounceMs={500}
+        sx={{ minWidth: 200 }}
+      />
+    </GridToolbarContainer>
   );
 }
 
@@ -587,14 +619,14 @@ function App() {
                     }
                   }}
                   disableMultipleColumnsSorting={false}
-                  components={{
-                    Toolbar: GridToolbar,
-                  }}
-                  componentsProps={{
-                    toolbar: {
-                      showQuickFilter: true,
-                      quickFilterProps: { debounceMs: 500 },
-                    },
+                  slots={{
+                    toolbar: () => (
+                      <CustomToolbar 
+                        rows={filteredData} 
+                        columns={columns} 
+                        contentType={contentTypes[selectedTab]}
+                      />
+                    ),
                   }}
                   localeText={{
                     // Toolbar

@@ -1,6 +1,8 @@
 import React from 'react';
-import { Paper, Typography, Box } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { Paper, Typography, Box, Button } from '@mui/material';
+import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarQuickFilter } from '@mui/x-data-grid';
+import { FileDownload as FileDownloadIcon } from '@mui/icons-material';
+import { exportDataGridToExcel } from '../utils/exportToExcel';
 
 const formatTime = (seconds) => {
   const hours = Math.floor(seconds / 3600);
@@ -9,6 +11,37 @@ const formatTime = (seconds) => {
   
   return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 };
+
+function ClientsToolbar({ rows, columns, contentType }) {
+  const handleExport = () => {
+    const filename = `${contentType}_статистика_по_клиентам_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}`;
+    exportDataGridToExcel(rows, columns, filename);
+  };
+
+  return (
+    <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      <Button
+        startIcon={<FileDownloadIcon />}
+        onClick={handleExport}
+        size="small"
+        sx={{
+          textTransform: 'none',
+          fontWeight: 600
+        }}
+      >
+        Экспорт в Excel
+      </Button>
+      <Box sx={{ flexGrow: 1 }} />
+      <GridToolbarQuickFilter 
+        debounceMs={500}
+        sx={{ minWidth: 200 }}
+      />
+    </GridToolbarContainer>
+  );
+}
 
 const ClientsStatisticsTable = ({ data, currentContentType }) => {
   // Group data by user (phone number)
@@ -178,10 +211,26 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
               sortModel: [{ field: 'pageViews', sort: 'desc' }]
             }
           }}
+          slots={{
+            toolbar: () => (
+              <ClientsToolbar 
+                rows={rows} 
+                columns={columns} 
+                contentType={currentContentType}
+              />
+            ),
+          }}
           localeText={{
             noRowsLabel: 'Нет данных о клиентах',
             noResultsOverlayLabel: 'Клиенты не найдены.',
             toolbarQuickFilterPlaceholder: 'Поиск...',
+            toolbarDensity: 'Плотность',
+            toolbarDensityLabel: 'Плотность',
+            toolbarDensityCompact: 'Компактная',
+            toolbarDensityStandard: 'Стандартная',
+            toolbarDensityComfortable: 'Комфортная',
+            toolbarColumns: 'Колонки',
+            toolbarFilters: 'Фильтры',
           }}
           sx={{
             border: 'none',
