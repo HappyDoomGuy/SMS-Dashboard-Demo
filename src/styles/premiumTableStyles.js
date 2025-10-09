@@ -48,13 +48,24 @@ export const premiumTableStyles = {
       background: 'rgba(100, 116, 255, 0.05)',
       borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
       '& .MuiButton-root': {
-        color: 'rgba(255, 255, 255, 0.7)',
+        color: 'rgba(255, 255, 255, 0.9)',
         '&:hover': {
-          background: 'rgba(100, 116, 255, 0.1)'
+          background: 'rgba(100, 116, 255, 0.1)',
+          color: '#ffffff'
         }
+      },
+      '& .MuiButtonBase-root': {
+        color: 'rgba(255, 255, 255, 0.9)'
       },
       '& .MuiInputBase-root': {
         color: 'rgba(255, 255, 255, 0.9)',
+        '& input': {
+          color: 'rgba(255, 255, 255, 0.9)'
+        },
+        '& .MuiInputBase-input::placeholder': {
+          color: 'rgba(255, 255, 255, 0.5)',
+          opacity: 1
+        },
         '& .MuiOutlinedInput-notchedOutline': {
           borderColor: 'rgba(100, 116, 255, 0.3)'
         },
@@ -64,11 +75,31 @@ export const premiumTableStyles = {
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
           borderColor: '#6474ff'
         }
+      },
+      '& .MuiSvgIcon-root': {
+        color: 'rgba(255, 255, 255, 0.7)'
       }
     },
     '& .MuiDataGrid-footerContainer': {
       borderTop: '1px solid rgba(100, 116, 255, 0.1)',
       background: 'rgba(100, 116, 255, 0.05)'
+    },
+    '& .MuiDataGrid-menuIcon': {
+      color: 'rgba(255, 255, 255, 0.7)'
+    },
+    '& .MuiDataGrid-sortIcon': {
+      color: 'rgba(255, 255, 255, 0.7)'
+    },
+    '& .MuiDataGrid-filterIcon': {
+      color: 'rgba(255, 255, 255, 0.7)'
+    },
+    '& .MuiTypography-root': {
+      color: 'rgba(255, 255, 255, 0.9) !important'
+    },
+    '& .MuiChip-root': {
+      background: 'rgba(100, 116, 255, 0.15)',
+      color: 'rgba(255, 255, 255, 0.9)',
+      borderColor: 'rgba(100, 116, 255, 0.3)'
     }
   }
 };
