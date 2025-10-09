@@ -21,6 +21,7 @@ import StatisticsCards from './components/StatisticsCards';
 import CampaignsTable from './components/CampaignsTable';
 import ViewsDynamicsChart from './components/ViewsDynamicsChart';
 import ClientsStatisticsTable from './components/ClientsStatisticsTable';
+import AIConsultant from './components/AIConsultant';
 import config, { getCoverageColor } from './config';
 import { exportDataGridToExcel } from './utils/exportToExcel';
 
@@ -746,6 +747,85 @@ function App() {
           <ClientsStatisticsTable 
             data={filteredData} 
             currentContentType={contentTypes[selectedTab]} 
+          />
+        )}
+
+        {/* AI Consultant - Floating Button */}
+        {filteredData.length > 0 && contentTypes[selectedTab] && (
+          <AIConsultant 
+            data={filteredData}
+            contentType={contentTypes[selectedTab]}
+            campaignsData={React.useMemo(() => {
+              // Prepare campaigns data for AI
+              const allCampaigns = apiService.getFilteredCampaigns();
+              const currentDistributionIds = new Set(
+                filteredData.map(item => item.distributionType).filter(id => id)
+              );
+              
+              const campaignStats = new Map();
+              allCampaigns
+                .filter(c => currentDistributionIds.has(c['ID дистрибуции']))
+                .forEach(campaign => {
+                  const campaignName = campaign['Название кампании'] || '';
+                  if (!campaignStats.has(campaignName)) {
+                    campaignStats.set(campaignName, {
+                      campaignName,
+                      latestDate: campaign['Дата и время'] || '',
+                      smsSent: 0,
+                      smsViewed: 0,
+                      pageViews: 0
+                    });
+                  }
+                  const stats = campaignStats.get(campaignName);
+                  stats.smsSent += parseInt(campaign['Кол-во обычных контактов']) || 0;
+                });
+
+              // Calculate views for each campaign
+              campaignStats.forEach(stats => {
+                const campaignViews = filteredData.filter(
+                  item => item.campaignName === stats.campaignName
+                );
+                stats.pageViews = campaignViews.length;
+                stats.smsViewed = Math.round(campaignViews.length * 
+                  (contentTypes[selectedTab] === 'Донормил' ? 4.6 : 1.44));
+              });
+
+              return Array.from(campaignStats.values());
+            }, [filteredData, contentTypes, selectedTab])}
+            clientsData={React.useMemo(() => {
+              // Prepare clients data for AI
+              const userStats = new Map();
+              filteredData.forEach(item => {
+                const phone = item.phone || '';
+                if (!phone || !item.userName) return;
+                
+                if (!userStats.has(phone)) {
+                  userStats.set(phone, {
+                    userName: item.userName,
+                    specialty: item.specialty || '',
+                    workplace: item.workplace || '',
+                    district: item.district || '',
+                    pageViews: 0,
+                    totalTime: 0,
+                    totalTimeFormatted: ''
+                  });
+                }
+                
+                const stats = userStats.get(phone);
+                stats.pageViews += 1;
+                stats.totalTime += (item.timeSec || 0);
+              });
+
+              // Format time for each client
+              userStats.forEach(stats => {
+                const hours = Math.floor(stats.totalTime / 3600);
+                const minutes = Math.floor((stats.totalTime % 3600) / 60);
+                const seconds = stats.totalTime % 60;
+                stats.totalTimeFormatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+              });
+
+              return Array.from(userStats.values());
+            }, [filteredData])}
           />
         )}
       </Container>
