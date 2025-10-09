@@ -237,7 +237,7 @@ const CampaignsTable = ({ data, currentContentType }) => {
           sortingMode="client"
           initialState={{
             sorting: {
-              sortModel: [{ field: 'campaignName', sort: 'desc' }]
+              sortModel: [{ field: 'latestDate', sort: 'desc' }]
             }
           }}
           slots={{
