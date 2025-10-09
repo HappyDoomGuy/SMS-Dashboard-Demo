@@ -57,18 +57,18 @@ const ViewsDynamicsChart = ({ data, currentContentType }) => {
       return (
         <Box
           sx={{
-            background: '#ffffff',
-            border: '1px solid #e9ecef',
+            background: '#1a1f3a',
+            border: '1px solid rgba(100, 116, 255, 0.3)',
             borderRadius: 1,
             p: 1.5,
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
           }}
         >
-          <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
+          <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5, color: '#ffffff' }}>
             {payload[0].payload.date}
           </Typography>
-          <Typography variant="body2" sx={{ color: '#495057' }}>
-            Просмотров: <strong>{payload[0].value}</strong>
+          <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+            Просмотров: <strong style={{ color: '#6474ff' }}>{payload[0].value}</strong>
           </Typography>
         </Box>
       );
@@ -83,13 +83,13 @@ const ViewsDynamicsChart = ({ data, currentContentType }) => {
         mb: 3,
         borderRadius: 2,
         overflow: 'hidden',
-        background: '#ffffff',
-        border: '1px solid #e9ecef',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+        background: '#151933',
+        border: '1px solid rgba(100, 116, 255, 0.15)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
       }}
     >
-      <Box sx={{ p: 2, borderBottom: '1px solid #e9ecef' }}>
-        <Typography variant="h6" sx={{ fontWeight: 600, color: '#212529' }}>
+      <Box sx={{ p: 2, borderBottom: '1px solid rgba(100, 116, 255, 0.1)' }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, color: '#ffffff' }}>
           Динамика просмотров по дням
         </Typography>
       </Box>
@@ -100,27 +100,27 @@ const ViewsDynamicsChart = ({ data, currentContentType }) => {
             data={chartData}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#e9ecef" />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(100, 116, 255, 0.1)" />
             <XAxis 
               dataKey="date" 
-              tick={{ fill: '#6c757d', fontSize: 12 }}
-              stroke="#dee2e6"
+              tick={{ fill: 'rgba(255, 255, 255, 0.6)', fontSize: 12 }}
+              stroke="rgba(100, 116, 255, 0.3)"
             />
             <YAxis 
-              tick={{ fill: '#6c757d', fontSize: 12 }}
-              stroke="#dee2e6"
+              tick={{ fill: 'rgba(255, 255, 255, 0.6)', fontSize: 12 }}
+              stroke="rgba(100, 116, 255, 0.3)"
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend 
               wrapperStyle={{ 
                 paddingTop: '20px',
                 fontSize: '14px',
-                color: '#495057'
+                color: 'rgba(255, 255, 255, 0.7)'
               }}
             />
             <Bar 
               dataKey="Просмотров" 
-              fill="#495057"
+              fill="#6474ff"
               radius={[4, 4, 0, 0]}
             />
           </BarChart>

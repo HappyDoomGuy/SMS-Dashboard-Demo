@@ -493,16 +493,17 @@ function App() {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, minHeight: '100vh', pb: 4 }}>
+    <Box sx={{ flexGrow: 1, minHeight: '100vh', pb: 4, background: '#0a0e27' }}>
       <AppBar 
         position="static" 
         elevation={0}
         sx={{
-          background: '#ffffff',
-          borderBottom: '1px solid #e9ecef'
+          background: '#151933',
+          borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
         }}
       >
-        <Toolbar sx={{ py: 2 }}>
+        <Toolbar sx={{ py: 2.5 }}>
           <Typography 
             variant="h5" 
             component="div" 
@@ -510,7 +511,8 @@ function App() {
               flexGrow: 1,
               fontWeight: 700,
               letterSpacing: 0.5,
-              color: '#212529'
+              color: '#ffffff',
+              fontSize: '1.5rem'
             }}
           >
             {config.company.displayName}
@@ -519,9 +521,10 @@ function App() {
             <Typography 
               variant="body2" 
               sx={{ 
-                color: '#6c757d',
-                mr: 2,
-                fontWeight: 500
+                color: 'rgba(255, 255, 255, 0.6)',
+                mr: 3,
+                fontWeight: 500,
+                fontSize: '0.875rem'
               }}
             >
               Обновлено: {lastUpdate.toLocaleString('ru-RU')}
@@ -533,16 +536,17 @@ function App() {
             disabled={loading}
             variant="outlined"
             sx={{
-              borderRadius: 2,
+              borderRadius: 1.5,
               px: 3,
               py: 1,
               fontWeight: 600,
               textTransform: 'none',
-              borderColor: '#dee2e6',
-              color: '#495057',
+              borderColor: 'rgba(100, 116, 255, 0.3)',
+              color: '#6474ff',
+              background: 'rgba(100, 116, 255, 0.05)',
               '&:hover': {
-                borderColor: '#adb5bd',
-                background: '#f8f9fa'
+                borderColor: '#6474ff',
+                background: 'rgba(100, 116, 255, 0.1)'
               },
               transition: 'all 0.2s ease'
             }}
@@ -561,15 +565,15 @@ function App() {
 
 
         {/* Global Tabs Navigation */}
-        <Paper 
-          sx={{ 
-            width: '100%', 
+        <Paper
+          sx={{
+            width: '100%',
             mb: 3,
             borderRadius: 2,
             overflow: 'hidden',
-            background: '#ffffff',
-            border: '1px solid #e9ecef',
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+            background: '#151933',
+            border: '1px solid rgba(100, 116, 255, 0.15)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
           }}
         >
           <Tabs
@@ -582,22 +586,24 @@ function App() {
                         fontSize: '1.1rem',
                         fontWeight: 600,
                         textTransform: 'none',
-                        minHeight: 56,
+                        minHeight: 64,
                         py: 2,
                         transition: 'all 0.2s ease',
-                        color: '#6c757d',
+                        color: 'rgba(255, 255, 255, 0.5)',
                         '&:hover': {
-                          background: '#f8f9fa',
-                          color: '#495057'
+                          background: 'rgba(100, 116, 255, 0.08)',
+                          color: 'rgba(255, 255, 255, 0.8)'
                         },
                         '&.Mui-selected': {
-                          color: '#212529',
-                          fontWeight: 700
+                          color: '#ffffff',
+                          fontWeight: 700,
+                          background: 'rgba(100, 116, 255, 0.12)'
                         }
                       },
               '& .MuiTabs-indicator': {
                 height: 3,
-                background: '#495057',
+                background: '#6474ff',
+                boxShadow: '0 0 10px rgba(100, 116, 255, 0.5)',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
               }
             }}
@@ -643,13 +649,13 @@ function App() {
             width: '100%',
             borderRadius: 2,
             overflow: 'hidden',
-            background: '#ffffff',
-            border: '1px solid #e9ecef',
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+            background: '#151933',
+            border: '1px solid rgba(100, 116, 255, 0.15)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
           }}
         >
-          <Box sx={{ p: 2, borderBottom: '1px solid #e9ecef' }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#212529' }}>
+          <Box sx={{ p: 2, borderBottom: '1px solid rgba(100, 116, 255, 0.1)' }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: '#ffffff' }}>
               Лог просмотров
             </Typography>
           </Box>
@@ -774,24 +780,25 @@ function App() {
                       alignItems: 'flex-start',
                       paddingTop: '12px',
                       paddingBottom: '12px',
-                      borderBottom: '1px solid rgba(224, 224, 224, 0.4)'
+                      borderBottom: '1px solid rgba(100, 116, 255, 0.08)',
+                      color: 'rgba(255, 255, 255, 0.9)'
                     },
                     '& .MuiDataGrid-columnHeader': {
                       fontSize: '0.875rem',
                       fontWeight: 700,
-                      background: '#f8f9fa',
-                      color: '#495057',
-                      borderBottom: '2px solid #dee2e6'
+                      background: 'rgba(100, 116, 255, 0.08)',
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      borderBottom: '1px solid rgba(100, 116, 255, 0.2)'
                     },
                     '& .MuiDataGrid-row': {
                       minHeight: 'auto !important',
                       maxHeight: 'none !important',
                       '&:hover': {
-                        background: '#f8f9fa',
+                        background: 'rgba(100, 116, 255, 0.08)',
                         cursor: 'pointer'
                       },
                       '&:nth-of-type(even)': {
-                        background: 'rgba(0, 0, 0, 0.01)'
+                        background: 'rgba(100, 116, 255, 0.02)'
                       }
                     },
                     '& .MuiDataGrid-cell--textLeft': {
@@ -805,12 +812,12 @@ function App() {
                     },
                     '& .MuiDataGrid-toolbarContainer': {
                       padding: '16px',
-                      background: '#f8f9fa',
-                      borderBottom: '1px solid #e9ecef'
+                      background: 'rgba(100, 116, 255, 0.05)',
+                      borderBottom: '1px solid rgba(100, 116, 255, 0.1)'
                     },
                     '& .MuiDataGrid-footerContainer': {
-                      borderTop: '2px solid #e9ecef',
-                      background: '#f8f9fa'
+                      borderTop: '1px solid rgba(100, 116, 255, 0.1)',
+                      background: 'rgba(100, 116, 255, 0.05)'
                     }
                   }}
                   getRowHeight={() => 'auto'}

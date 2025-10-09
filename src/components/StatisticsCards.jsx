@@ -14,11 +14,11 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
   <Card 
     sx={{ 
       height: '100%',
-      background: '#ffffff',
-      border: '1px solid #e9ecef',
+      background: '#151933',
+      border: '1px solid rgba(100, 116, 255, 0.15)',
       borderRadius: 2,
-      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-      transition: 'all 0.2s ease',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+      transition: 'all 0.3s ease',
       position: 'relative',
       overflow: 'hidden',
       '&::before': {
@@ -27,45 +27,48 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
         top: 0,
         left: 0,
         right: 0,
-        height: '3px',
-        background: color
+        height: '2px',
+        background: color,
+        boxShadow: `0 0 12px ${color}`
       },
       '&:hover': {
-        transform: 'translateY(-2px)',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        borderColor: '#dee2e6'
+        transform: 'translateY(-4px)',
+        boxShadow: `0 12px 48px rgba(0, 0, 0, 0.5), 0 0 20px ${color}40`,
+        borderColor: `${color}60`
       }
     }}
   >
-    <CardContent>
+    <CardContent sx={{ p: 3 }}>
       {/* Title at the top */}
           <Typography 
             variant="caption" 
             sx={{ 
-              color: '#6c757d',
-              fontWeight: 600,
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontWeight: 700,
               textTransform: 'uppercase',
-              letterSpacing: 1.2,
+              letterSpacing: 1.5,
               fontSize: '0.7rem',
               display: 'block',
-              mb: 2.5
+              mb: 3
             }}
           >
             {title}
           </Typography>
       
       {/* Icon and Value */}
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
         <Box 
           sx={{ 
-            width: 56,
-            height: 56,
+            width: 60,
+            height: 60,
             borderRadius: 2,
-            background: `${color}15`,
+            background: `${color}20`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            flexShrink: 0
+            flexShrink: 0,
+            border: `1px solid ${color}40`,
+            boxShadow: `0 0 20px ${color}30`
           }}
         >
           <Icon sx={{ fontSize: 32, color: color }} />
@@ -74,9 +77,9 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color }) => (
           variant="h4" 
           sx={{ 
             fontWeight: 800,
-            color: '#212529',
+            color: '#ffffff',
             lineHeight: 1.2,
-            fontSize: '2rem'
+            fontSize: '2.25rem'
           }}
         >
           {value}

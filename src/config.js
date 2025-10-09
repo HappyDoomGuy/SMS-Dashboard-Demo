@@ -69,14 +69,14 @@ export const config = {
   // ===== НАСТРОЙКИ ЦВЕТОВОЙ СХЕМЫ =====
   colors: {
     statistics: {
-      pageViews: '#1976d2',      // Синий
-      smsSent: '#00897b',        // Бирюзовый
-      totalTime: '#9c27b0',      // Фиолетовый
-      smsViewed: '#f57c00',      // Оранжевый
+      pageViews: '#6474ff',      // Premium blue
+      smsSent: '#00d9ff',        // Cyan
+      totalTime: '#a78bfa',      // Purple
+      smsViewed: '#ff6b9d',      // Pink
       avgViewPercent: {
-        high: '#2e7d32',         // Зеленый (≥70%)
-        medium: '#ed6c02',       // Оранжевый (≥50%)
-        low: '#d32f2f'           // Красный (<50%)
+        high: '#10b981',         // Emerald (≥70%)
+        medium: '#f59e0b',       // Amber (≥50%)
+        low: '#ef4444'           // Red (<50%)
       }
     }
   },

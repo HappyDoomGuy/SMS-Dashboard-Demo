@@ -5,6 +5,7 @@ import { FileDownload as FileDownloadIcon } from '@mui/icons-material';
 import { getSmsMultiplier, isAllowedCampaignSource } from '../config';
 import { apiService } from '../services/api';
 import { exportDataGridToExcel } from '../utils/exportToExcel';
+import { premiumTableStyles } from '../styles/premiumTableStyles';
 
 function CampaignsToolbar({ rows, columns, contentType }) {
   const handleExport = () => {
@@ -232,19 +233,9 @@ const CampaignsTable = ({ data, currentContentType }) => {
   ];
 
   return (
-    <Paper 
-      sx={{ 
-        width: '100%',
-        mb: 3,
-        borderRadius: 2,
-        overflow: 'hidden',
-        background: '#ffffff',
-        border: '1px solid #e9ecef',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
-      }}
-    >
-      <Box sx={{ p: 2, borderBottom: '1px solid #e9ecef' }}>
-        <Typography variant="h6" sx={{ fontWeight: 600, color: '#212529' }}>
+    <Paper sx={premiumTableStyles.paper}>
+      <Box sx={premiumTableStyles.header}>
+        <Typography variant="h6" sx={premiumTableStyles.headerText}>
           Статистика по кампаниям
         </Typography>
       </Box>
@@ -282,34 +273,7 @@ const CampaignsTable = ({ data, currentContentType }) => {
             toolbarColumns: 'Колонки',
             toolbarFilters: 'Фильтры',
           }}
-          sx={{
-            border: 'none',
-            '& .MuiDataGrid-cell': {
-              fontSize: '0.875rem',
-              borderBottom: '1px solid rgba(224, 224, 224, 0.4)'
-            },
-            '& .MuiDataGrid-columnHeader': {
-              fontSize: '0.875rem',
-              fontWeight: 700,
-              background: '#f8f9fa',
-              color: '#495057',
-              borderBottom: '2px solid #dee2e6'
-            },
-            '& .MuiDataGrid-row': {
-              '&:hover': {
-                background: '#f8f9fa',
-                cursor: 'pointer'
-              },
-              '&:nth-of-type(even)': {
-                background: 'rgba(0, 0, 0, 0.01)'
-              }
-            },
-            '& .MuiDataGrid-footerContainer': {
-              borderTop: '2px solid #e9ecef',
-              background: '#f8f9fa',
-              justifyContent: 'center'
-            }
-          }}
+          sx={premiumTableStyles.dataGrid}
         />
       </Box>
     </Paper>
