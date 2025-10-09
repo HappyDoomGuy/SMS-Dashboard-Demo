@@ -138,20 +138,6 @@ const CampaignsTable = ({ data, currentContentType }) => {
     }
   });
   
-  // Debug: Log first few campaigns to see date format
-  if (relevantCampaigns.length > 0) {
-    console.log('=== CAMPAIGNS TABLE DEBUG ===');
-    console.log('Sample campaign data:', relevantCampaigns.slice(0, 3).map(c => ({
-      name: c['Название кампании'],
-      date: c['Дата и время'],
-      distId: c['ID дистрибуции']
-    })));
-    console.log('Campaign stats:', Array.from(campaignStats.values()).map(s => ({
-      name: s.campaignName,
-      date: s.latestDate ? s.latestDate.toLocaleString('ru-RU') : 'NO DATE'
-    })));
-  }
-
   // Convert to array for DataGrid
   const rowsBeforeRounding = Array.from(campaignStats.values()).map((item, index) => ({
     id: index + 1,
@@ -182,15 +168,6 @@ const CampaignsTable = ({ data, currentContentType }) => {
     return row;
   });
   
-  // Debug: Log campaign stats
-  const totalSmsViewedInTable = rows.reduce((sum, row) => sum + row.smsViewed, 0);
-  const totalSmsViewedBeforeRounding = Array.from(campaignStats.values()).reduce((sum, item) => sum + item.smsViewed, 0);
-  console.log(`=== CAMPAIGNS TABLE (${currentContentType}) ===`);
-  console.log('Campaigns:', rows.map(r => ({ name: r.campaignName, smsViewed: r.smsViewed })));
-  console.log(`Total SMS viewed (before rounding): ${totalSmsViewedBeforeRounding}`);
-  console.log(`Total SMS viewed in table (after rounding): ${totalSmsViewedInTable}`);
-  console.log(`Total records in data: ${data.length}`);
-  console.log('===============================');
   
   // Define columns
   const columns = [
@@ -251,7 +228,7 @@ const CampaignsTable = ({ data, currentContentType }) => {
         </Typography>
       </Box>
       
-      <Box sx={{ height: 400, width: '100%' }}>
+      <Box sx={{ height: 500, width: '100%' }}>
         <DataGrid
           rows={rows}
           columns={columns}
