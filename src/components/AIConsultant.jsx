@@ -498,7 +498,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           zIndex: 1000
         }}
       >
-        <PsychologyIcon sx={{ fontSize: 42, color: '#ffffff' }} />
+        <PsychologyIcon sx={{ fontSize: 48, color: '#ffffff' }} />
       </Fab>
 
       {/* Dialog */}
