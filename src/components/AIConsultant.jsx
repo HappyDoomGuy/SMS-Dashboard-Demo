@@ -73,11 +73,20 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       specialtyDistribution[specialty] = (specialtyDistribution[specialty] || 0) + 1;
     });
 
-    // Динамика просмотров по дням
+    // Динамика просмотров по дням (с валидацией дат)
     const dailyViews = {};
     data.forEach(item => {
-      const date = new Date(item.date).toLocaleDateString('ru-RU');
-      dailyViews[date] = (dailyViews[date] || 0) + 1;
+      if (!item.date) return;
+      
+      // Пробуем распарсить дату
+      let dateStr = item.date;
+      const dateObj = new Date(dateStr);
+      
+      // Проверяем валидность
+      if (!isNaN(dateObj.getTime())) {
+        const formattedDate = dateObj.toLocaleDateString('ru-RU');
+        dailyViews[formattedDate] = (dailyViews[formattedDate] || 0) + 1;
+      }
     });
 
     const sortedDates = Object.keys(dailyViews).sort((a, b) => {
@@ -90,6 +99,29 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       date,
       views: dailyViews[date]
     }));
+    
+    // Добавляем статистику по дням недели
+    const dayOfWeekStats = { 'Пн': 0, 'Вт': 0, 'Ср': 0, 'Чт': 0, 'Пт': 0, 'Сб': 0, 'Вс': 0 };
+    const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+    data.forEach(item => {
+      if (!item.date) return;
+      const dateObj = new Date(item.date);
+      if (!isNaN(dateObj.getTime())) {
+        const dayName = dayNames[dateObj.getDay()];
+        dayOfWeekStats[dayName] = (dayOfWeekStats[dayName] || 0) + 1;
+      }
+    });
+    
+    // Добавляем статистику по часам
+    const hourlyStats = {};
+    data.forEach(item => {
+      if (!item.date) return;
+      const dateObj = new Date(item.date);
+      if (!isNaN(dateObj.getTime())) {
+        const hour = dateObj.getHours();
+        hourlyStats[hour] = (hourlyStats[hour] || 0) + 1;
+      }
+    });
 
     return {
       contentType,
@@ -101,10 +133,22 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       topClients,
       specialtyDistribution,
       viewsDynamics,
+      dayOfWeekStats,
+      hourlyStats,
       dateRange: {
-        first: sortedDates[0],
-        last: sortedDates[sortedDates.length - 1]
-      }
+        first: sortedDates[0] || 'Нет данных',
+        last: sortedDates[sortedDates.length - 1] || 'Нет данных',
+        totalDays: sortedDates.length
+      },
+      // Добавляем сырые данные для более детального анализа
+      rawDataSample: data.slice(0, 10).map(item => ({
+        date: item.date,
+        campaignName: item.campaignName,
+        specialty: item.specialty,
+        district: item.district,
+        timeSec: item.timeSec,
+        viewPercent: item.viewPercent
+      }))
     };
   };
 
@@ -150,8 +194,23 @@ ${Object.entries(dataForAnalysis.specialtyDistribution)
   .map(([specialty, count]) => `- ${specialty}: ${count} клиентов`)
   .join('\n')}
 
-**Динамика просмотров по дням (последние 10 дней):**
-${dataForAnalysis.viewsDynamics.slice(-10).map(d => `- ${d.date}: ${d.views} просмотров`).join('\n')}
+**Динамика просмотров по дням (все ${dataForAnalysis.dateRange.totalDays} дней):**
+${dataForAnalysis.viewsDynamics.map(d => `- ${d.date}: ${d.views} просмотров`).join('\n')}
+
+**Статистика по дням недели:**
+${Object.entries(dataForAnalysis.dayOfWeekStats).map(([day, count]) => `- ${day}: ${count} просмотров`).join('\n')}
+
+**Статистика по часам (топ-10 активных часов):**
+${Object.entries(dataForAnalysis.hourlyStats)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 10)
+  .map(([hour, count]) => `- ${hour}:00 - ${count} просмотров`)
+  .join('\n')}
+
+**Примеры реальных записей (первые 10):**
+${dataForAnalysis.rawDataSample.map((item, i) => 
+  `${i + 1}. ${item.date} | ${item.campaignName} | ${item.specialty} | Время: ${item.timeSec}с | Просмотр: ${item.viewPercent}%`
+).join('\n')}
 
 **ЗАДАНИЕ:**
 Проанализируй эти данные и предоставь:
@@ -177,10 +236,12 @@ ${dataForAnalysis.viewsDynamics.slice(-10).map(d => `- ${d.date}: ${d.views} п�
    - Характеристики наиболее вовлеченных клиентов
    - Потенциальные сегменты для таргетинга
 
-4. **Временной анализ**:
-   - Динамика вовлеченности по дням
-   - Оптимальное время для рассылок
+4. **Временной анализ** (используй ВСЕ предоставленные данные):
+   - Динамика вовлеченности по дням (анализируй все ${dataForAnalysis.dateRange.totalDays} дней)
+   - Анализ по дням недели (какие дни наиболее активны)
+   - Анализ по часам (оптимальное время для рассылок)
    - Тренды роста/снижения активности
+   - Выявление пиковых периодов активности
 
 5. **Конкретные маркетинговые рекомендации** (минимум 5):
    - Как улучшить конверсию
