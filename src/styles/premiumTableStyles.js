@@ -58,22 +58,41 @@ export const premiumTableStyles = {
         color: 'rgba(255, 255, 255, 0.9)'
       },
       '& .MuiInputBase-root': {
-        color: 'rgba(255, 255, 255, 0.9)',
+        color: 'rgba(255, 255, 255, 0.9) !important',
         '& input': {
-          color: 'rgba(255, 255, 255, 0.9)'
+          color: 'rgba(255, 255, 255, 0.9) !important'
+        },
+        '& .MuiInputBase-input': {
+          color: 'rgba(255, 255, 255, 0.9) !important'
         },
         '& .MuiInputBase-input::placeholder': {
-          color: 'rgba(255, 255, 255, 0.5)',
+          color: 'rgba(255, 255, 255, 0.5) !important',
           opacity: 1
         },
         '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: 'rgba(100, 116, 255, 0.3)'
+          borderColor: 'rgba(100, 116, 255, 0.3) !important'
         },
         '&:hover .MuiOutlinedInput-notchedOutline': {
-          borderColor: 'rgba(100, 116, 255, 0.5)'
+          borderColor: 'rgba(100, 116, 255, 0.5) !important'
         },
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-          borderColor: '#6474ff'
+          borderColor: '#6474ff !important'
+        }
+      },
+      '& .MuiTextField-root': {
+        '& .MuiInputBase-root': {
+          color: 'rgba(255, 255, 255, 0.9) !important'
+        },
+        '& input': {
+          color: 'rgba(255, 255, 255, 0.9) !important'
+        }
+      },
+      '& .MuiFormControl-root': {
+        '& .MuiInputBase-root': {
+          color: 'rgba(255, 255, 255, 0.9) !important'
+        },
+        '& .MuiInputLabel-root': {
+          color: 'rgba(255, 255, 255, 0.6) !important'
         }
       },
       '& .MuiSvgIcon-root': {
