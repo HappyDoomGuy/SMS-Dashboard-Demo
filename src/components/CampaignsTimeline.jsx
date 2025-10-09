@@ -1,33 +1,33 @@
-import React from 'react';
-import { Box, Paper, Typography, Chip, LinearProgress } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Paper, Typography, Chip, LinearProgress, IconButton } from '@mui/material';
 import {
   Send as SendIcon,
   Visibility as VisibilityIcon,
   Message as MessageIcon,
   TrendingUp as TrendingUpIcon,
-  CalendarToday as CalendarIcon
+  CalendarToday as CalendarIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon
 } from '@mui/icons-material';
 import { getSmsMultiplier, isAllowedCampaignSource } from '../config';
 import { apiService } from '../services/api';
 import { keyframes } from '@mui/system';
 
-const slideIn = keyframes`
+const fadeIn = keyframes`
   from { 
     opacity: 0;
-    transform: translateX(-30px);
+    transform: scale(0.95);
   }
   to { 
     opacity: 1;
-    transform: translateX(0);
+    transform: scale(1);
   }
 `;
 
-const pulse = keyframes`
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-`;
-
 const CampaignsTimeline = ({ data, currentContentType }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const cardsPerView = 3; // Показываем 3 карточки одновременно
+
   const allCampaigns = apiService.getFilteredCampaigns();
 
   const currentDistributionIds = new Set(
@@ -110,6 +110,18 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
       return b.latestDate - a.latestDate;
     });
 
+  const handlePrev = () => {
+    setCurrentIndex(Math.max(0, currentIndex - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex(Math.min(campaigns.length - cardsPerView, currentIndex + 1));
+  };
+
+  const visibleCampaigns = campaigns.slice(currentIndex, currentIndex + cardsPerView);
+  const canGoPrev = currentIndex > 0;
+  const canGoNext = currentIndex < campaigns.length - cardsPerView;
+
   return (
     <Paper
       sx={{
@@ -122,15 +134,56 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
       }}
     >
-      <Box sx={{ p: 2, borderBottom: '1px solid rgba(100, 116, 255, 0.1)' }}>
+      {/* Header with Navigation */}
+      <Box sx={{ 
+        p: 2, 
+        borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
         <Typography variant="h6" sx={{ fontWeight: 600, color: '#ffffff' }}>
           📊 Статистика по кампаниям
         </Typography>
+        
+        {campaigns.length > cardsPerView && (
+          <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+            <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+              {currentIndex + 1}-{Math.min(currentIndex + cardsPerView, campaigns.length)} из {campaigns.length}
+            </Typography>
+            <IconButton
+              onClick={handlePrev}
+              disabled={!canGoPrev}
+              size="small"
+              sx={{
+                color: canGoPrev ? '#6474ff' : 'rgba(255, 255, 255, 0.3)',
+                '&:hover': {
+                  background: 'rgba(100, 116, 255, 0.1)'
+                }
+              }}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+            <IconButton
+              onClick={handleNext}
+              disabled={!canGoNext}
+              size="small"
+              sx={{
+                color: canGoNext ? '#6474ff' : 'rgba(255, 255, 255, 0.3)',
+                '&:hover': {
+                  background: 'rgba(100, 116, 255, 0.1)'
+                }
+              }}
+            >
+              <ChevronRightIcon />
+            </IconButton>
+          </Box>
+        )}
       </Box>
 
       <Box sx={{ p: 2 }}>
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
-          {campaigns.map((campaign, index) => (
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2 }}>
+          {visibleCampaigns.map((campaign, index) => (
             <Paper
               key={index}
               sx={{
@@ -140,7 +193,7 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                 borderRadius: 2,
                 position: 'relative',
                 overflow: 'hidden',
-                animation: `${slideIn} 0.4s ease-out ${index * 0.08}s both`,
+                animation: `${fadeIn} 0.3s ease-out both`,
                 transition: 'all 0.3s ease',
                 '&::before': {
                   content: '""',
