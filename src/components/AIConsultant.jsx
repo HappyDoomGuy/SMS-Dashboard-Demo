@@ -34,6 +34,57 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
   };
 
   const prepareDataForAnalysis = () => {
+    // Функция для парсинга дат (та же, что в App.jsx)
+    const parseDate = (dateString) => {
+      if (!dateString) return null;
+      
+      const cleanDate = String(dateString).trim();
+      let date = null;
+      let match = null;
+      
+      // Format 1: DD.MM.YYYY HH:MM:SS (Russian format with time)
+      match = cleanDate.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})/);
+      if (match) {
+        const [, day, month, year, hour, minute, second] = match;
+        date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
+      }
+      
+      // Format 2: DD.MM.YYYY (date only)
+      if (!date || isNaN(date.getTime())) {
+        match = cleanDate.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+        if (match) {
+          const [, day, month, year] = match;
+          date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+        }
+      }
+      
+      // Format 3: YYYY-MM-DD HH:MM:SS (ISO format)
+      if (!date || isNaN(date.getTime())) {
+        match = cleanDate.match(/(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})/);
+        if (match) {
+          const [, year, month, day, hour, minute, second] = match;
+          date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
+        }
+      }
+      
+      // Format 4: YYYY-MM-DD (ISO date only)
+      if (!date || isNaN(date.getTime())) {
+        match = cleanDate.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+        if (match) {
+          const [, year, month, day] = match;
+          date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+        }
+      }
+      
+      // Fallback: try native Date parsing
+      if (!date || isNaN(date.getTime())) {
+        date = new Date(dateString);
+      }
+      
+      // If still invalid, return null
+      return (!date || isNaN(date.getTime())) ? null : date;
+    };
+
     // Общая статистика
     const totalRecords = data.length;
     const totalTime = data.reduce((sum, item) => sum + (item.timeSec || 0), 0);
@@ -78,12 +129,11 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
     data.forEach(item => {
       if (!item.date) return;
       
-      // Пробуем распарсить дату
-      let dateStr = item.date;
-      const dateObj = new Date(dateStr);
+      // Используем нашу функцию парсинга
+      const dateObj = parseDate(item.date);
       
       // Проверяем валидность
-      if (!isNaN(dateObj.getTime())) {
+      if (dateObj) {
         const formattedDate = dateObj.toLocaleDateString('ru-RU');
         dailyViews[formattedDate] = (dailyViews[formattedDate] || 0) + 1;
       }
@@ -105,8 +155,8 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
     const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
     data.forEach(item => {
       if (!item.date) return;
-      const dateObj = new Date(item.date);
-      if (!isNaN(dateObj.getTime())) {
+      const dateObj = parseDate(item.date);
+      if (dateObj) {
         const dayName = dayNames[dateObj.getDay()];
         dayOfWeekStats[dayName] = (dayOfWeekStats[dayName] || 0) + 1;
       }
@@ -116,8 +166,8 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
     const hourlyStats = {};
     data.forEach(item => {
       if (!item.date) return;
-      const dateObj = new Date(item.date);
-      if (!isNaN(dateObj.getTime())) {
+      const dateObj = parseDate(item.date);
+      if (dateObj) {
         const hour = dateObj.getHours();
         hourlyStats[hour] = (hourlyStats[hour] || 0) + 1;
       }
@@ -140,18 +190,29 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         last: sortedDates[sortedDates.length - 1] || 'Нет данных',
         totalDays: sortedDates.length
       },
-      // Добавляем ВСЕ сырые данные для полного анализа
-      allRecords: data.map(item => ({
-        date: item.date,
-        campaignName: item.campaignName,
-        userName: item.userName,
-        specialty: item.specialty,
-        workplace: item.workplace,
-        district: item.district,
-        timeSec: item.timeSec,
-        viewPercent: item.viewPercent,
-        videoName: item.videoName
-      }))
+      // Фильтруем данные за последние 30 дней
+      recentRecords: (() => {
+        const now = new Date();
+        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        
+        return data
+          .filter(item => {
+            if (!item.date) return false;
+            const itemDate = new Date(item.date);
+            return !isNaN(itemDate.getTime()) && itemDate >= thirtyDaysAgo;
+          })
+          .map(item => ({
+            date: item.date,
+            campaignName: item.campaignName,
+            userName: item.userName,
+            specialty: item.specialty,
+            workplace: item.workplace,
+            district: item.district,
+            timeSec: item.timeSec,
+            viewPercent: item.viewPercent,
+            videoName: item.videoName
+          }));
+      })()
     };
   };
 
