@@ -189,28 +189,30 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
       sx={{
         width: '100%',
         mb: 3,
-        borderRadius: 2,
+        borderRadius: 3,
         overflow: 'hidden',
-        background: '#151933',
-        border: '1px solid rgba(100, 116, 255, 0.15)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
+        background: 'rgba(255, 255, 255, 0.9)',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid rgba(100, 116, 255, 0.1)',
+        boxShadow: '0 8px 32px rgba(100, 116, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
       }}
     >
       {/* Header with Navigation */}
       <Box sx={{ 
-        p: 2, 
+        p: 2.5, 
         borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
+        background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.03) 0%, rgba(139, 149, 255, 0.02) 100%)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
       }}>
-        <Typography variant="h6" sx={{ fontWeight: 600, color: '#ffffff' }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2332', fontSize: '1.1rem' }}>
           📊 Статистика по кампаниям
         </Typography>
         
         {campaigns.length > 1 && (
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-            <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+            <Typography variant="caption" sx={{ color: '#6b7280', fontWeight: 600 }}>
               {campaigns.length} {campaigns.length === 1 ? 'кампания' : campaigns.length < 5 ? 'кампании' : 'кампаний'}
             </Typography>
             <IconButton
@@ -218,9 +220,13 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
               disabled={isAtStart}
               size="small"
               sx={{
-                color: !isAtStart ? '#6474ff' : 'rgba(255, 255, 255, 0.3)',
+                color: !isAtStart ? '#6474ff' : '#d1d5db',
+                background: !isAtStart ? 'rgba(100, 116, 255, 0.1)' : 'transparent',
                 '&:hover': {
-                  background: 'rgba(100, 116, 255, 0.1)'
+                  background: 'rgba(100, 116, 255, 0.15)'
+                },
+                '&:disabled': {
+                  color: '#d1d5db'
                 }
               }}
             >
@@ -231,9 +237,13 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
               disabled={isAtEnd}
               size="small"
               sx={{
-                color: !isAtEnd ? '#6474ff' : 'rgba(255, 255, 255, 0.3)',
+                color: !isAtEnd ? '#6474ff' : '#d1d5db',
+                background: !isAtEnd ? 'rgba(100, 116, 255, 0.1)' : 'transparent',
                 '&:hover': {
-                  background: 'rgba(100, 116, 255, 0.1)'
+                  background: 'rgba(100, 116, 255, 0.15)'
+                },
+                '&:disabled': {
+                  color: '#d1d5db'
                 }
               }}
             >
@@ -281,48 +291,32 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
               key={index}
               sx={{
                 p: 2.5,
-                minWidth: '340px',
-                maxWidth: '340px',
+                minWidth: '320px',
+                maxWidth: '320px',
                 flexShrink: 0,
-                background: 'linear-gradient(135deg, #1a1f3a 0%, #151933 100%)',
-                border: '1px solid rgba(100, 116, 255, 0.2)',
-                borderRadius: 2,
+                background: 'rgba(255, 255, 255, 0.7)',
+                backdropFilter: 'blur(10px)',
+                border: `2px solid ${parseFloat(campaign.conversionRate) > 7 ? '#10b981' : parseFloat(campaign.conversionRate) > 5 ? '#f59e0b' : '#ef4444'}40`,
+                borderRadius: 2.5,
                 position: 'relative',
                 overflow: 'hidden',
                 animation: `${fadeIn} 0.3s ease-out both`,
-                transition: 'all 0.3s ease',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '4px',
-                  height: '100%',
-                  background: parseFloat(campaign.conversionRate) > 7
-                    ? '#10b981'
-                    : parseFloat(campaign.conversionRate) > 5
-                      ? '#f59e0b'
-                      : '#ef4444',
-                  boxShadow: parseFloat(campaign.conversionRate) > 7
-                    ? '0 0 10px #10b981'
-                    : parseFloat(campaign.conversionRate) > 5
-                      ? '0 0 10px #f59e0b'
-                      : '0 0 10px #ef4444'
-                },
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 12px 40px rgba(100, 116, 255, 0.4)',
-                  borderColor: '#6474ff'
+                  transform: 'translateY(-6px) scale(1.02)',
+                  boxShadow: `0 16px 48px ${parseFloat(campaign.conversionRate) > 7 ? 'rgba(16, 185, 129, 0.2)' : parseFloat(campaign.conversionRate) > 5 ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`,
+                  borderColor: parseFloat(campaign.conversionRate) > 7 ? '#10b981' : parseFloat(campaign.conversionRate) > 5 ? '#f59e0b' : '#ef4444'
                 }
               }}
             >
               {/* Campaign Name & Date */}
               <Box sx={{ mb: 2 }}>
-                <Typography variant="body1" sx={{ color: '#ffffff', fontWeight: 700, mb: 0.5, fontSize: '1.05rem' }}>
+                <Typography variant="body1" sx={{ color: '#1a2332', fontWeight: 800, mb: 0.5, fontSize: '1rem', lineHeight: 1.3 }}>
                   {campaign.campaignName}
                 </Typography>
-                <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.5)', display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                  <CalendarIcon sx={{ fontSize: 14 }} />
+                <Typography variant="caption" sx={{ color: '#6b7280', display: 'flex', alignItems: 'center', gap: 0.5, fontWeight: 500 }}>
+                  <CalendarIcon sx={{ fontSize: 13 }} />
                   {campaign.latestDate ? campaign.latestDate.toLocaleDateString('ru-RU') : 'Нет данных'}
                 </Typography>
               </Box>
