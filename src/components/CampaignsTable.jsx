@@ -312,7 +312,6 @@ const CampaignsTable = ({ data, currentContentType }) => {
               justifyContent: 'center'
             }
           }}
-          hideFooter={true}
         />
       </Box>
     </Paper>

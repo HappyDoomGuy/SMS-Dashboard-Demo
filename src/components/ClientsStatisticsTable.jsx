@@ -260,7 +260,6 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
               justifyContent: 'center'
             }
           }}
-          hideFooter={true}
         />
       </Box>
     </Paper>
