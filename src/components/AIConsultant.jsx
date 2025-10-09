@@ -498,17 +498,17 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           right: 32,
           width: 80,
           height: 80,
-          background: '#6474ff',
-          border: '2px solid rgba(100, 116, 255, 0.3)',
+          background: 'linear-gradient(135deg, #6474ff 0%, #8b95ff 100%)',
+          border: '3px solid rgba(255, 255, 255, 0.9)',
           animation: `${pulse} 3s ease-in-out infinite`,
           '&:hover': {
-            background: '#7d8aff',
-            transform: 'scale(1.1)',
-            boxShadow: '0 0 50px rgba(100, 116, 255, 0.8), 0 8px 40px rgba(0, 0, 0, 0.5)',
+            background: 'linear-gradient(135deg, #5060e0 0%, #7a84ff 100%)',
+            transform: 'scale(1.12) rotate(5deg)',
+            boxShadow: '0 0 60px rgba(100, 116, 255, 0.6), 0 12px 50px rgba(100, 116, 255, 0.3)',
             animation: 'none'
           },
-          transition: 'all 0.3s ease',
-          boxShadow: '0 0 35px rgba(100, 116, 255, 0.5), 0 8px 30px rgba(0, 0, 0, 0.4)',
+          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+          boxShadow: '0 8px 40px rgba(100, 116, 255, 0.4), 0 0 30px rgba(100, 116, 255, 0.2)',
           zIndex: 1000
         }}
       >
@@ -516,7 +516,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           sx={{ 
             fontSize: 56, 
             color: '#ffffff',
-            filter: 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.6))',
+            filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3))',
             animation: `${pulse} 2s ease-in-out infinite`
           }} 
         />
@@ -530,50 +530,52 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         fullWidth
         PaperProps={{
           sx: {
-            borderRadius: 3,
+            borderRadius: 4,
             minHeight: '70vh',
             maxHeight: '90vh',
-            background: '#151933',
-            border: '1px solid rgba(100, 116, 255, 0.2)',
-            boxShadow: '0 24px 64px rgba(0, 0, 0, 0.6)'
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(20px)',
+            border: '2px solid rgba(100, 116, 255, 0.2)',
+            boxShadow: '0 24px 80px rgba(100, 116, 255, 0.2)'
           }
         }}
       >
         <DialogTitle
           sx={{
-            background: '#1a1f3a',
-            borderBottom: '1px solid rgba(100, 116, 255, 0.2)',
-            color: 'white',
+            background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.08) 0%, rgba(139, 149, 255, 0.05) 100%)',
+            borderBottom: '2px solid rgba(100, 116, 255, 0.15)',
+            color: '#1a2332',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            py: 2.5,
-            position: 'relative',
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '2px',
-              background: '#6474ff',
-              boxShadow: '0 0 12px rgba(100, 116, 255, 0.6)'
-            }
+            py: 3,
+            position: 'relative'
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-            <AutoAwesomeIcon sx={{ color: '#6474ff', fontSize: 28 }} />
-            <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 0.5 }}>
-              ИИ Консультант - Маркетинговый анализ
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{
+              width: 48,
+              height: 48,
+              borderRadius: 2,
+              background: 'linear-gradient(135deg, #6474ff, #8b95ff)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 20px rgba(100, 116, 255, 0.4)'
+            }}>
+              <AutoAwesomeIcon sx={{ color: '#ffffff', fontSize: 28 }} />
+            </Box>
+            <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: -0.5 }}>
+              ИИ Консультант
             </Typography>
           </Box>
           <IconButton
             onClick={handleClose}
             sx={{
-              color: 'rgba(255, 255, 255, 0.7)',
+              color: '#6b7280',
               '&:hover': {
-                background: 'rgba(100, 116, 255, 0.15)',
-                color: '#ffffff'
+                background: 'rgba(100, 116, 255, 0.1)',
+                color: '#1a2332'
               }
             }}
           >
@@ -581,7 +583,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           </IconButton>
         </DialogTitle>
 
-        <DialogContent sx={{ p: 3, background: '#0f1429' }}>
+        <DialogContent sx={{ p: 4, background: 'rgba(248, 250, 252, 0.5)' }}>
           {!analysis && !loading && !error && (
             <Box
               sx={{
@@ -593,11 +595,11 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 textAlign: 'center'
               }}
             >
-              <PsychologyIcon sx={{ fontSize: 80, color: '#6474ff', mb: 3, filter: 'drop-shadow(0 0 20px rgba(100, 116, 255, 0.5))' }} />
-              <Typography variant="h6" sx={{ mb: 1, fontWeight: 700, color: '#ffffff' }}>
+              <PsychologyIcon sx={{ fontSize: 80, color: '#6474ff', mb: 3, filter: 'drop-shadow(0 4px 20px rgba(100, 116, 255, 0.3))' }} />
+              <Typography variant="h6" sx={{ mb: 1, fontWeight: 800, color: '#1a2332' }}>
                 Готов проанализировать данные кампании "{contentType}"
               </Typography>
-              <Typography variant="body2" sx={{ mb: 4, color: 'rgba(255, 255, 255, 0.6)', maxWidth: '400px' }}>
+              <Typography variant="body2" sx={{ mb: 4, color: '#6b7280', maxWidth: '400px', lineHeight: 1.6 }}>
                 Нажмите кнопку ниже, чтобы получить подробный анализ и рекомендации от ИИ
               </Typography>
               <Button
@@ -606,19 +608,18 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 startIcon={<AutoAwesomeIcon />}
                 onClick={analyzeData}
                 sx={{
-                  background: '#6474ff',
+                  background: 'linear-gradient(135deg, #6474ff 0%, #8b95ff 100%)',
                   px: 5,
-                  py: 1.5,
-                  borderRadius: 2,
+                  py: 1.8,
+                  borderRadius: 2.5,
                   textTransform: 'none',
                   fontSize: '1.1rem',
-                  fontWeight: 700,
-                  border: '1px solid rgba(100, 116, 255, 0.3)',
-                  boxShadow: '0 0 20px rgba(100, 116, 255, 0.4)',
+                  fontWeight: 800,
+                  boxShadow: '0 8px 32px rgba(100, 116, 255, 0.3)',
                   '&:hover': {
-                    background: '#7d8aff',
-                    boxShadow: '0 0 30px rgba(100, 116, 255, 0.6), 0 4px 20px rgba(0, 0, 0, 0.3)',
-                    transform: 'translateY(-2px)'
+                    background: 'linear-gradient(135deg, #5060e0 0%, #7a84ff 100%)',
+                    boxShadow: '0 12px 48px rgba(100, 116, 255, 0.4)',
+                    transform: 'translateY(-3px)'
                   },
                   transition: 'all 0.3s ease'
                 }}
@@ -642,14 +643,13 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 size={60} 
                 sx={{ 
                   mb: 3,
-                  color: '#6474ff',
-                  filter: 'drop-shadow(0 0 10px rgba(100, 116, 255, 0.5))'
+                  color: '#6474ff'
                 }} 
               />
-              <Typography variant="h6" sx={{ mb: 1, color: '#ffffff', fontWeight: 600 }}>
+              <Typography variant="h6" sx={{ mb: 1, color: '#1a2332', fontWeight: 700 }}>
                 Анализирую данные...
               </Typography>
-              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+              <Typography variant="body2" sx={{ color: '#6b7280' }}>
                 ИИ консультант обрабатывает информацию о кампании
               </Typography>
             </Box>
@@ -691,58 +691,65 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               ref={contentRef}
               sx={{
                 p: 4,
-                background: '#1a1f3a',
-                border: '1px solid rgba(100, 116, 255, 0.15)',
-                borderRadius: 2,
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+                background: 'rgba(255, 255, 255, 0.7)',
+                backdropFilter: 'blur(10px)',
+                border: '2px solid rgba(100, 116, 255, 0.15)',
+                borderRadius: 3,
+                boxShadow: '0 4px 24px rgba(100, 116, 255, 0.1)',
                 '& h1': { 
-                  fontSize: '1.75rem', 
-                  fontWeight: 700, 
+                  fontSize: '1.9rem', 
+                  fontWeight: 800, 
                   mt: 3, 
                   mb: 2,
-                  color: '#ffffff',
-                  borderBottom: '2px solid rgba(100, 116, 255, 0.3)',
-                  paddingBottom: '8px'
+                  color: '#1a2332',
+                  borderBottom: '3px solid rgba(100, 116, 255, 0.2)',
+                  paddingBottom: '12px',
+                  background: 'linear-gradient(135deg, #1a2332, #6474ff)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
                 },
                 '& h2': { 
-                  fontSize: '1.4rem', 
-                  fontWeight: 600, 
+                  fontSize: '1.5rem', 
+                  fontWeight: 700, 
                   mt: 3, 
                   mb: 1.5,
-                  color: '#ffffff'
+                  color: '#1a2332'
                 },
                 '& h3': { 
-                  fontSize: '1.15rem', 
-                  fontWeight: 600, 
+                  fontSize: '1.2rem', 
+                  fontWeight: 700, 
                   mt: 2, 
                   mb: 1,
-                  color: 'rgba(255, 255, 255, 0.95)'
+                  color: '#374151'
                 },
                 '& p': { 
                   mb: 1.5, 
                   lineHeight: 1.8,
-                  color: 'rgba(255, 255, 255, 0.85)'
+                  color: '#4b5563',
+                  fontSize: '0.95rem'
                 },
                 '& ul, & ol': { 
                   pl: 3, 
                   mb: 2,
-                  color: 'rgba(255, 255, 255, 0.85)'
+                  color: '#4b5563'
                 },
                 '& li': { 
-                  mb: 0.8,
-                  color: 'rgba(255, 255, 255, 0.85)'
+                  mb: 1,
+                  color: '#4b5563'
                 },
                 '& strong': { 
-                  fontWeight: 700,
+                  fontWeight: 800,
                   color: '#6474ff'
                 },
                 '& code': {
-                  background: 'rgba(100, 116, 255, 0.15)',
-                  color: '#00d9ff',
-                  padding: '3px 8px',
-                  borderRadius: 1,
+                  background: 'rgba(100, 116, 255, 0.1)',
+                  color: '#1a2332',
+                  padding: '4px 10px',
+                  borderRadius: 1.5,
                   fontSize: '0.9em',
-                  border: '1px solid rgba(100, 116, 255, 0.2)'
+                  border: '1px solid rgba(100, 116, 255, 0.2)',
+                  fontWeight: 600
                 }
               }}
             >
@@ -752,9 +759,9 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         </DialogContent>
 
         <DialogActions sx={{ 
-          p: 2.5, 
-          borderTop: '1px solid rgba(100, 116, 255, 0.2)',
-          background: '#151933',
+          p: 3, 
+          borderTop: '2px solid rgba(100, 116, 255, 0.15)',
+          background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.03) 0%, rgba(139, 149, 255, 0.02) 100%)',
           gap: 1.5
         }}>
           {analysis && (
@@ -766,14 +773,17 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 variant="outlined"
                 sx={{ 
                   textTransform: 'none',
-                  borderColor: 'rgba(0, 217, 255, 0.4)',
+                  borderColor: 'rgba(0, 217, 255, 0.5)',
                   color: '#00d9ff',
-                  fontWeight: 600,
+                  fontWeight: 700,
+                  borderWidth: 2,
                   '&:hover': {
                     borderColor: '#00d9ff',
                     background: 'rgba(0, 217, 255, 0.1)',
-                    boxShadow: '0 0 15px rgba(0, 217, 255, 0.3)'
-                  }
+                    boxShadow: '0 4px 20px rgba(0, 217, 255, 0.3)',
+                    transform: 'translateY(-2px)'
+                  },
+                  transition: 'all 0.3s ease'
                 }}
               >
                 Сохранить как Word
@@ -785,14 +795,17 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 variant="outlined"
                 sx={{ 
                   textTransform: 'none',
-                  borderColor: 'rgba(255, 107, 157, 0.4)',
+                  borderColor: 'rgba(255, 107, 157, 0.5)',
                   color: '#ff6b9d',
-                  fontWeight: 600,
+                  fontWeight: 700,
+                  borderWidth: 2,
                   '&:hover': {
                     borderColor: '#ff6b9d',
                     background: 'rgba(255, 107, 157, 0.1)',
-                    boxShadow: '0 0 15px rgba(255, 107, 157, 0.3)'
-                  }
+                    boxShadow: '0 4px 20px rgba(255, 107, 157, 0.3)',
+                    transform: 'translateY(-2px)'
+                  },
+                  transition: 'all 0.3s ease'
                 }}
               >
                 Сохранить как PDF
@@ -804,8 +817,8 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 disabled={loading || exporting}
                 sx={{ 
                   textTransform: 'none',
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  fontWeight: 600,
+                  color: '#6474ff',
+                  fontWeight: 700,
                   '&:hover': {
                     background: 'rgba(100, 116, 255, 0.1)'
                   }
@@ -819,11 +832,11 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             onClick={handleClose} 
             sx={{ 
               textTransform: 'none',
-              color: 'rgba(255, 255, 255, 0.7)',
-              fontWeight: 600,
+              color: '#6b7280',
+              fontWeight: 700,
               '&:hover': {
                 background: 'rgba(100, 116, 255, 0.1)',
-                color: '#ffffff'
+                color: '#1a2332'
               }
             }}
           >

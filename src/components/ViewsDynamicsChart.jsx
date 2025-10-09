@@ -57,18 +57,19 @@ const ViewsDynamicsChart = ({ data, currentContentType }) => {
       return (
         <Box
           sx={{
-            background: '#1a1f3a',
-            border: '1px solid rgba(100, 116, 255, 0.3)',
-            borderRadius: 1,
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
+            border: '2px solid rgba(100, 116, 255, 0.3)',
+            borderRadius: 2,
             p: 1.5,
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
+            boxShadow: '0 8px 32px rgba(100, 116, 255, 0.2)'
           }}
         >
-          <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5, color: '#ffffff' }}>
+          <Typography variant="body2" sx={{ fontWeight: 700, mb: 0.5, color: '#1a2332' }}>
             {payload[0].payload.date}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-            Просмотров: <strong style={{ color: '#6474ff' }}>{payload[0].value}</strong>
+          <Typography variant="body2" sx={{ color: '#374151' }}>
+            Просмотров: <strong style={{ color: '#6474ff', fontSize: '1.1em' }}>{payload[0].value}</strong>
           </Typography>
         </Box>
       );
@@ -81,16 +82,21 @@ const ViewsDynamicsChart = ({ data, currentContentType }) => {
       sx={{ 
         width: '100%',
         mb: 3,
-        borderRadius: 2,
+        borderRadius: 3,
         overflow: 'hidden',
-        background: '#151933',
-        border: '1px solid rgba(100, 116, 255, 0.15)',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
+        background: 'rgba(255, 255, 255, 0.9)',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid rgba(100, 116, 255, 0.1)',
+        boxShadow: '0 8px 32px rgba(100, 116, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
       }}
     >
-      <Box sx={{ p: 2, borderBottom: '1px solid rgba(100, 116, 255, 0.1)' }}>
-        <Typography variant="h6" sx={{ fontWeight: 600, color: '#ffffff' }}>
-          Динамика просмотров по дням
+      <Box sx={{ 
+        p: 2.5, 
+        borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
+        background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.03) 0%, rgba(139, 149, 255, 0.02) 100%)'
+      }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2332', fontSize: '1.1rem' }}>
+          📈 Динамика просмотров по дням
         </Typography>
       </Box>
       
@@ -100,29 +106,37 @@ const ViewsDynamicsChart = ({ data, currentContentType }) => {
             data={chartData}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(100, 116, 255, 0.1)" />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(100, 116, 255, 0.15)" />
             <XAxis 
               dataKey="date" 
-              tick={{ fill: 'rgba(255, 255, 255, 0.6)', fontSize: 12 }}
-              stroke="rgba(100, 116, 255, 0.3)"
+              tick={{ fill: '#6b7280', fontSize: 12 }}
+              stroke="rgba(100, 116, 255, 0.2)"
             />
             <YAxis 
-              tick={{ fill: 'rgba(255, 255, 255, 0.6)', fontSize: 12 }}
-              stroke="rgba(100, 116, 255, 0.3)"
+              tick={{ fill: '#6b7280', fontSize: 12 }}
+              stroke="rgba(100, 116, 255, 0.2)"
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend 
               wrapperStyle={{ 
                 paddingTop: '20px',
                 fontSize: '14px',
-                color: 'rgba(255, 255, 255, 0.7)'
+                color: '#374151',
+                fontWeight: 600
               }}
             />
             <Bar 
               dataKey="Просмотров" 
-              fill="#6474ff"
-              radius={[4, 4, 0, 0]}
-            />
+              fill="url(#colorGradient)"
+              radius={[6, 6, 0, 0]}
+            >
+              <defs>
+                <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#6474ff" stopOpacity={0.9}/>
+                  <stop offset="100%" stopColor="#8b95ff" stopOpacity={0.7}/>
+                </linearGradient>
+              </defs>
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </Box>

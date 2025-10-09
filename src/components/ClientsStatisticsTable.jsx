@@ -3,7 +3,7 @@ import { Paper, Typography, Box, Button } from '@mui/material';
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { FileDownload as FileDownloadIcon } from '@mui/icons-material';
 import { exportDataGridToExcel } from '../utils/exportToExcel';
-import { premiumTableStyles } from '../styles/premiumTableStyles';
+import { premiumLightTableStyles } from '../styles/premiumLightStyles';
 
 const formatTime = (seconds) => {
   const hours = Math.floor(seconds / 3600);
@@ -21,17 +21,17 @@ function ClientsToolbar({ rows, columns, contentType }) {
 
   return (
     <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
-      <GridToolbarColumnsButton sx={{ color: 'rgba(255, 255, 255, 0.9)' }} />
-      <GridToolbarFilterButton sx={{ color: 'rgba(255, 255, 255, 0.9)' }} />
-      <GridToolbarDensitySelector sx={{ color: 'rgba(255, 255, 255, 0.9)' }} />
+      <GridToolbarColumnsButton sx={{ color: '#374151', fontWeight: 600 }} />
+      <GridToolbarFilterButton sx={{ color: '#374151', fontWeight: 600 }} />
+      <GridToolbarDensitySelector sx={{ color: '#374151', fontWeight: 600 }} />
       <Button
         startIcon={<FileDownloadIcon />}
         onClick={handleExport}
         size="small"
         sx={{
           textTransform: 'none',
-          fontWeight: 600,
-          color: 'rgba(255, 255, 255, 0.9)',
+          fontWeight: 700,
+          color: '#6474ff',
           '&:hover': {
             background: 'rgba(100, 116, 255, 0.1)'
           }
@@ -45,26 +45,27 @@ function ClientsToolbar({ rows, columns, contentType }) {
         sx={{ 
           minWidth: 200,
           '& .MuiInputBase-root': {
-            color: 'rgba(255, 255, 255, 0.9)',
+            color: '#1a2332',
             '& input': {
-              color: 'rgba(255, 255, 255, 0.9)'
+              color: '#1a2332'
             }
           },
           '& .MuiInputBase-input::placeholder': {
-            color: 'rgba(255, 255, 255, 0.5)',
+            color: '#9ca3af',
             opacity: 1
           },
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(100, 116, 255, 0.3)'
+            borderColor: 'rgba(100, 116, 255, 0.2)'
           },
           '& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(100, 116, 255, 0.5)'
+            borderColor: 'rgba(100, 116, 255, 0.4)'
           },
           '& .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#6474ff'
+            borderColor: '#6474ff',
+            boxShadow: '0 0 0 3px rgba(100, 116, 255, 0.1)'
           },
           '& .MuiSvgIcon-root': {
-            color: 'rgba(255, 255, 255, 0.7)'
+            color: '#6b7280'
           }
         }}
       />
@@ -125,7 +126,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -142,7 +143,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -159,7 +160,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem'
           }}
@@ -177,7 +178,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -211,10 +212,10 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
   ];
 
   return (
-    <Paper sx={premiumTableStyles.paper}>
-      <Box sx={premiumTableStyles.header}>
-        <Typography variant="h6" sx={premiumTableStyles.headerText}>
-          Статистика по клиентам
+    <Paper sx={premiumLightTableStyles.paper}>
+      <Box sx={premiumLightTableStyles.header}>
+        <Typography variant="h6" sx={premiumLightTableStyles.headerText}>
+          👥 Статистика по клиентам
         </Typography>
       </Box>
       
@@ -251,7 +252,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
             toolbarColumns: 'Колонки',
             toolbarFilters: 'Фильтры',
           }}
-          sx={premiumTableStyles.dataGrid}
+          sx={premiumLightTableStyles.dataGrid}
         />
       </Box>
     </Paper>
