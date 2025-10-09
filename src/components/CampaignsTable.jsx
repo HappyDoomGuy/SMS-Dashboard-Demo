@@ -64,6 +64,30 @@ const CampaignsTable = ({ data, currentContentType }) => {
   // Group data by campaign name
   const campaignStats = new Map();
   
+  // Helper function to parse dates in multiple formats
+  const parseDate = (dateString) => {
+    if (!dateString) return null;
+    
+    // Try standard Date constructor first
+    let date = new Date(dateString);
+    if (!isNaN(date.getTime()) && date.getFullYear() > 2000) {
+      return date;
+    }
+    
+    // Try Russian format: DD.MM.YYYY HH:MM:SS or DD.MM.YYYY HH:MM
+    const ruFormatMatch = dateString.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})\s*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?/);
+    if (ruFormatMatch) {
+      const [, day, month, year, hours = '0', minutes = '0', seconds = '0'] = ruFormatMatch;
+      date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), 
+                     parseInt(hours), parseInt(minutes), parseInt(seconds));
+      if (!isNaN(date.getTime())) {
+        return date;
+      }
+    }
+    
+    return null;
+  };
+
   // Process each row from campaigns table
   relevantCampaigns.forEach(campaign => {
     const campaignName = campaign['Название кампании'] || '';
@@ -90,8 +114,8 @@ const CampaignsTable = ({ data, currentContentType }) => {
     
     // Update latest date from campaigns table
     if (campaignDate) {
-      const date = new Date(campaignDate);
-      if (!isNaN(date.getTime())) {
+      const date = parseDate(campaignDate);
+      if (date && !isNaN(date.getTime())) {
         if (!stats.latestDate || date > stats.latestDate) {
           stats.latestDate = date;
         }
@@ -114,11 +138,25 @@ const CampaignsTable = ({ data, currentContentType }) => {
     }
   });
   
+  // Debug: Log first few campaigns to see date format
+  if (relevantCampaigns.length > 0) {
+    console.log('=== CAMPAIGNS TABLE DEBUG ===');
+    console.log('Sample campaign data:', relevantCampaigns.slice(0, 3).map(c => ({
+      name: c['Название кампании'],
+      date: c['Дата и время'],
+      distId: c['ID дистрибуции']
+    })));
+    console.log('Campaign stats:', Array.from(campaignStats.values()).map(s => ({
+      name: s.campaignName,
+      date: s.latestDate ? s.latestDate.toLocaleString('ru-RU') : 'NO DATE'
+    })));
+  }
+
   // Convert to array for DataGrid
   const rowsBeforeRounding = Array.from(campaignStats.values()).map((item, index) => ({
     id: index + 1,
     campaignName: item.campaignName,
-    latestDate: item.latestDate ? item.latestDate.toLocaleString('ru-RU') : '',
+    latestDate: item.latestDate ? item.latestDate.toLocaleString('ru-RU') : 'Нет данных',
     smsSent: item.smsSent,
     smsViewedFloat: item.smsViewed, // Keep float value
     smsViewed: 0, // Will be calculated
