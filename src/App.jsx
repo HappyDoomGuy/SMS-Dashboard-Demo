@@ -484,23 +484,24 @@ function App() {
             onChange={handleTabChange}
             aria-label="content type tabs"
             variant="fullWidth"
-            sx={{
-              '& .MuiTab-root': {
-                fontSize: '1rem',
-                fontWeight: 600,
-                textTransform: 'none',
-                minHeight: 72,
-                transition: 'all 0.2s ease',
-                color: '#6c757d',
-                '&:hover': {
-                  background: '#f8f9fa',
-                  color: '#495057'
-                },
-                '&.Mui-selected': {
-                  color: '#212529',
-                  fontWeight: 700
-                }
-              },
+                    sx={{
+                      '& .MuiTab-root': {
+                        fontSize: '1.1rem',
+                        fontWeight: 600,
+                        textTransform: 'none',
+                        minHeight: 56,
+                        py: 2,
+                        transition: 'all 0.2s ease',
+                        color: '#6c757d',
+                        '&:hover': {
+                          background: '#f8f9fa',
+                          color: '#495057'
+                        },
+                        '&.Mui-selected': {
+                          color: '#212529',
+                          fontWeight: 700
+                        }
+                      },
               '& .MuiTabs-indicator': {
                 height: 3,
                 background: '#495057',
@@ -508,23 +509,14 @@ function App() {
               }
             }}
           >
-            {contentTypes.map((type, index) => (
-              <Tab
-                key={type}
-                label={
-                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                      {type}
-                    </Typography>
-                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                      {data.filter(item => item.contentType === type).length} записей
-                    </Typography>
-                  </Box>
-                }
-                id={`tab-${index}`}
-                aria-controls={`tabpanel-${index}`}
-              />
-            ))}
+                    {contentTypes.map((type, index) => (
+                      <Tab
+                        key={type}
+                        label={type}
+                        id={`tab-${index}`}
+                        aria-controls={`tabpanel-${index}`}
+                      />
+                    ))}
           </Tabs>
         </Paper>
 
@@ -576,9 +568,7 @@ function App() {
                   rows={filteredData}
                   columns={columns}
                   disableSelectionOnClick
-                  hideFooterPagination={true}
-                  hideFooter={false}
-                  footerHeight={40}
+                  hideFooter={true}
                   sortingMode="client"
                   filterMode="client"
                   disableVirtualization={false}
@@ -599,20 +589,6 @@ function App() {
                   disableMultipleColumnsSorting={false}
                   components={{
                     Toolbar: GridToolbar,
-                  }}
-                  slots={{
-                    footer: () => (
-                      <Box sx={{ 
-                        display: 'flex', 
-                        justifyContent: 'center', 
-                        alignItems: 'center', 
-                        height: '40px',
-                        fontSize: '0.875rem',
-                        color: 'text.secondary'
-                      }}>
-                        Всего записей: {filteredData.length}
-                      </Box>
-                    )
                   }}
                   componentsProps={{
                     toolbar: {

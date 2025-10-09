@@ -212,20 +212,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
               justifyContent: 'center'
             }
           }}
-          slots={{
-            footer: () => (
-              <Box sx={{ 
-                display: 'flex', 
-                justifyContent: 'center', 
-                alignItems: 'center', 
-                height: '40px',
-                fontSize: '0.875rem',
-                color: 'text.secondary'
-              }}>
-                Всего клиентов: {rows.length}
-              </Box>
-            )
-          }}
+          hideFooter={true}
         />
       </Box>
     </Paper>
