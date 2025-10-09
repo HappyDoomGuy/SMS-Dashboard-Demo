@@ -97,7 +97,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -114,7 +114,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -131,7 +131,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem'
           }}
@@ -149,7 +149,7 @@ const ClientsStatisticsTable = ({ data, currentContentType }) => {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >

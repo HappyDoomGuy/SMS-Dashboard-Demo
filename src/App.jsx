@@ -287,7 +287,7 @@ function App() {
           <Typography 
             variant="body2" 
             sx={{ 
-              color: isValid ? 'text.primary' : 'text.disabled'
+              color: isValid ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)'
             }}
           >
             {isValid ? parsed.toLocaleString('ru-RU') : params.value || 'Неверная дата'}
@@ -304,7 +304,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -321,7 +321,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -340,7 +340,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem'
           }}
@@ -358,7 +358,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -377,7 +377,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic',
             fontWeight: params.value ? 'bold' : 'normal'
           }}
@@ -404,7 +404,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'text.primary' : 'text.disabled',
+            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem',
             lineHeight: 1.4,
