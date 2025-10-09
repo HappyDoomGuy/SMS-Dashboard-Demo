@@ -169,13 +169,34 @@ const CampaignsTable = ({ data, currentContentType }) => {
   });
   
   
+  // Helper function to parse dates for sorting
+  const parseDateForSort = (dateString) => {
+    if (!dateString || dateString === 'Нет данных') return new Date(0);
+    
+    // Try Russian format: DD.MM.YYYY, HH:MM:SS
+    const match = dateString.match(/(\d{1,2})\.(\d{1,2})\.(\d{4}),?\s*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?/);
+    if (match) {
+      const [, day, month, year, hours = '0', minutes = '0', seconds = '0'] = match;
+      return new Date(parseInt(year), parseInt(month) - 1, parseInt(day), 
+                     parseInt(hours), parseInt(minutes), parseInt(seconds));
+    }
+    
+    // Fallback
+    return new Date(dateString);
+  };
+
   // Define columns
   const columns = [
     {
       field: 'latestDate',
       headerName: 'Дата и время',
       width: 180,
-      sortable: true
+      sortable: true,
+      sortComparator: (v1, v2) => {
+        const date1 = parseDateForSort(v1);
+        const date2 = parseDateForSort(v2);
+        return date1.getTime() - date2.getTime();
+      }
     },
     {
       field: 'campaignName',
