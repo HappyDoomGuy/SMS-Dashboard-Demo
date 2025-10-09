@@ -21,16 +21,20 @@ function ClientsToolbar({ rows, columns, contentType }) {
 
   return (
     <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
-      <GridToolbarColumnsButton />
-      <GridToolbarFilterButton />
-      <GridToolbarDensitySelector />
+      <GridToolbarColumnsButton sx={{ color: 'rgba(255, 255, 255, 0.9)' }} />
+      <GridToolbarFilterButton sx={{ color: 'rgba(255, 255, 255, 0.9)' }} />
+      <GridToolbarDensitySelector sx={{ color: 'rgba(255, 255, 255, 0.9)' }} />
       <Button
         startIcon={<FileDownloadIcon />}
         onClick={handleExport}
         size="small"
         sx={{
           textTransform: 'none',
-          fontWeight: 600
+          fontWeight: 600,
+          color: 'rgba(255, 255, 255, 0.9)',
+          '&:hover': {
+            background: 'rgba(100, 116, 255, 0.1)'
+          }
         }}
       >
         Экспорт в Excel
@@ -38,7 +42,31 @@ function ClientsToolbar({ rows, columns, contentType }) {
       <Box sx={{ flexGrow: 1 }} />
       <GridToolbarQuickFilter 
         debounceMs={500}
-        sx={{ minWidth: 200 }}
+        sx={{ 
+          minWidth: 200,
+          '& .MuiInputBase-root': {
+            color: 'rgba(255, 255, 255, 0.9)',
+            '& input': {
+              color: 'rgba(255, 255, 255, 0.9)'
+            }
+          },
+          '& .MuiInputBase-input::placeholder': {
+            color: 'rgba(255, 255, 255, 0.5)',
+            opacity: 1
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'rgba(100, 116, 255, 0.3)'
+          },
+          '& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'rgba(100, 116, 255, 0.5)'
+          },
+          '& .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#6474ff'
+          },
+          '& .MuiSvgIcon-root': {
+            color: 'rgba(255, 255, 255, 0.7)'
+          }
+        }}
       />
     </GridToolbarContainer>
   );
