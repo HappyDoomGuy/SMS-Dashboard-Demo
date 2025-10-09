@@ -22,8 +22,20 @@ import {
 import ReactMarkdown from 'react-markdown';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { keyframes } from '@mui/system';
 
 const PROXY_URL = 'https://happydoomguy.pythonanywhere.com/gemini/models/gemini-2.5-flash-lite:generateContent';
+
+// Анимация вращения
+const rotate = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+const pulse = keyframes`
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+`;
 
 const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
   const [open, setOpen] = useState(false);
@@ -484,21 +496,30 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           position: 'fixed',
           bottom: 32,
           right: 32,
-          width: 72,
-          height: 72,
+          width: 80,
+          height: 80,
           background: '#6474ff',
           border: '2px solid rgba(100, 116, 255, 0.3)',
+          animation: `${pulse} 3s ease-in-out infinite`,
           '&:hover': {
             background: '#7d8aff',
-            transform: 'scale(1.08)',
-            boxShadow: '0 0 40px rgba(100, 116, 255, 0.6), 0 8px 32px rgba(0, 0, 0, 0.5)'
+            transform: 'scale(1.1)',
+            boxShadow: '0 0 50px rgba(100, 116, 255, 0.8), 0 8px 40px rgba(0, 0, 0, 0.5)',
+            animation: 'none'
           },
           transition: 'all 0.3s ease',
-          boxShadow: '0 0 30px rgba(100, 116, 255, 0.4), 0 8px 24px rgba(0, 0, 0, 0.4)',
+          boxShadow: '0 0 35px rgba(100, 116, 255, 0.5), 0 8px 30px rgba(0, 0, 0, 0.4)',
           zIndex: 1000
         }}
       >
-        <PsychologyIcon sx={{ fontSize: 48, color: '#ffffff' }} />
+        <PsychologyIcon 
+          sx={{ 
+            fontSize: 56, 
+            color: '#ffffff',
+            animation: `${rotate} 4s linear infinite`,
+            filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))'
+          }} 
+        />
       </Fab>
 
       {/* Dialog */}
