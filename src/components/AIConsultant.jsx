@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -15,9 +15,13 @@ import {
 import {
   Close as CloseIcon,
   Psychology as PsychologyIcon,
-  AutoAwesome as AutoAwesomeIcon
+  AutoAwesome as AutoAwesomeIcon,
+  Description as DescriptionIcon,
+  PictureAsPdf as PictureAsPdfIcon
 } from '@mui/icons-material';
 import ReactMarkdown from 'react-markdown';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const PROXY_URL = 'https://happydoomguy.pythonanywhere.com/gemini/models/gemini-2.5-flash-lite:generateContent';
 
@@ -26,11 +30,114 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState('');
   const [error, setError] = useState(null);
+  const [exporting, setExporting] = useState(false);
+  const contentRef = useRef(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     setError(null);
+  };
+
+  const exportToPDF = async () => {
+    if (!analysis || !contentRef.current) return;
+    
+    setExporting(true);
+    try {
+      const element = contentRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff'
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const imgWidth = 190; // A4 width minus margins
+      const pageHeight = 277; // A4 height minus margins
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 10;
+
+      // Add first page
+      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      // Add more pages if needed
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight + 10;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const filename = `Анализ_${contentType}_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.pdf`;
+      pdf.save(filename);
+    } catch (err) {
+      console.error('Error exporting to PDF:', err);
+      setError(`Ошибка при экспорте в PDF: ${err.message}`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const exportToWord = async () => {
+    if (!analysis) return;
+    
+    setExporting(true);
+    try {
+      // Convert markdown to HTML
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+            h1 { color: #333; font-size: 24px; margin-top: 20px; }
+            h2 { color: #555; font-size: 20px; margin-top: 16px; }
+            h3 { color: #666; font-size: 16px; margin-top: 12px; }
+            p { margin: 10px 0; }
+            ul, ol { margin: 10px 0; padding-left: 30px; }
+            li { margin: 5px 0; }
+            strong { font-weight: bold; }
+            code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+          </style>
+        </head>
+        <body>
+          <h1>Маркетинговый анализ - ${contentType}</h1>
+          <p><strong>Дата создания:</strong> ${new Date().toLocaleString('ru-RU')}</p>
+          <hr/>
+          ${analysis.replace(/\n/g, '<br/>')}
+        </body>
+        </html>
+      `;
+
+      // Create blob and download
+      const blob = new Blob([htmlContent], { 
+        type: 'application/msword' 
+      });
+      
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Анализ_${contentType}_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.doc`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error exporting to Word:', err);
+      setError(`Ошибка при экспорте в Word: ${err.message}`);
+    } finally {
+      setExporting(false);
+    }
   };
 
   const prepareDataForAnalysis = () => {
@@ -521,6 +628,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
 
           {analysis && (
             <Paper
+              ref={contentRef}
               sx={{
                 p: 3,
                 background: '#f8f9fa',
@@ -545,16 +653,53 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           )}
         </DialogContent>
 
-        <DialogActions sx={{ p: 2, borderTop: '1px solid #e9ecef' }}>
+        <DialogActions sx={{ p: 2, borderTop: '1px solid #e9ecef', gap: 1 }}>
           {analysis && (
-            <Button
-              startIcon={<AutoAwesomeIcon />}
-              onClick={analyzeData}
-              disabled={loading}
-              sx={{ textTransform: 'none' }}
-            >
-              Повторить анализ
-            </Button>
+            <>
+              <Button
+                startIcon={<DescriptionIcon />}
+                onClick={exportToWord}
+                disabled={exporting}
+                variant="outlined"
+                sx={{ 
+                  textTransform: 'none',
+                  borderColor: '#0d6efd',
+                  color: '#0d6efd',
+                  '&:hover': {
+                    borderColor: '#0b5ed7',
+                    background: 'rgba(13, 110, 253, 0.04)'
+                  }
+                }}
+              >
+                Сохранить как Word
+              </Button>
+              <Button
+                startIcon={<PictureAsPdfIcon />}
+                onClick={exportToPDF}
+                disabled={exporting}
+                variant="outlined"
+                sx={{ 
+                  textTransform: 'none',
+                  borderColor: '#dc3545',
+                  color: '#dc3545',
+                  '&:hover': {
+                    borderColor: '#bb2d3b',
+                    background: 'rgba(220, 53, 69, 0.04)'
+                  }
+                }}
+              >
+                Сохранить как PDF
+              </Button>
+              <Box sx={{ flexGrow: 1 }} />
+              <Button
+                startIcon={<AutoAwesomeIcon />}
+                onClick={analyzeData}
+                disabled={loading || exporting}
+                sx={{ textTransform: 'none' }}
+              >
+                Повторить анализ
+              </Button>
+            </>
           )}
           <Button onClick={handleClose} sx={{ textTransform: 'none' }}>
             Закрыть
