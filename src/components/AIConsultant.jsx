@@ -140,14 +140,17 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         last: sortedDates[sortedDates.length - 1] || 'Нет данных',
         totalDays: sortedDates.length
       },
-      // Добавляем сырые данные для более детального анализа
-      rawDataSample: data.slice(0, 10).map(item => ({
+      // Добавляем ВСЕ сырые данные для полного анализа
+      allRecords: data.map(item => ({
         date: item.date,
         campaignName: item.campaignName,
+        userName: item.userName,
         specialty: item.specialty,
+        workplace: item.workplace,
         district: item.district,
         timeSec: item.timeSec,
-        viewPercent: item.viewPercent
+        viewPercent: item.viewPercent,
+        videoName: item.videoName
       }))
     };
   };
@@ -207,10 +210,13 @@ ${Object.entries(dataForAnalysis.hourlyStats)
   .map(([hour, count]) => `- ${hour}:00 - ${count} просмотров`)
   .join('\n')}
 
-**Примеры реальных записей (первые 10):**
-${dataForAnalysis.rawDataSample.map((item, i) => 
-  `${i + 1}. ${item.date} | ${item.campaignName} | ${item.specialty} | Время: ${item.timeSec}с | Просмотр: ${item.viewPercent}%`
-).join('\n')}
+**ПОЛНЫЙ НАБОР ДАННЫХ (все ${dataForAnalysis.totalRecords} записей в формате JSON):**
+
+\`\`\`json
+${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
+\`\`\`
+
+Анализируй ВСЕ эти записи для получения полной картины.
 
 **ЗАДАНИЕ:**
 Проанализируй эти данные и предоставь:
