@@ -19,6 +19,7 @@ import { Refresh as RefreshIcon, FileDownload as FileDownloadIcon } from '@mui/i
 import { apiService, dataUtils } from './services/api';
 import StatisticsCards from './components/StatisticsCards';
 import CampaignsTable from './components/CampaignsTable';
+import CampaignsTimeline from './components/CampaignsTimeline';
 import ViewsDynamicsChart from './components/ViewsDynamicsChart';
 import ClientsStatisticsTable from './components/ClientsStatisticsTable';
 import AIConsultant from './components/AIConsultant';
@@ -655,9 +656,9 @@ function App() {
           />
         )}
 
-        {/* Campaigns Table */}
+        {/* Campaigns Timeline */}
         {filteredData.length > 0 && (
-          <CampaignsTable 
+          <CampaignsTimeline 
             data={filteredData} 
             currentContentType={contentTypes[selectedTab]} 
           />
