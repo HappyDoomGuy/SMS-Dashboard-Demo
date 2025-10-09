@@ -23,6 +23,7 @@ import ReactMarkdown from 'react-markdown';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { keyframes } from '@mui/system';
+import AIBrainIcon from './AIBrainIcon';
 
 const PROXY_URL = 'https://happydoomguy.pythonanywhere.com/gemini/models/gemini-2.5-flash-lite:generateContent';
 
@@ -512,14 +513,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           zIndex: 1000
         }}
       >
-        <PsychologyIcon 
-          sx={{ 
-            fontSize: 56, 
-            color: '#ffffff',
-            animation: `${rotate} 4s linear infinite`,
-            filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))'
-          }} 
-        />
+        <AIBrainIcon size={64} />
       </Fab>
 
       {/* Dialog */}
