@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Box, Paper, Typography, Chip, LinearProgress, IconButton } from '@mui/material';
 import {
   Send as SendIcon,
@@ -25,8 +25,11 @@ const fadeIn = keyframes`
 `;
 
 const CampaignsTimeline = ({ data, currentContentType }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const cardsPerView = 3; // Показываем 3 карточки одновременно
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const scrollContainerRef = useRef(null);
 
   const allCampaigns = apiService.getFilteredCampaigns();
 
@@ -110,17 +113,76 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
       return b.latestDate - a.latestDate;
     });
 
-  const handlePrev = () => {
-    setCurrentIndex(Math.max(0, currentIndex - 1));
+  // Scroll to newest (first) campaign on mount or content type change
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft = 0;
+    }
+  }, [currentContentType, campaigns.length]);
+
+  // Mouse/touch drag handlers
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
   };
 
-  const handleNext = () => {
-    setCurrentIndex(Math.min(campaigns.length - cardsPerView, currentIndex + 1));
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll speed multiplier
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  const visibleCampaigns = campaigns.slice(currentIndex, currentIndex + cardsPerView);
-  const canGoPrev = currentIndex > 0;
-  const canGoNext = currentIndex < campaigns.length - cardsPerView;
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  // Touch handlers for mobile
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
+  const scrollToLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -350, behavior: 'smooth' });
+    }
+  };
+
+  const scrollToRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 350, behavior: 'smooth' });
+    }
+  };
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      setScrollPosition(scrollContainerRef.current.scrollLeft);
+    }
+  };
+
+  const isAtStart = scrollPosition <= 10;
+  const isAtEnd = scrollContainerRef.current 
+    ? scrollPosition >= scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth - 10
+    : false;
 
   return (
     <Paper
@@ -146,17 +208,17 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
           📊 Статистика по кампаниям
         </Typography>
         
-        {campaigns.length > cardsPerView && (
+        {campaigns.length > 1 && (
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
-              {currentIndex + 1}-{Math.min(currentIndex + cardsPerView, campaigns.length)} из {campaigns.length}
+              {campaigns.length} {campaigns.length === 1 ? 'кампания' : campaigns.length < 5 ? 'кампании' : 'кампаний'}
             </Typography>
             <IconButton
-              onClick={handlePrev}
-              disabled={!canGoPrev}
+              onClick={scrollToLeft}
+              disabled={isAtStart}
               size="small"
               sx={{
-                color: canGoPrev ? '#6474ff' : 'rgba(255, 255, 255, 0.3)',
+                color: !isAtStart ? '#6474ff' : 'rgba(255, 255, 255, 0.3)',
                 '&:hover': {
                   background: 'rgba(100, 116, 255, 0.1)'
                 }
@@ -165,11 +227,11 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
               <ChevronLeftIcon />
             </IconButton>
             <IconButton
-              onClick={handleNext}
-              disabled={!canGoNext}
+              onClick={scrollToRight}
+              disabled={isAtEnd}
               size="small"
               sx={{
-                color: canGoNext ? '#6474ff' : 'rgba(255, 255, 255, 0.3)',
+                color: !isAtEnd ? '#6474ff' : 'rgba(255, 255, 255, 0.3)',
                 '&:hover': {
                   background: 'rgba(100, 116, 255, 0.1)'
                 }
@@ -181,13 +243,47 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
         )}
       </Box>
 
-      <Box sx={{ p: 2 }}>
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2 }}>
-          {visibleCampaigns.map((campaign, index) => (
+      <Box 
+        ref={scrollContainerRef}
+        onScroll={handleScroll}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        sx={{ 
+          p: 2,
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          cursor: isDragging ? 'grabbing' : 'grab',
+          userSelect: 'none',
+          '&::-webkit-scrollbar': {
+            height: '6px'
+          },
+          '&::-webkit-scrollbar-track': {
+            background: 'rgba(100, 116, 255, 0.05)',
+            borderRadius: '3px'
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: 'rgba(100, 116, 255, 0.3)',
+            borderRadius: '3px',
+            '&:hover': {
+              background: 'rgba(100, 116, 255, 0.5)'
+            }
+          }
+        }}
+      >
+        <Box sx={{ display: 'flex', gap: 2, minWidth: 'min-content' }}>
+          {campaigns.map((campaign, index) => (
             <Paper
               key={index}
               sx={{
                 p: 2.5,
+                minWidth: '340px',
+                maxWidth: '340px',
+                flexShrink: 0,
                 background: 'linear-gradient(135deg, #1a1f3a 0%, #151933 100%)',
                 border: '1px solid rgba(100, 116, 255, 0.2)',
                 borderRadius: 2,
