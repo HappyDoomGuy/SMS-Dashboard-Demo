@@ -223,12 +223,6 @@ function App() {
       }
     },
     {
-      field: 'phone',
-      headerName: 'Номер телефона',
-      width: 150,
-      sortable: true
-    },
-    {
       field: 'userName',
       headerName: 'ФИО',
       width: 200,
@@ -407,12 +401,6 @@ function App() {
           </Typography>
         </Box>
       )
-    },
-    {
-      field: 'distributionType',
-      headerName: 'Тип дистрибуции',
-      width: 150,
-      sortable: true
     }
   ], []); // Empty deps - columns don't change
 
