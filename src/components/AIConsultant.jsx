@@ -19,7 +19,7 @@ import {
 } from '@mui/icons-material';
 import ReactMarkdown from 'react-markdown';
 
-const PROXY_URL = 'https://happydoomguy.pythonanywhere.com/gemini/models/gemini-1.5-flash:generateContent';
+const PROXY_URL = 'https://happydoomguy.pythonanywhere.com/gemini/models/gemini-2.0-flash-exp:generateContent';
 
 const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
   const [open, setOpen] = useState(false);
