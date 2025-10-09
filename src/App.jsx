@@ -57,17 +57,17 @@ function CustomToolbar({ rows, columns, contentType }) {
 
   return (
     <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
-      <GridToolbarColumnsButton sx={{ color: 'rgba(255, 255, 255, 0.9)' }} />
-      <GridToolbarFilterButton sx={{ color: 'rgba(255, 255, 255, 0.9)' }} />
-      <GridToolbarDensitySelector sx={{ color: 'rgba(255, 255, 255, 0.9)' }} />
+      <GridToolbarColumnsButton sx={{ color: '#374151', fontWeight: 600 }} />
+      <GridToolbarFilterButton sx={{ color: '#374151', fontWeight: 600 }} />
+      <GridToolbarDensitySelector sx={{ color: '#374151', fontWeight: 600 }} />
       <Button
         startIcon={<FileDownloadIcon />}
         onClick={handleExport}
         size="small"
         sx={{
           textTransform: 'none',
-          fontWeight: 600,
-          color: 'rgba(255, 255, 255, 0.9)',
+          fontWeight: 700,
+          color: '#6474ff',
           '&:hover': {
             background: 'rgba(100, 116, 255, 0.1)'
           }
@@ -81,26 +81,27 @@ function CustomToolbar({ rows, columns, contentType }) {
         sx={{ 
           minWidth: 200,
           '& .MuiInputBase-root': {
-            color: 'rgba(255, 255, 255, 0.9)',
+            color: '#1a2332',
             '& input': {
-              color: 'rgba(255, 255, 255, 0.9)'
+              color: '#1a2332'
             }
           },
           '& .MuiInputBase-input::placeholder': {
-            color: 'rgba(255, 255, 255, 0.5)',
+            color: '#9ca3af',
             opacity: 1
           },
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(100, 116, 255, 0.3)'
+            borderColor: 'rgba(100, 116, 255, 0.2)'
           },
           '& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(100, 116, 255, 0.5)'
+            borderColor: 'rgba(100, 116, 255, 0.4)'
           },
           '& .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#6474ff'
+            borderColor: '#6474ff',
+            boxShadow: '0 0 0 3px rgba(100, 116, 255, 0.1)'
           },
           '& .MuiSvgIcon-root': {
-            color: 'rgba(255, 255, 255, 0.7)'
+            color: '#6b7280'
           }
         }}
       />
@@ -316,7 +317,7 @@ function App() {
           <Typography 
             variant="body2" 
             sx={{ 
-              color: isValid ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)'
+              color: isValid ? '#374151' : '#9ca3af'
             }}
           >
             {isValid ? parsed.toLocaleString('ru-RU') : params.value || 'Неверная дата'}
@@ -333,7 +334,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -350,7 +351,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -369,7 +370,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem'
           }}
@@ -387,7 +388,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -406,7 +407,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic',
             fontWeight: params.value ? 'bold' : 'normal'
           }}
@@ -433,7 +434,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+            color: params.value ? '#374151' : '#9ca3af',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem',
             lineHeight: 1.4,
@@ -522,14 +523,15 @@ function App() {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, minHeight: '100vh', pb: 4, background: '#0a0e27' }}>
+    <Box sx={{ flexGrow: 1, minHeight: '100vh', pb: 4 }}>
       <AppBar 
         position="static" 
         elevation={0}
         sx={{
-          background: '#151933',
-          borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+          background: 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(100, 116, 255, 0.15)',
+          boxShadow: '0 4px 30px rgba(100, 116, 255, 0.1)'
         }}
       >
         <Toolbar sx={{ py: 2.5 }}>
@@ -538,10 +540,13 @@ function App() {
             component="div" 
             sx={{ 
               flexGrow: 1,
-              fontWeight: 700,
-              letterSpacing: 0.5,
-              color: '#ffffff',
-              fontSize: '1.5rem'
+              fontWeight: 800,
+              letterSpacing: -0.5,
+              background: 'linear-gradient(135deg, #1a2332 0%, #6474ff 100%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontSize: '1.75rem'
             }}
           >
             {config.company.displayName}
@@ -550,7 +555,7 @@ function App() {
             <Typography 
               variant="body2" 
               sx={{ 
-                color: 'rgba(255, 255, 255, 0.6)',
+                color: '#6b7280',
                 mr: 3,
                 fontWeight: 500,
                 fontSize: '0.875rem'
@@ -563,21 +568,21 @@ function App() {
             startIcon={<RefreshIcon />}
             onClick={loadData}
             disabled={loading}
-            variant="outlined"
+            variant="contained"
             sx={{
-              borderRadius: 1.5,
+              borderRadius: 2,
               px: 3,
-              py: 1,
-              fontWeight: 600,
+              py: 1.2,
+              fontWeight: 700,
               textTransform: 'none',
-              borderColor: 'rgba(100, 116, 255, 0.3)',
-              color: '#6474ff',
-              background: 'rgba(100, 116, 255, 0.05)',
+              background: 'linear-gradient(135deg, #6474ff 0%, #8b95ff 100%)',
+              boxShadow: '0 4px 14px rgba(100, 116, 255, 0.4)',
               '&:hover': {
-                borderColor: '#6474ff',
-                background: 'rgba(100, 116, 255, 0.1)'
+                background: 'linear-gradient(135deg, #5060e0 0%, #7a84ff 100%)',
+                boxShadow: '0 6px 20px rgba(100, 116, 255, 0.5)',
+                transform: 'translateY(-2px)'
               },
-              transition: 'all 0.2s ease'
+              transition: 'all 0.3s ease'
             }}
           >
             Обновить
@@ -598,11 +603,12 @@ function App() {
           sx={{
             width: '100%',
             mb: 3,
-            borderRadius: 2,
+            borderRadius: 3,
             overflow: 'hidden',
-            background: '#151933',
-            border: '1px solid rgba(100, 116, 255, 0.15)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(100, 116, 255, 0.1)',
+            boxShadow: '0 8px 32px rgba(100, 116, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
           }}
         >
           <Tabs
@@ -612,28 +618,36 @@ function App() {
             variant="fullWidth"
                     sx={{
                       '& .MuiTab-root': {
-                        fontSize: '1.1rem',
+                        fontSize: '1.15rem',
                         fontWeight: 600,
                         textTransform: 'none',
-                        minHeight: 64,
-                        py: 2,
-                        transition: 'all 0.2s ease',
-                        color: 'rgba(255, 255, 255, 0.5)',
+                        minHeight: 70,
+                        py: 2.5,
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        color: '#9ca3af',
+                        position: 'relative',
                         '&:hover': {
-                          background: 'rgba(100, 116, 255, 0.08)',
-                          color: 'rgba(255, 255, 255, 0.8)'
+                          color: '#6474ff',
+                          background: 'rgba(100, 116, 255, 0.04)'
                         },
                         '&.Mui-selected': {
-                          color: '#ffffff',
-                          fontWeight: 700,
-                          background: 'rgba(100, 116, 255, 0.12)'
+                          color: '#1a2332',
+                          fontWeight: 800,
+                          '&::after': {
+                            content: '""',
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            height: '4px',
+                            background: 'linear-gradient(90deg, #6474ff, #8b95ff)',
+                            boxShadow: '0 -2px 10px rgba(100, 116, 255, 0.4)',
+                            borderRadius: '4px 4px 0 0'
+                          }
                         }
                       },
               '& .MuiTabs-indicator': {
-                height: 3,
-                background: '#6474ff',
-                boxShadow: '0 0 10px rgba(100, 116, 255, 0.5)',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                height: 0
               }
             }}
           >
@@ -676,16 +690,21 @@ function App() {
         <Paper 
           sx={{ 
             width: '100%',
-            borderRadius: 2,
+            borderRadius: 3,
             overflow: 'hidden',
-            background: '#151933',
-            border: '1px solid rgba(100, 116, 255, 0.15)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(100, 116, 255, 0.1)',
+            boxShadow: '0 8px 32px rgba(100, 116, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
           }}
         >
-          <Box sx={{ p: 2, borderBottom: '1px solid rgba(100, 116, 255, 0.1)' }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, color: '#ffffff' }}>
-              Лог просмотров
+          <Box sx={{ 
+            p: 2.5, 
+            borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
+            background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.03) 0%, rgba(139, 149, 255, 0.02) 100%)'
+          }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2332', fontSize: '1.1rem' }}>
+              📋 Лог просмотров
             </Typography>
           </Box>
           
@@ -801,6 +820,7 @@ function App() {
                   }}
                   sx={{
                     border: 'none',
+                    background: 'transparent',
                     '& .MuiDataGrid-main': {
                       borderRadius: 2
                     },
@@ -810,20 +830,20 @@ function App() {
                       paddingTop: '12px',
                       paddingBottom: '12px',
                       borderBottom: '1px solid rgba(100, 116, 255, 0.08)',
-                      color: 'rgba(255, 255, 255, 0.9)'
+                      color: '#374151'
                     },
                     '& .MuiDataGrid-columnHeader': {
                       fontSize: '0.875rem',
                       fontWeight: 700,
-                      background: 'rgba(100, 116, 255, 0.08)',
-                      color: 'rgba(255, 255, 255, 0.9)',
-                      borderBottom: '1px solid rgba(100, 116, 255, 0.2)'
+                      background: 'rgba(100, 116, 255, 0.05)',
+                      color: '#1a2332',
+                      borderBottom: '2px solid rgba(100, 116, 255, 0.15)'
                     },
                     '& .MuiDataGrid-row': {
                       minHeight: 'auto !important',
                       maxHeight: 'none !important',
                       '&:hover': {
-                        background: 'rgba(100, 116, 255, 0.08)',
+                        background: 'rgba(100, 116, 255, 0.06)',
                         cursor: 'pointer'
                       },
                       '&:nth-of-type(even)': {
@@ -841,12 +861,12 @@ function App() {
                     },
                     '& .MuiDataGrid-toolbarContainer': {
                       padding: '16px',
-                      background: 'rgba(100, 116, 255, 0.05)',
+                      background: 'rgba(100, 116, 255, 0.03)',
                       borderBottom: '1px solid rgba(100, 116, 255, 0.1)'
                     },
                     '& .MuiDataGrid-footerContainer': {
                       borderTop: '1px solid rgba(100, 116, 255, 0.1)',
-                      background: 'rgba(100, 116, 255, 0.05)'
+                      background: 'rgba(100, 116, 255, 0.03)'
                     }
                   }}
                   getRowHeight={() => 'auto'}
