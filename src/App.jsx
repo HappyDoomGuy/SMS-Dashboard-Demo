@@ -174,17 +174,11 @@ function App() {
     return isNaN(date.getTime()) ? new Date(0) : date;
   };
 
-  // Filter data by selected content type and sort by date (newest first)
+  // Filter data by selected content type (sorting handled by DataGrid)
   const filteredData = React.useMemo(() => {
-    return (contentTypes.length > 0 
+    return contentTypes.length > 0 
       ? data.filter(item => item.contentType === contentTypes[selectedTab])
-      : data
-    ).sort((a, b) => {
-      // Sort by date descending (newest first)
-      const dateA = parseDate(a.date);
-      const dateB = parseDate(b.date);
-      return dateA - dateB; // Changed: A - B for newest first
-    });
+      : data;
   }, [data, contentTypes, selectedTab]);
 
   // Debug: Log sorting info (disabled for performance)
