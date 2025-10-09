@@ -172,16 +172,16 @@ const CampaignsTable = ({ data, currentContentType }) => {
   // Define columns
   const columns = [
     {
+      field: 'latestDate',
+      headerName: 'Дата и время',
+      width: 180,
+      sortable: true
+    },
+    {
       field: 'campaignName',
       headerName: 'Название кампании',
       flex: 1,
       minWidth: 300,
-      sortable: true
-    },
-    {
-      field: 'latestDate',
-      headerName: 'Дата и время',
-      width: 180,
       sortable: true
     },
     {
