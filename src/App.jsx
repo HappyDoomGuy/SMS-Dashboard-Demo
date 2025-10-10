@@ -21,7 +21,7 @@ import StatisticsCards from './components/StatisticsCards';
 import CampaignsTable from './components/CampaignsTable';
 import CampaignsTimeline from './components/CampaignsTimeline';
 import ViewsDynamicsChart from './components/ViewsDynamicsChart';
-import ClientsStatisticsTable from './components/ClientsStatisticsTable';
+import ClientsStatisticsCards from './components/ClientsStatisticsCards';
 import AIConsultant from './components/AIConsultant';
 import config, { getCoverageColor } from './config';
 import { exportDataGridToExcel } from './utils/exportToExcel';
@@ -863,9 +863,9 @@ function App() {
           ))}
         </Paper>
 
-        {/* Clients Statistics Table */}
+        {/* Clients Statistics Cards */}
         {filteredData.length > 0 && (
-          <ClientsStatisticsTable 
+          <ClientsStatisticsCards 
             data={filteredData} 
             currentContentType={contentTypes[selectedTab]} 
           />

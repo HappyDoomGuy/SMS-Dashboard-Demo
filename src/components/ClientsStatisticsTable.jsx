@@ -1,79 +1,49 @@
-import React from 'react';
-import { Paper, Typography, Box, Button } from '@mui/material';
-import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarQuickFilter } from '@mui/x-data-grid';
-import { FileDownload as FileDownloadIcon } from '@mui/icons-material';
+import React, { useState } from 'react';
+import { Paper, Typography, Box, Button, Avatar, Chip, Grid, TextField, InputAdornment } from '@mui/material';
+import { 
+  FileDownload as FileDownloadIcon,
+  Person as PersonIcon,
+  Visibility as VisibilityIcon,
+  Timer as TimerIcon,
+  Search as SearchIcon,
+  Business as BusinessIcon,
+  LocationOn as LocationOnIcon,
+  LocalHospital as LocalHospitalIcon
+} from '@mui/icons-material';
 import { exportDataGridToExcel } from '../utils/exportToExcel';
-import { premiumLightTableStyles } from '../styles/premiumLightStyles';
 
 const formatTime = (seconds) => {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
   
-  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  if (hours > 0) {
+    return `${hours}ч ${minutes}м`;
+  } else if (minutes > 0) {
+    return `${minutes}м ${secs}с`;
+  }
+  return `${secs}с`;
 };
 
-function ClientsToolbar({ rows, columns, contentType }) {
-  const handleExport = () => {
-    const filename = `${contentType}_статистика_по_клиентам_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}`;
-    exportDataGridToExcel(rows, columns, filename);
-  };
+// Функция для генерации инициалов
+const getInitials = (name) => {
+  if (!name) return '?';
+  const parts = name.trim().split(' ').filter(p => p);
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+  }
+  return parts[0][0].toUpperCase();
+};
 
-  return (
-    <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
-      <GridToolbarColumnsButton sx={{ color: '#1d1d1f', fontWeight: 400, textTransform: 'none' }} />
-      <GridToolbarFilterButton sx={{ color: '#1d1d1f', fontWeight: 400, textTransform: 'none' }} />
-      <GridToolbarDensitySelector sx={{ color: '#1d1d1f', fontWeight: 400, textTransform: 'none' }} />
-      <Button
-        startIcon={<FileDownloadIcon />}
-        onClick={handleExport}
-        size="small"
-        sx={{
-          textTransform: 'none',
-          fontWeight: 400,
-          color: '#1d1d1f',
-          '&:hover': {
-            background: 'rgba(0, 0, 0, 0.04)'
-          }
-        }}
-      >
-        Экспорт в Excel
-      </Button>
-      <Box sx={{ flexGrow: 1 }} />
-      <GridToolbarQuickFilter 
-        debounceMs={500}
-        sx={{ 
-          minWidth: 200,
-          '& .MuiInputBase-root': {
-            color: '#1d1d1f',
-            fontSize: '0.875rem',
-            '& input': {
-              color: '#1d1d1f'
-            }
-          },
-          '& .MuiInputBase-input::placeholder': {
-            color: '#86868b',
-            opacity: 1
-          },
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(0, 0, 0, 0.12)',
-            borderRadius: '8px'
-          },
-          '& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(0, 0, 0, 0.24)'
-          },
-          '& .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#007AFF',
-            borderWidth: '1px'
-          },
-          '& .MuiSvgIcon-root': {
-            color: '#86868b'
-          }
-        }}
-      />
-    </GridToolbarContainer>
-  );
-}
+// Функция для генерации цвета аватара
+const getAvatarColor = (name) => {
+  const colors = [
+    '#007AFF', '#34C759', '#FF9500', '#5856D6', '#FF3B30',
+    '#00C7BE', '#AF52DE', '#FF2D55', '#5AC8FA', '#FFCC00'
+  ];
+  const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return colors[hash % colors.length];
+};
 
 const ClientsStatisticsTable = ({ data, currentContentType }) => {
   // Group data by user (phone number)
