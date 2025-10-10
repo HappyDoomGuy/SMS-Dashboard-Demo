@@ -50,31 +50,34 @@ const materialize = keyframes`
 
 const buttonScale = keyframes`
   0% {
-    transform: translate(-50%, -50%) scale(0) rotate(180deg);
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    opacity: 0;
   }
-  50% {
-    transform: translate(-50%, -50%) scale(1.2) rotate(-10deg);
+  60% {
+    transform: translate(-50%, -50%) scale(1.08) rotate(0deg);
+    opacity: 1;
   }
-  75% {
-    transform: translate(-50%, -50%) scale(0.95) rotate(5deg);
+  80% {
+    transform: translate(-50%, -50%) scale(0.98) rotate(0deg);
   }
   100% {
     transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
   }
 `;
 
 const glowPulse = keyframes`
   0%, 100% {
     box-shadow: 
-      0 0 20px rgba(0, 122, 255, 0.4),
-      0 0 40px rgba(0, 122, 255, 0.2),
-      0 8px 32px rgba(0, 122, 255, 0.3);
+      0 0 20px rgba(0, 122, 255, 0.3),
+      0 0 40px rgba(0, 122, 255, 0.15),
+      0 8px 32px rgba(0, 122, 255, 0.2);
   }
   50% {
     box-shadow: 
-      0 0 40px rgba(0, 122, 255, 0.8),
-      0 0 80px rgba(0, 122, 255, 0.4),
-      0 8px 32px rgba(0, 122, 255, 0.5);
+      0 0 30px rgba(0, 122, 255, 0.5),
+      0 0 60px rgba(0, 122, 255, 0.25),
+      0 8px 32px rgba(0, 122, 255, 0.3);
   }
 `;
 
@@ -83,14 +86,17 @@ const energyWave = keyframes`
     transform: translate(-50%, -50%) scale(1);
     opacity: 0;
   }
-  10% {
-    opacity: 0.6;
+  15% {
+    opacity: 0.4;
   }
   50% {
-    opacity: 0.6;
+    opacity: 0.4;
+  }
+  85% {
+    opacity: 0.3;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.6);
+    transform: translate(-50%, -50%) scale(1.8);
     opacity: 0;
   }
 `;
@@ -100,35 +106,35 @@ const hologramShift = keyframes`
     transform: translateX(0) translateY(0);
     opacity: 0;
   }
-  10% {
-    opacity: 0.7;
+  15% {
+    opacity: 0.5;
   }
-  25% {
-    transform: translateX(1px) translateY(-1px);
-    opacity: 0.9;
+  30% {
+    transform: translateX(0.5px) translateY(-0.5px);
+    opacity: 0.6;
   }
   50% {
-    transform: translateX(-1px) translateY(1px);
-    opacity: 0.7;
+    transform: translateX(-0.5px) translateY(0.5px);
+    opacity: 0.5;
   }
-  75% {
-    transform: translateX(1px) translateY(1px);
-    opacity: 0.9;
+  70% {
+    transform: translateX(0.5px) translateY(0.5px);
+    opacity: 0.6;
   }
   100% {
     transform: translateX(0) translateY(0);
-    opacity: 0.7;
+    opacity: 0.5;
   }
 `;
 
 const dialogAppear = keyframes`
   0% {
-    transform: scale(0.3);
+    transform: scale(0.5);
     opacity: 0;
-    filter: blur(10px);
+    filter: blur(8px);
   }
-  50% {
-    transform: scale(1.05);
+  60% {
+    transform: scale(1.02);
     opacity: 1;
     filter: blur(0px);
   }
@@ -153,7 +159,7 @@ const iconFloat = keyframes`
     transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-3px) rotate(5deg);
+    transform: translateY(-2px) rotate(2deg);
   }
 `;
 
@@ -848,7 +854,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           height: 140,
           zIndex: 1000,
           pointerEvents: 'none',
-          animation: `${materialize} 0.8s ease-out 0.3s backwards`
+          animation: `${materialize} 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards`
         }}
       >
         {/* Energy waves */}
@@ -862,10 +868,10 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               transform: 'translate(-50%, -50%)',
               width: '80px',
               height: '80px',
-              border: '2px solid rgba(0, 122, 255, 0.5)',
+              border: '1.5px solid rgba(0, 122, 255, 0.4)',
               borderRadius: '50%',
-              animation: `${energyWave} ${2.5 + i * 0.3}s ease-out infinite`,
-              animationDelay: `${i * 0.8 + 0.5}s`,
+              animation: `${energyWave} ${3.5 + i * 0.5}s cubic-bezier(0.4, 0, 0.2, 1) infinite`,
+              animationDelay: `${i * 1.2 + 0.8}s`,
               pointerEvents: 'none'
             }}
           />
@@ -880,10 +886,10 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               top: `${35 + i * 15}%`,
               left: '15%',
               width: '70%',
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.6), transparent)',
-              animation: `${hologramShift} ${1.5 + i * 0.2}s ease-in-out infinite`,
-              animationDelay: `${i * 0.15 + 0.5}s`,
+              height: '0.5px',
+              background: 'linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.4), transparent)',
+              animation: `${hologramShift} ${2.5 + i * 0.3}s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
+              animationDelay: `${i * 0.2 + 0.8}s`,
               pointerEvents: 'none'
             }}
           />
@@ -904,7 +910,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             pointerEvents: 'auto',
             background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
             border: '3px solid rgba(255, 255, 255, 0.95)',
-            animation: `${buttonScale} 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s backwards, ${glowPulse} 3s ease-in-out 1.7s infinite`,
+            animation: `${buttonScale} 1.6s cubic-bezier(0.34, 1.2, 0.64, 1) 0.6s backwards, ${glowPulse} 4s cubic-bezier(0.4, 0, 0.6, 1) 2s infinite`,
             overflow: 'visible',
             '&::before': {
               content: '""',
@@ -935,7 +941,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               fontSize: 56, 
               color: '#ffffff',
               filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2))',
-              animation: `${iconFloat} 2s ease-in-out 1.7s infinite`,
+              animation: `${iconFloat} 3s cubic-bezier(0.4, 0, 0.6, 1) 2s infinite`,
               position: 'relative',
               zIndex: 3
             }} 
@@ -954,9 +960,9 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         }}
         sx={{
           '& .MuiBackdrop-root': {
-            animation: open ? `${backdropFade} 0.3s ease-out` : 'none',
-            background: 'rgba(0, 0, 0, 0.4)',
-            backdropFilter: 'blur(4px)'
+            animation: open ? `${backdropFade} 0.6s ease-out` : 'none',
+            background: 'rgba(0, 0, 0, 0.3)',
+            backdropFilter: 'blur(6px)'
           }
         }}
         PaperProps={{
@@ -967,7 +973,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             background: '#ffffff',
             border: '1px solid rgba(0, 0, 0, 0.12)',
             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
-            animation: open ? `${dialogAppear} 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)` : 'none',
+            animation: open ? `${dialogAppear} 0.8s cubic-bezier(0.34, 1.2, 0.64, 1)` : 'none',
             transformOrigin: 'bottom right'
           }
         }}
