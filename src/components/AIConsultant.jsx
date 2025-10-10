@@ -732,7 +732,6 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
           border: '3px solid rgba(255, 255, 255, 0.95)',
           animation: `${pulse} 3s ease-in-out infinite`,
-          position: 'relative',
           overflow: 'hidden',
           '&::before': {
             content: '""',
