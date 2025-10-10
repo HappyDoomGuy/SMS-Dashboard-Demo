@@ -57,19 +57,19 @@ function CustomToolbar({ rows, columns, contentType }) {
 
   return (
     <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
-      <GridToolbarColumnsButton sx={{ color: '#374151', fontWeight: 600 }} />
-      <GridToolbarFilterButton sx={{ color: '#374151', fontWeight: 600 }} />
-      <GridToolbarDensitySelector sx={{ color: '#374151', fontWeight: 600 }} />
+      <GridToolbarColumnsButton sx={{ color: '#86868b', fontWeight: 400, textTransform: 'none' }} />
+      <GridToolbarFilterButton sx={{ color: '#86868b', fontWeight: 400, textTransform: 'none' }} />
+      <GridToolbarDensitySelector sx={{ color: '#86868b', fontWeight: 400, textTransform: 'none' }} />
       <Button
         startIcon={<FileDownloadIcon />}
         onClick={handleExport}
         size="small"
         sx={{
           textTransform: 'none',
-          fontWeight: 700,
-          color: '#6474ff',
+          fontWeight: 500,
+          color: '#007AFF',
           '&:hover': {
-            background: 'rgba(100, 116, 255, 0.1)'
+            background: 'rgba(0, 122, 255, 0.08)'
           }
         }}
       >
@@ -81,27 +81,29 @@ function CustomToolbar({ rows, columns, contentType }) {
         sx={{ 
           minWidth: 200,
           '& .MuiInputBase-root': {
-            color: '#1a2332',
+            color: '#1d1d1f',
+            fontSize: '0.875rem',
             '& input': {
-              color: '#1a2332'
+              color: '#1d1d1f'
             }
           },
           '& .MuiInputBase-input::placeholder': {
-            color: '#9ca3af',
+            color: '#86868b',
             opacity: 1
           },
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(100, 116, 255, 0.2)'
+            borderColor: 'rgba(0, 0, 0, 0.12)',
+            borderRadius: '8px'
           },
           '& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(100, 116, 255, 0.4)'
+            borderColor: 'rgba(0, 0, 0, 0.24)'
           },
           '& .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#6474ff',
-            boxShadow: '0 0 0 3px rgba(100, 116, 255, 0.1)'
+            borderColor: '#007AFF',
+            borderWidth: '1px'
           },
           '& .MuiSvgIcon-root': {
-            color: '#6b7280'
+            color: '#86868b'
           }
         }}
       />
@@ -317,7 +319,7 @@ function App() {
           <Typography 
             variant="body2" 
             sx={{ 
-              color: isValid ? '#374151' : '#9ca3af'
+              color: isValid ? '#1d1d1f' : '#86868b'
             }}
           >
             {isValid ? parsed.toLocaleString('ru-RU') : params.value || 'Неверная дата'}
@@ -334,7 +336,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? '#374151' : '#9ca3af',
+            color: params.value ? '#1d1d1f' : '#86868b',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -351,7 +353,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? '#374151' : '#9ca3af',
+            color: params.value ? '#1d1d1f' : '#86868b',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -370,7 +372,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? '#374151' : '#9ca3af',
+            color: params.value ? '#1d1d1f' : '#86868b',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem'
           }}
@@ -388,7 +390,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? '#374151' : '#9ca3af',
+            color: params.value ? '#1d1d1f' : '#86868b',
             fontStyle: params.value ? 'normal' : 'italic'
           }}
         >
@@ -407,7 +409,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? '#374151' : '#9ca3af',
+            color: params.value ? '#1d1d1f' : '#86868b',
             fontStyle: params.value ? 'normal' : 'italic',
             fontWeight: params.value ? 'bold' : 'normal'
           }}
@@ -434,7 +436,7 @@ function App() {
         <Typography 
           variant="body2" 
           sx={{ 
-            color: params.value ? '#374151' : '#9ca3af',
+            color: params.value ? '#1d1d1f' : '#86868b',
             fontStyle: params.value ? 'normal' : 'italic',
             fontSize: '0.875rem',
             lineHeight: 1.4,
@@ -679,21 +681,19 @@ function App() {
         <Paper 
           sx={{ 
             width: '100%',
-            borderRadius: 3,
+            borderRadius: 2,
             overflow: 'hidden',
-            background: 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(100, 116, 255, 0.1)',
-            boxShadow: '0 8px 32px rgba(100, 116, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
+            background: '#ffffff',
+            border: '0.5px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
           }}
         >
           <Box sx={{ 
             p: 2.5, 
-            borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
-            background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.03) 0%, rgba(139, 149, 255, 0.02) 100%)'
+            borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)'
           }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2332', fontSize: '1.1rem' }}>
-              📋 Лог просмотров
+            <Typography variant="h6" sx={{ fontWeight: 600, color: '#1d1d1f', fontSize: '1.125rem' }}>
+              Лог просмотров
             </Typography>
           </Box>
           
@@ -809,34 +809,32 @@ function App() {
                   }}
                   sx={{
                     border: 'none',
-                    background: 'transparent',
+                    background: '#ffffff',
                     '& .MuiDataGrid-main': {
-                      borderRadius: 2
+                      borderRadius: 0
                     },
                     '& .MuiDataGrid-cell': {
                       fontSize: '0.875rem',
                       alignItems: 'flex-start',
                       paddingTop: '12px',
                       paddingBottom: '12px',
-                      borderBottom: '1px solid rgba(100, 116, 255, 0.08)',
-                      color: '#374151'
+                      borderBottom: '0.5px solid rgba(0, 0, 0, 0.06)',
+                      color: '#1d1d1f'
                     },
                     '& .MuiDataGrid-columnHeader': {
-                      fontSize: '0.875rem',
-                      fontWeight: 700,
-                      background: 'rgba(100, 116, 255, 0.05)',
-                      color: '#1a2332',
-                      borderBottom: '2px solid rgba(100, 116, 255, 0.15)'
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      background: '#f5f5f7',
+                      color: '#86868b',
+                      borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)',
+                      textTransform: 'uppercase',
+                      letterSpacing: 0.5
                     },
                     '& .MuiDataGrid-row': {
                       minHeight: 'auto !important',
                       maxHeight: 'none !important',
                       '&:hover': {
-                        background: 'rgba(100, 116, 255, 0.06)',
-                        cursor: 'pointer'
-                      },
-                      '&:nth-of-type(even)': {
-                        background: 'rgba(100, 116, 255, 0.02)'
+                        background: '#f5f5f7'
                       }
                     },
                     '& .MuiDataGrid-cell--textLeft': {
@@ -850,12 +848,12 @@ function App() {
                     },
                     '& .MuiDataGrid-toolbarContainer': {
                       padding: '16px',
-                      background: 'rgba(100, 116, 255, 0.03)',
-                      borderBottom: '1px solid rgba(100, 116, 255, 0.1)'
+                      background: '#ffffff',
+                      borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)'
                     },
                     '& .MuiDataGrid-footerContainer': {
-                      borderTop: '1px solid rgba(100, 116, 255, 0.1)',
-                      background: 'rgba(100, 116, 255, 0.03)'
+                      borderTop: '0.5px solid rgba(0, 0, 0, 0.08)',
+                      background: '#ffffff'
                     }
                   }}
                   getRowHeight={() => 'auto'}
