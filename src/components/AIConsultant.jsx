@@ -37,9 +37,37 @@ const pulse = keyframes`
   50% { transform: scale(1.05); }
 `;
 
+// Анимация сканирования
+const scanLine = keyframes`
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+`;
+
+const scanPulse = keyframes`
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+`;
+
 const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [scanning, setScanning] = useState(false);
   const [analysis, setAnalysis] = useState('');
   const [error, setError] = useState(null);
   const [exporting, setExporting] = useState(false);
@@ -336,6 +364,13 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
   };
 
   const analyzeData = async () => {
+    // Запускаем эффект сканирования
+    setScanning(true);
+    
+    // Ждем 2 секунды для эффекта сканирования
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    setScanning(false);
     setLoading(true);
     setError(null);
     setAnalysis('');
@@ -487,6 +522,124 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
 
   return (
     <>
+      {/* Scanning Overlay */}
+      {scanning && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 9999,
+            pointerEvents: 'none',
+            background: 'rgba(0, 122, 255, 0.03)'
+          }}
+        >
+          {/* Scanning Line */}
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              height: '3px',
+              background: 'linear-gradient(90deg, transparent, #007AFF, transparent)',
+              boxShadow: '0 0 20px #007AFF, 0 0 40px #007AFF',
+              animation: `${scanLine} 2s ease-in-out`,
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: '-50px',
+                left: 0,
+                right: 0,
+                height: '100px',
+                background: 'linear-gradient(180deg, transparent, rgba(0, 122, 255, 0.1), transparent)',
+                filter: 'blur(10px)'
+              }
+            }}
+          />
+          
+          {/* Scanning Grid Overlay */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `
+                linear-gradient(rgba(0, 122, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 122, 255, 0.05) 1px, transparent 1px)
+              `,
+              backgroundSize: '50px 50px',
+              animation: `${scanPulse} 2s ease-in-out`
+            }}
+          />
+          
+          {/* Corner Markers */}
+          {[
+            { top: 20, left: 20 },
+            { top: 20, right: 20 },
+            { bottom: 20, left: 20 },
+            { bottom: 20, right: 20 }
+          ].map((pos, i) => (
+            <Box
+              key={i}
+              sx={{
+                position: 'absolute',
+                ...pos,
+                width: 40,
+                height: 40,
+                borderTop: pos.top !== undefined ? '2px solid #007AFF' : 'none',
+                borderBottom: pos.bottom !== undefined ? '2px solid #007AFF' : 'none',
+                borderLeft: pos.left !== undefined ? '2px solid #007AFF' : 'none',
+                borderRight: pos.right !== undefined ? '2px solid #007AFF' : 'none',
+                animation: `${scanPulse} 2s ease-in-out`,
+                boxShadow: '0 0 10px rgba(0, 122, 255, 0.5)'
+              }}
+            />
+          ))}
+          
+          {/* Scanning Text */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              textAlign: 'center',
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(10px)',
+              padding: '24px 40px',
+              borderRadius: 3,
+              boxShadow: '0 10px 40px rgba(0, 122, 255, 0.2)',
+              border: '1px solid rgba(0, 122, 255, 0.3)'
+            }}
+          >
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                color: '#1d1d1f', 
+                fontWeight: 600, 
+                mb: 1,
+                fontSize: '1.125rem'
+              }}
+            >
+              Сканирование данных...
+            </Typography>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                color: '#86868b',
+                fontSize: '0.875rem'
+              }}
+            >
+              Анализирую {data.length} записей
+            </Typography>
+          </Box>
+        </Box>
+      )}
+
       {/* Floating Action Button */}
       <Fab
         color="primary"
