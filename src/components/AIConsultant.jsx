@@ -39,19 +39,27 @@ const pulse = keyframes`
 
 const materialize = keyframes`
   0% {
-    transform: scale(0) rotate(180deg);
     opacity: 0;
-  }
-  50% {
-    transform: scale(1.2) rotate(-10deg);
-    opacity: 1;
-  }
-  75% {
-    transform: scale(0.95) rotate(5deg);
+    filter: blur(10px);
   }
   100% {
-    transform: scale(1) rotate(0deg);
     opacity: 1;
+    filter: blur(0px);
+  }
+`;
+
+const buttonScale = keyframes`
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(180deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2) rotate(-10deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) scale(0.95) rotate(5deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
   }
 `;
 
@@ -100,6 +108,33 @@ const hologramShift = keyframes`
   75% {
     transform: translateX(1px) translateY(1px);
     opacity: 0.9;
+  }
+`;
+
+const dialogAppear = keyframes`
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+    filter: blur(10px);
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0px);
+  }
+`;
+
+const backdropFade = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 `;
 
@@ -802,7 +837,8 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           width: 140,
           height: 140,
           zIndex: 1000,
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          animation: `${materialize} 0.8s ease-out 0.3s backwards`
         }}
       >
         {/* Energy waves */}
@@ -818,7 +854,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               border: '2px solid rgba(0, 122, 255, 0.5)',
               borderRadius: '50%',
               animation: `${energyWave} ${2.5 + i * 0.3}s ease-out infinite`,
-              animationDelay: `${i * 0.8}s`,
+              animationDelay: `${i * 0.8 + 1.1}s`,
               pointerEvents: 'none'
             }}
           />
@@ -836,7 +872,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               height: '1px',
               background: 'linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.6), transparent)',
               animation: `${hologramShift} ${1.5 + i * 0.2}s ease-in-out infinite`,
-              animationDelay: `${i * 0.15}s`,
+              animationDelay: `${i * 0.15 + 1.1}s`,
               pointerEvents: 'none'
             }}
           />
@@ -857,7 +893,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             pointerEvents: 'auto',
             background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
             border: '3px solid rgba(255, 255, 255, 0.95)',
-            animation: `${materialize} 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s backwards, ${glowPulse} 3s ease-in-out 1.7s infinite`,
+            animation: `${buttonScale} 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s backwards, ${glowPulse} 3s ease-in-out 1.7s infinite`,
             overflow: 'visible',
             '&::before': {
               content: '""',
@@ -902,21 +938,33 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         onClose={handleClose}
         maxWidth="md"
         fullWidth
+        TransitionProps={{
+          timeout: 500
+        }}
+        sx={{
+          '& .MuiBackdrop-root': {
+            animation: open ? `${backdropFade} 0.3s ease-out` : 'none',
+            background: 'rgba(0, 0, 0, 0.4)',
+            backdropFilter: 'blur(4px)'
+          }
+        }}
         PaperProps={{
           sx: {
             borderRadius: 3,
             minHeight: '70vh',
             maxHeight: '90vh',
             background: '#ffffff',
-            border: '0.5px solid rgba(0, 0, 0, 0.08)',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)'
+            border: '1px solid rgba(0, 0, 0, 0.12)',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
+            animation: open ? `${dialogAppear} 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)` : 'none',
+            transformOrigin: 'bottom right'
           }
         }}
       >
         <DialogTitle
           sx={{
             background: '#ffffff',
-            borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
             color: '#1d1d1f',
             display: 'flex',
             alignItems: 'center',
@@ -1128,7 +1176,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
 
         <DialogActions sx={{ 
           p: 3, 
-          borderTop: '0.5px solid rgba(0, 0, 0, 0.08)',
+          borderTop: '1px solid rgba(0, 0, 0, 0.12)',
           background: '#ffffff',
           gap: 1.5
         }}>
