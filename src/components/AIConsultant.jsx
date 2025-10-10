@@ -70,35 +70,32 @@ const glowPulse = keyframes`
   }
 `;
 
-const rippleWave = keyframes`
+const orbitRing = keyframes`
   0% {
-    width: 100%;
-    height: 100%;
-    opacity: 0.4;
-  }
-  50% {
-    width: 130%;
-    height: 130%;
-    opacity: 0.15;
-  }
-  80% {
-    width: 145%;
-    height: 145%;
-    opacity: 0.05;
+    transform: translate(-50%, -50%) rotate(0deg);
   }
   100% {
-    width: 150%;
-    height: 150%;
-    opacity: 0;
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+`;
+
+const particleFloat = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
   }
 `;
 
 const iconFloat = keyframes`
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-3px);
+    transform: translateY(-3px) rotate(5deg);
   }
 `;
 
@@ -783,7 +780,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         </Box>
       )}
 
-      {/* Floating Action Button with Ripple Waves */}
+      {/* Floating Action Button with Orbit Ring */}
       <Box
         sx={{
           position: 'fixed',
@@ -794,20 +791,49 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           zIndex: 1000
         }}
       >
-        {/* Ripple waves */}
-        {[0, 1].map((i) => (
+        {/* Rotating orbit ring */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '110px',
+            height: '110px',
+            border: '2px dashed rgba(0, 122, 255, 0.3)',
+            borderRadius: '50%',
+            animation: `${orbitRing} 8s linear infinite`,
+            pointerEvents: 'none'
+          }}
+        />
+        
+        {/* Floating particles on orbit */}
+        {[0, 120, 240].map((angle, i) => (
           <Box
             key={i}
             sx={{
               position: 'absolute',
               top: '50%',
               left: '50%',
+              width: '110px',
+              height: '110px',
               transform: 'translate(-50%, -50%)',
-              border: '2px solid rgba(0, 122, 255, 0.6)',
-              borderRadius: '50%',
-              animation: `${rippleWave} 3s ease-out infinite`,
-              animationDelay: `${i * 1.5}s`,
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              animation: `${orbitRing} 8s linear infinite`,
+              animationDelay: `${i * 0.3}s`,
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '50%',
+                width: '6px',
+                height: '6px',
+                background: '#007AFF',
+                borderRadius: '50%',
+                transform: 'translateX(-50%)',
+                boxShadow: '0 0 10px rgba(0, 122, 255, 0.8)',
+                animation: `${particleFloat} 2s ease-in-out infinite`,
+                animationDelay: `${i * 0.5}s`
+              }
             }}
           />
         ))}
