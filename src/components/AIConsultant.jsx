@@ -785,7 +785,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         }}
       >
         {/* Ripple waves */}
-        {[0, 1, 2].map((i) => (
+        {[0, 1].map((i) => (
           <Box
             key={i}
             sx={{
@@ -796,7 +796,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               border: '2px solid rgba(0, 122, 255, 0.6)',
               borderRadius: '50%',
               animation: `${rippleWave} 3s ease-out infinite`,
-              animationDelay: `${i * 1}s`,
+              animationDelay: `${i * 1.5}s`,
               pointerEvents: 'none'
             }}
           />
