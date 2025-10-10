@@ -37,7 +37,7 @@ const pulse = keyframes`
   50% { transform: scale(1.05); }
 `;
 
-// Анимация сканирования
+// Анимация сканирования (вниз и обратно вверх)
 const scanLine = keyframes`
   0% {
     transform: translateY(-100%);
@@ -46,11 +46,21 @@ const scanLine = keyframes`
   5% {
     opacity: 1;
   }
+  45% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(100vh);
+    opacity: 1;
+  }
+  55% {
+    opacity: 1;
+  }
   95% {
     opacity: 1;
   }
   100% {
-    transform: translateY(100vh);
+    transform: translateY(-100%);
     opacity: 0;
   }
 `;
@@ -393,8 +403,8 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
     // Запускаем эффект сканирования
     setScanning(true);
     
-    // Ждем 2.5 секунды для эффекта сканирования
-    await new Promise(resolve => setTimeout(resolve, 2500));
+    // Ждем 4 секунды для эффекта сканирования (вниз и вверх)
+    await new Promise(resolve => setTimeout(resolve, 4000));
     
     setScanning(false);
     setLoading(true);
@@ -571,7 +581,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               right: 0,
               top: 0,
               height: '200px',
-              animation: `${scanLine} 2.5s cubic-bezier(0.4, 0, 0.2, 1)`,
+              animation: `${scanLine} 4s cubic-bezier(0.4, 0, 0.2, 1)`,
               pointerEvents: 'none'
             }}
           >
@@ -629,7 +639,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 linear-gradient(90deg, rgba(0, 122, 255, 0.03) 1px, transparent 1px)
               `,
               backgroundSize: '40px 40px',
-              animation: `${scanPulse} 2.5s ease-in-out`
+              animation: `${scanPulse} 4s ease-in-out`
             }}
           />
           
@@ -646,7 +656,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 radial-gradient(circle at 60px 60px, rgba(88, 86, 214, 0.05) 2px, transparent 2px)
               `,
               backgroundSize: '80px 80px',
-              animation: `${scanPulse} 2.5s ease-in-out 0.3s`
+              animation: `${scanPulse} 4s ease-in-out 0.5s`
             }}
           />
           
@@ -722,8 +732,8 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 height: `${i * 200}px`,
                 border: '1px solid rgba(0, 122, 255, 0.2)',
                 borderRadius: '50%',
-                animation: `${scanPulse} ${2 + i * 0.5}s ease-in-out infinite`,
-                animationDelay: `${i * 0.3}s`
+                animation: `${scanPulse} ${3 + i * 0.7}s ease-in-out infinite`,
+                animationDelay: `${i * 0.5}s`
               }}
             />
           ))}
