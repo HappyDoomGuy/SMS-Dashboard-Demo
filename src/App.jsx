@@ -66,10 +66,11 @@ function CustomToolbar({ rows, columns, contentType }) {
         size="small"
         sx={{
           textTransform: 'none',
-          fontWeight: 500,
-          color: '#007AFF',
+          fontWeight: 400,
+          color: '#86868b',
           '&:hover': {
-            background: 'rgba(0, 122, 255, 0.08)'
+            background: 'rgba(0, 0, 0, 0.04)',
+            color: '#1d1d1f'
           }
         }}
       >
