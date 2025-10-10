@@ -80,7 +80,7 @@ const glowPulse = keyframes`
 
 const energyWave = keyframes`
   0% {
-    transform: translate(-50%, -50%) scale(0.8);
+    transform: translate(-50%, -50%) scale(1);
     opacity: 0;
   }
   10% {
@@ -90,7 +90,7 @@ const energyWave = keyframes`
     opacity: 0.6;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.4);
+    transform: translate(-50%, -50%) scale(1.6);
     opacity: 0;
   }
 `;
@@ -859,6 +859,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               position: 'absolute',
               top: '50%',
               left: '50%',
+              transform: 'translate(-50%, -50%)',
               width: '80px',
               height: '80px',
               border: '2px solid rgba(0, 122, 255, 0.5)',
