@@ -84,23 +84,6 @@ const energyWave = keyframes`
   }
 `;
 
-const particleSpark = keyframes`
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1.5);
-    opacity: 0;
-  }
-`;
-
 const hologramShift = keyframes`
   0%, 100% {
     transform: translateX(0) translateY(0);
@@ -859,34 +842,6 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           />
         ))}
         
-        {/* Energy particles */}
-        {[
-          { x: 70, y: 25, delay: 0 },
-          { x: 105, y: 35, delay: 0.4 },
-          { x: 120, y: 70, delay: 0.8 },
-          { x: 105, y: 105, delay: 1.2 },
-          { x: 70, y: 115, delay: 1.6 },
-          { x: 35, y: 105, delay: 2.0 },
-          { x: 20, y: 70, delay: 2.4 },
-          { x: 35, y: 35, delay: 2.8 }
-        ].map((particle, i) => (
-          <Box
-            key={`particle-${i}`}
-            sx={{
-              position: 'absolute',
-              top: particle.y,
-              left: particle.x,
-              width: '4px',
-              height: '4px',
-              background: '#007AFF',
-              borderRadius: '50%',
-              boxShadow: '0 0 10px rgba(0, 122, 255, 1), 0 0 4px rgba(255, 255, 255, 0.8)',
-              animation: `${particleSpark} 3s ease-in-out infinite`,
-              animationDelay: `${particle.delay}s`,
-              pointerEvents: 'none'
-            }}
-          />
-        ))}
 
         <Fab
           color="primary"
