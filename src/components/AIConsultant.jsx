@@ -74,16 +74,21 @@ const rippleWave = keyframes`
   0% {
     width: 100%;
     height: 100%;
-    opacity: 0.6;
+    opacity: 0.4;
   }
-  70% {
-    width: 150%;
-    height: 150%;
-    opacity: 0.2;
+  50% {
+    width: 130%;
+    height: 130%;
+    opacity: 0.15;
+  }
+  80% {
+    width: 145%;
+    height: 145%;
+    opacity: 0.05;
   }
   100% {
-    width: 160%;
-    height: 160%;
+    width: 150%;
+    height: 150%;
     opacity: 0;
   }
 `;
