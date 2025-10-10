@@ -188,30 +188,28 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
       sx={{
         width: '100%',
         mb: 3,
-        borderRadius: 3,
+        borderRadius: 2,
         overflow: 'hidden',
-        background: 'rgba(255, 255, 255, 0.9)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(100, 116, 255, 0.1)',
-        boxShadow: '0 8px 32px rgba(100, 116, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
+        background: '#ffffff',
+        border: '0.5px solid rgba(0, 0, 0, 0.08)',
+        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
       }}
     >
       {/* Header with Navigation */}
       <Box sx={{ 
         p: 2.5, 
-        borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
-        background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.03) 0%, rgba(139, 149, 255, 0.02) 100%)',
+        borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
       }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2332', fontSize: '1.1rem' }}>
-          📊 Статистика по кампаниям
+        <Typography variant="h6" sx={{ fontWeight: 600, color: '#1d1d1f', fontSize: '1.125rem' }}>
+          Статистика по кампаниям
         </Typography>
         
         {campaigns.length > 1 && (
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-            <Typography variant="caption" sx={{ color: '#6b7280', fontWeight: 600 }}>
+            <Typography variant="caption" sx={{ color: '#86868b', fontWeight: 500 }}>
               {campaigns.length} {campaigns.length === 1 ? 'кампания' : campaigns.length < 5 ? 'кампании' : 'кампаний'}
             </Typography>
             <IconButton
@@ -219,10 +217,9 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
               disabled={isAtStart}
               size="small"
               sx={{
-                color: !isAtStart ? '#6474ff' : '#d1d5db',
-                background: !isAtStart ? 'rgba(100, 116, 255, 0.1)' : 'transparent',
+                color: !isAtStart ? '#007AFF' : '#d1d5db',
                 '&:hover': {
-                  background: 'rgba(100, 116, 255, 0.15)'
+                  background: 'rgba(0, 122, 255, 0.08)'
                 },
                 '&:disabled': {
                   color: '#d1d5db'
@@ -236,10 +233,9 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
               disabled={isAtEnd}
               size="small"
               sx={{
-                color: !isAtEnd ? '#6474ff' : '#d1d5db',
-                background: !isAtEnd ? 'rgba(100, 116, 255, 0.1)' : 'transparent',
+                color: !isAtEnd ? '#007AFF' : '#d1d5db',
                 '&:hover': {
-                  background: 'rgba(100, 116, 255, 0.15)'
+                  background: 'rgba(0, 122, 255, 0.08)'
                 },
                 '&:disabled': {
                   color: '#d1d5db'
@@ -289,33 +285,31 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
             <Paper
               key={index}
               sx={{
-                p: 3,
-                minWidth: '360px',
-                maxWidth: '360px',
+                p: 2.5,
+                minWidth: '340px',
+                maxWidth: '340px',
                 flexShrink: 0,
-                background: 'rgba(255, 255, 255, 0.7)',
-                backdropFilter: 'blur(10px)',
-                border: `2px solid ${parseFloat(campaign.conversionRate) > 7 ? '#10b981' : parseFloat(campaign.conversionRate) > 5 ? '#f59e0b' : '#ef4444'}40`,
-                borderRadius: 2.5,
+                background: '#ffffff',
+                border: '0.5px solid rgba(0, 0, 0, 0.08)',
+                borderRadius: 2,
                 position: 'relative',
                 overflow: 'hidden',
                 animation: `${fadeIn} 0.3s ease-out both`,
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
                 '&:hover': {
-                  transform: 'translateY(-6px) scale(1.02)',
-                  boxShadow: `0 16px 48px ${parseFloat(campaign.conversionRate) > 7 ? 'rgba(16, 185, 129, 0.2)' : parseFloat(campaign.conversionRate) > 5 ? 'rgba(245, 158, 11, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`,
-                  borderColor: parseFloat(campaign.conversionRate) > 7 ? '#10b981' : parseFloat(campaign.conversionRate) > 5 ? '#f59e0b' : '#ef4444'
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
                 }
               }}
             >
               {/* Campaign Name & Date */}
-              <Box sx={{ mb: 2.5 }}>
-                <Typography variant="body1" sx={{ color: '#1a2332', fontWeight: 800, mb: 0.5, fontSize: '1rem', lineHeight: 1.3 }}>
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="body1" sx={{ color: '#1d1d1f', fontWeight: 600, mb: 0.5, fontSize: '1rem', lineHeight: 1.3 }}>
                   {campaign.campaignName}
                 </Typography>
-                <Typography variant="caption" sx={{ color: '#6b7280', display: 'flex', alignItems: 'center', gap: 0.5, fontWeight: 500 }}>
-                  <CalendarIcon sx={{ fontSize: 13 }} />
+                <Typography variant="caption" sx={{ color: '#86868b', display: 'flex', alignItems: 'center', gap: 0.5, fontWeight: 400 }}>
+                  <CalendarIcon sx={{ fontSize: 12 }} />
                   {campaign.latestDate ? campaign.latestDate.toLocaleDateString('ru-RU') : 'Нет данных'}
                 </Typography>
               </Box>
@@ -328,35 +322,27 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'space-between',
-                    p: 1.5, 
-                    borderRadius: 2, 
-                    background: 'linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 217, 255, 0.05))',
-                    border: '1px solid rgba(0, 217, 255, 0.2)',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(0, 217, 255, 0.08))',
-                      transform: 'translateX(4px)',
-                      boxShadow: '0 4px 12px rgba(0, 217, 255, 0.2)'
-                    }
+                    py: 1,
+                    borderBottom: '0.5px solid rgba(0, 0, 0, 0.06)'
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Box sx={{ 
-                      width: 36, 
-                      height: 36, 
-                      borderRadius: 1.5, 
-                      background: 'rgba(0, 217, 255, 0.15)',
+                      width: 32, 
+                      height: 32, 
+                      borderRadius: '50%', 
+                      background: '#34C75915',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}>
-                      <SendIcon sx={{ fontSize: 18, color: '#00d9ff' }} />
+                      <SendIcon sx={{ fontSize: 16, color: '#34C759' }} />
                     </Box>
-                    <Typography variant="body2" sx={{ color: '#4b5563', fontWeight: 600 }}>
+                    <Typography variant="body2" sx={{ color: '#86868b', fontWeight: 400, fontSize: '0.875rem' }}>
                       Отправлено СМС
                     </Typography>
                   </Box>
-                  <Typography variant="h6" sx={{ color: '#00d9ff', fontWeight: 800, fontSize: '1.2rem' }}>
+                  <Typography variant="body1" sx={{ color: '#1d1d1f', fontWeight: 600 }}>
                     {campaign.smsSent.toLocaleString('ru-RU')}
                   </Typography>
                 </Box>
@@ -367,35 +353,27 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'space-between',
-                    p: 1.5, 
-                    borderRadius: 2, 
-                    background: 'linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(255, 107, 157, 0.05))',
-                    border: '1px solid rgba(255, 107, 157, 0.2)',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(255, 107, 157, 0.08))',
-                      transform: 'translateX(4px)',
-                      boxShadow: '0 4px 12px rgba(255, 107, 157, 0.2)'
-                    }
+                    py: 1,
+                    borderBottom: '0.5px solid rgba(0, 0, 0, 0.06)'
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Box sx={{ 
-                      width: 36, 
-                      height: 36, 
-                      borderRadius: 1.5, 
-                      background: 'rgba(255, 107, 157, 0.15)',
+                      width: 32, 
+                      height: 32, 
+                      borderRadius: '50%', 
+                      background: '#FF950015',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}>
-                      <MessageIcon sx={{ fontSize: 18, color: '#ff6b9d' }} />
+                      <MessageIcon sx={{ fontSize: 16, color: '#FF9500' }} />
                     </Box>
-                    <Typography variant="body2" sx={{ color: '#4b5563', fontWeight: 600 }}>
+                    <Typography variant="body2" sx={{ color: '#86868b', fontWeight: 400, fontSize: '0.875rem' }}>
                       Просмотров СМС
                     </Typography>
                   </Box>
-                  <Typography variant="h6" sx={{ color: '#ff6b9d', fontWeight: 800, fontSize: '1.2rem' }}>
+                  <Typography variant="body1" sx={{ color: '#1d1d1f', fontWeight: 600 }}>
                     {campaign.smsViewed.toLocaleString('ru-RU')}
                   </Typography>
                 </Box>
@@ -406,35 +384,26 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                     display: 'flex', 
                     alignItems: 'center', 
                     justifyContent: 'space-between',
-                    p: 1.5, 
-                    borderRadius: 2, 
-                    background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.1), rgba(100, 116, 255, 0.05))',
-                    border: '1px solid rgba(100, 116, 255, 0.2)',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.15), rgba(100, 116, 255, 0.08))',
-                      transform: 'translateX(4px)',
-                      boxShadow: '0 4px 12px rgba(100, 116, 255, 0.2)'
-                    }
+                    py: 1
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Box sx={{ 
-                      width: 36, 
-                      height: 36, 
-                      borderRadius: 1.5, 
-                      background: 'rgba(100, 116, 255, 0.15)',
+                      width: 32, 
+                      height: 32, 
+                      borderRadius: '50%', 
+                      background: '#007AFF15',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}>
-                      <VisibilityIcon sx={{ fontSize: 18, color: '#6474ff' }} />
+                      <VisibilityIcon sx={{ fontSize: 16, color: '#007AFF' }} />
                     </Box>
-                    <Typography variant="body2" sx={{ color: '#4b5563', fontWeight: 600 }}>
+                    <Typography variant="body2" sx={{ color: '#86868b', fontWeight: 400, fontSize: '0.875rem' }}>
                       Просмотров страниц
                     </Typography>
                   </Box>
-                  <Typography variant="h6" sx={{ color: '#6474ff', fontWeight: 800, fontSize: '1.2rem' }}>
+                  <Typography variant="body1" sx={{ color: '#1d1d1f', fontWeight: 600 }}>
                     {campaign.pageViews.toLocaleString('ru-RU')}
                   </Typography>
                 </Box>
