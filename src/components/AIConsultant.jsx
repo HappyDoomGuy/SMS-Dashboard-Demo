@@ -163,87 +163,86 @@ const iconFloat = keyframes`
   }
 `;
 
-// Чистое киберпанк сканирование
-const scanBeam = keyframes`
+// Голографический анализ
+const hologramRing = keyframes`
   0% {
-    top: 0;
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  95% {
-    opacity: 1;
-  }
-  100% {
-    top: 100%;
-    opacity: 0;
-  }
-`;
-
-const gridFadeIn = keyframes`
-  0% {
+    transform: translate(-50%, -50%) scale(0.5);
     opacity: 0;
   }
   20% {
     opacity: 1;
   }
-  80% {
-    opacity: 1;
-  }
   100% {
+    transform: translate(-50%, -50%) scale(3);
     opacity: 0;
   }
 `;
 
-const scanLineMove = keyframes`
+const verticalSweep = keyframes`
   0% {
-    transform: translateY(-100%);
+    left: -10%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
   }
   100% {
-    transform: translateY(100vh);
+    left: 110%;
+    opacity: 0;
   }
 `;
 
-const dataFlow = keyframes`
+const particleFloat = keyframes`
   0% {
-    transform: translateX(-100%);
+    transform: translate(0, 0) scale(1);
     opacity: 0;
   }
   20% {
-    opacity: 1;
+    opacity: 0.8;
   }
   80% {
-    opacity: 1;
+    opacity: 0.6;
   }
   100% {
-    transform: translateX(100%);
+    transform: translate(var(--tx), var(--ty)) scale(0);
     opacity: 0;
   }
 `;
 
-const cornerScan = keyframes`
+const hexagonPulse = keyframes`
   0%, 100% {
-    opacity: 0.4;
+    opacity: 0.2;
     transform: scale(1);
   }
   50% {
-    opacity: 1;
+    opacity: 0.6;
     transform: scale(1.1);
   }
 `;
 
-const waveExpand = keyframes`
+const scannerReveal = keyframes`
   0% {
-    transform: scale(0.5);
+    clip-path: circle(0% at 50% 50%);
     opacity: 0;
   }
-  50% {
-    opacity: 0.6;
+  20% {
+    opacity: 1;
   }
   100% {
-    transform: scale(2);
-    opacity: 0;
+    clip-path: circle(100% at 50% 50%);
+    opacity: 1;
+  }
+`;
+
+const dataOrbit = keyframes`
+  from {
+    transform: rotate(0deg) translateX(150px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(150px) rotate(-360deg);
   }
 `;
 
@@ -705,7 +704,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
 
   return (
     <>
-      {/* Clean Cyberpunk Scanning Effect - Behind Modal */}
+      {/* Holographic Analysis Scanning - Behind Modal */}
       {scanning && (
         <Box
           sx={{
@@ -716,164 +715,177 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             bottom: 0,
             zIndex: 1200,
             pointerEvents: 'none',
-            background: 'rgba(0, 0, 0, 0.05)'
+            background: 'radial-gradient(circle at 50% 50%, rgba(0, 122, 255, 0.02), transparent)',
+            animation: `${scannerReveal} 3s ease-out`
           }}
         >
-          {/* Scanning Grid - Clean Lines */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundImage: `
-                linear-gradient(0deg, rgba(0, 122, 255, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 122, 255, 0.08) 1px, transparent 1px)
-              `,
-              backgroundSize: '50px 50px',
-              animation: `${gridFadeIn} 3s ease-in-out`
-            }}
-          />
-          
-          {/* Main Scanning Laser Beam */}
-          <Box
-            sx={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              top: 0,
-              height: '80px',
-              background: `
-                linear-gradient(180deg,
-                  transparent 0%,
-                  rgba(0, 255, 255, 0.15) 30%,
-                  rgba(0, 255, 255, 0.4) 50%,
-                  rgba(0, 255, 255, 0.15) 70%,
-                  transparent 100%
-                )
-              `,
-              animation: `${scanBeam} 3s cubic-bezier(0.4, 0, 0.2, 1)`,
-              zIndex: 4,
-              '&::before': {
-                content: '""',
+          {/* Central Hologram Rings */}
+          {[0, 1, 2, 3, 4].map((i) => (
+            <Box
+              key={`ring-${i}`}
+              sx={{
                 position: 'absolute',
                 top: '50%',
-                left: 0,
-                right: 0,
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent 0%, #00FFFF 50%, transparent 100%)',
-                boxShadow: '0 0 20px rgba(0, 255, 255, 0.8), 0 0 40px rgba(0, 255, 255, 0.4)',
-                transform: 'translateY(-50%)'
-              },
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                top: '50%',
-                left: 0,
-                right: 0,
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%)',
-                transform: 'translateY(-1px)'
-              }
-            }}
-          />
+                left: '50%',
+                width: '200px',
+                height: '200px',
+                border: `${2 - i * 0.3}px solid rgba(0, 255, 255, ${0.6 - i * 0.1})`,
+                borderRadius: '50%',
+                animation: `${hologramRing} ${2.5 + i * 0.4}s ease-out infinite`,
+                animationDelay: `${i * 0.4}s`
+              }}
+            />
+          ))}
           
-          {/* Scanning Lines - Multiple Thin Lines */}
+          {/* Vertical Sweep Panels */}
           {[0, 1, 2].map((i) => (
             <Box
-              key={`scan-${i}`}
+              key={`sweep-${i}`}
               sx={{
                 position: 'absolute',
-                left: 0,
-                right: 0,
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.5) 50%, transparent)',
-                animation: `${scanLineMove} ${2.5 + i * 0.3}s linear infinite`,
-                animationDelay: `${i * 0.8}s`
-              }}
-            />
-          ))}
-          
-          {/* Data Stream Horizontal */}
-          {[...Array(6)].map((_, i) => (
-            <Box
-              key={`stream-${i}`}
-              sx={{
-                position: 'absolute',
-                top: `${15 + i * 14}%`,
-                left: 0,
-                right: 0,
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent)',
-                animation: `${dataFlow} ${1.5 + i * 0.2}s ease-in-out`,
-                animationDelay: `${i * 0.25}s`,
-                opacity: 0
-              }}
-            />
-          ))}
-          
-          {/* Corner Brackets - HUD Style */}
-          {[
-            { top: 40, left: 40 },
-            { top: 40, right: 40 },
-            { bottom: 40, left: 40 },
-            { bottom: 40, right: 40 }
-          ].map((pos, i) => (
-            <Box
-              key={`bracket-${i}`}
-              sx={{
-                position: 'absolute',
-                ...pos,
-                width: 40,
-                height: 40,
-                animation: `${cornerScan} ${2 + i * 0.15}s ease-in-out infinite`,
-                animationDelay: `${i * 0.2}s`,
+                top: 0,
+                bottom: 0,
+                width: '150px',
+                background: `linear-gradient(90deg, 
+                  transparent, 
+                  rgba(0, 255, 255, 0.1) 20%,
+                  rgba(0, 255, 255, 0.3) 50%,
+                  rgba(0, 255, 255, 0.1) 80%,
+                  transparent
+                )`,
+                animation: `${verticalSweep} ${3 + i * 0.5}s cubic-bezier(0.4, 0, 0.2, 1)`,
+                animationDelay: `${i * 0.8}s`,
+                boxShadow: '0 0 50px rgba(0, 255, 255, 0.3)',
                 '&::before': {
                   content: '""',
                   position: 'absolute',
-                  top: pos.top !== undefined ? 0 : 'auto',
-                  bottom: pos.bottom !== undefined ? 0 : 'auto',
-                  left: pos.left !== undefined ? 0 : 'auto',
-                  right: pos.right !== undefined ? 0 : 'auto',
-                  width: '100%',
-                  height: '2px',
-                  background: 'linear-gradient(90deg, #00FFFF, transparent)',
-                  boxShadow: '0 0 8px rgba(0, 255, 255, 0.6)',
-                  transform: pos.right !== undefined ? 'scaleX(-1)' : 'none'
-                },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: pos.top !== undefined ? 0 : 'auto',
-                  bottom: pos.bottom !== undefined ? 0 : 'auto',
-                  left: pos.left !== undefined ? 0 : 'auto',
-                  right: pos.right !== undefined ? 0 : 'auto',
+                  left: '50%',
+                  top: 0,
+                  bottom: 0,
                   width: '2px',
-                  height: '100%',
-                  background: 'linear-gradient(180deg, #00FFFF, transparent)',
-                  boxShadow: '0 0 8px rgba(0, 255, 255, 0.6)',
-                  transform: pos.bottom !== undefined ? 'scaleY(-1)' : 'none'
+                  background: 'linear-gradient(180deg, transparent, #00FFFF 50%, transparent)',
+                  boxShadow: '0 0 20px rgba(0, 255, 255, 0.8)',
+                  transform: 'translateX(-50%)'
                 }
               }}
             />
           ))}
           
-          {/* Center Target Waves */}
-          {[0, 1, 2].map((i) => (
+          {/* Floating Particles */}
+          {[...Array(25)].map((_, i) => {
+            const angle = (i / 25) * 360;
+            const distance = 100 + Math.random() * 300;
+            const tx = Math.cos(angle * Math.PI / 180) * distance;
+            const ty = Math.sin(angle * Math.PI / 180) * distance;
+            
+            return (
+              <Box
+                key={`particle-${i}`}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: `${3 + Math.random() * 3}px`,
+                  height: `${3 + Math.random() * 3}px`,
+                  background: `rgba(0, 255, 255, ${0.5 + Math.random() * 0.5})`,
+                  borderRadius: '50%',
+                  boxShadow: '0 0 10px rgba(0, 255, 255, 0.8)',
+                  '--tx': `${tx}px`,
+                  '--ty': `${ty}px`,
+                  animation: `${particleFloat} ${2 + Math.random() * 1.5}s ease-out`,
+                  animationDelay: `${Math.random() * 0.8}s`
+                }}
+              />
+            );
+          })}
+          
+          {/* Hexagonal Pattern Overlay */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '80%',
+              height: '80%',
+              backgroundImage: `
+                radial-gradient(circle, rgba(0, 122, 255, 0.1) 2px, transparent 2px)
+              `,
+              backgroundSize: '40px 40px',
+              backgroundPosition: '0 0, 20px 20px',
+              animation: `${hexagonPulse} 2s ease-in-out infinite`,
+              opacity: 0.3
+            }}
+          />
+          
+          {/* Orbiting Data Points */}
+          {[0, 1, 2, 3].map((i) => (
             <Box
-              key={`wave-${i}`}
+              key={`orbit-${i}`}
               sx={{
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: '100px',
-                height: '100px',
-                border: '1px solid rgba(0, 255, 255, 0.3)',
+                width: '8px',
+                height: '8px',
+                background: '#00FFFF',
                 borderRadius: '50%',
-                transform: 'translate(-50%, -50%)',
-                animation: `${waveExpand} ${2.5 + i * 0.3}s ease-out infinite`,
-                animationDelay: `${i * 0.8}s`
+                boxShadow: '0 0 15px rgba(0, 255, 255, 1)',
+                animation: `${dataOrbit} ${4 + i}s linear infinite`,
+                animationDelay: `${i * -1}s`,
+                transformOrigin: 'center center',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: '20px',
+                  height: '20px',
+                  border: '1px solid rgba(0, 255, 255, 0.4)',
+                  borderRadius: '50%',
+                  transform: 'translate(-50%, -50%)'
+                }
+              }}
+            />
+          ))}
+          
+          {/* Corner Analysis Indicators */}
+          {[
+            { top: 30, left: 30, rotate: 0 },
+            { top: 30, right: 30, rotate: 90 },
+            { bottom: 30, left: 30, rotate: -90 },
+            { bottom: 30, right: 30, rotate: 180 }
+          ].map((pos, i) => (
+            <Box
+              key={`indicator-${i}`}
+              sx={{
+                position: 'absolute',
+                ...pos,
+                width: '50px',
+                height: '50px',
+                animation: `${hexagonPulse} ${1.8 + i * 0.2}s ease-in-out infinite`,
+                animationDelay: `${i * 0.15}s`,
+                transform: `rotate(${pos.rotate}deg)`,
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '2px',
+                  background: 'linear-gradient(90deg, #00FFFF, transparent)',
+                  boxShadow: '0 0 10px rgba(0, 255, 255, 0.6)'
+                },
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '2px',
+                  height: '100%',
+                  background: 'linear-gradient(180deg, #00FFFF, transparent)',
+                  boxShadow: '0 0 10px rgba(0, 255, 255, 0.6)'
+                }
               }}
             />
           ))}
