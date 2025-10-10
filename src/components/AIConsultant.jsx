@@ -729,17 +729,32 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           right: 32,
           width: 80,
           height: 80,
-          background: 'linear-gradient(135deg, #6474ff 0%, #8b95ff 100%)',
-          border: '3px solid rgba(255, 255, 255, 0.9)',
+          background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+          border: '3px solid rgba(255, 255, 255, 0.95)',
           animation: `${pulse} 3s ease-in-out infinite`,
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: '-100%',
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+            animation: `${rotate} 3s linear infinite`
+          },
           '&:hover': {
-            background: 'linear-gradient(135deg, #5060e0 0%, #7a84ff 100%)',
-            transform: 'scale(1.12) rotate(5deg)',
-            boxShadow: '0 0 60px rgba(100, 116, 255, 0.6), 0 12px 50px rgba(100, 116, 255, 0.3)',
-            animation: 'none'
+            background: 'linear-gradient(135deg, #0051D5 0%, #003DA5 100%)',
+            transform: 'scale(1.15) rotate(8deg)',
+            boxShadow: '0 12px 48px rgba(0, 122, 255, 0.5), 0 0 60px rgba(0, 122, 255, 0.3)',
+            animation: 'none',
+            '&::before': {
+              animation: 'none'
+            }
           },
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-          boxShadow: '0 8px 40px rgba(100, 116, 255, 0.4), 0 0 30px rgba(100, 116, 255, 0.2)',
+          boxShadow: '0 8px 32px rgba(0, 122, 255, 0.4), 0 0 40px rgba(0, 122, 255, 0.2)',
           zIndex: 1000
         }}
       >
@@ -747,8 +762,10 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           sx={{ 
             fontSize: 56, 
             color: '#ffffff',
-            filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3))',
-            animation: `${pulse} 2s ease-in-out infinite`
+            filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2))',
+            animation: `${pulse} 2s ease-in-out infinite`,
+            position: 'relative',
+            zIndex: 1
           }} 
         />
       </Fab>

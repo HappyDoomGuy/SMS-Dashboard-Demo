@@ -571,20 +571,36 @@ function App() {
             sx={{
               borderRadius: '980px',
               px: 3,
-              py: 1,
-              fontWeight: 500,
+              py: 1.2,
+              fontWeight: 600,
               textTransform: 'none',
-              background: '#007AFF',
+              background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
               color: '#fff',
-              boxShadow: 'none',
+              boxShadow: '0 4px 12px rgba(0, 122, 255, 0.3)',
+              position: 'relative',
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                transition: 'left 0.5s ease'
+              },
               '&:hover': {
-                background: '#0051D5',
-                boxShadow: 'none'
+                background: 'linear-gradient(135deg, #0051D5 0%, #003DA5 100%)',
+                boxShadow: '0 6px 20px rgba(0, 122, 255, 0.4)',
+                transform: 'translateY(-2px)',
+                '&::before': {
+                  left: '100%'
+                }
               },
               '&:active': {
-                transform: 'scale(0.98)'
+                transform: 'scale(0.98) translateY(-2px)'
               },
-              transition: 'all 0.2s ease'
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
             }}
           >
             Обновить
