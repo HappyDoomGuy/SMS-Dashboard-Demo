@@ -731,7 +731,6 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           height: 80,
           background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
           border: '3px solid rgba(255, 255, 255, 0.95)',
-          animation: `${pulse} 3s ease-in-out infinite`,
           overflow: 'hidden',
           '&::before': {
             content: '""',
@@ -740,19 +739,21 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             left: '-100%',
             width: '100%',
             height: '100%',
-            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
-            animation: `${rotate} 3s linear infinite`
+            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)',
+            transition: 'left 0.6s ease'
           },
           '&:hover': {
             background: 'linear-gradient(135deg, #0051D5 0%, #003DA5 100%)',
-            transform: 'scale(1.15) rotate(8deg)',
+            transform: 'scale(1.1)',
             boxShadow: '0 12px 48px rgba(0, 122, 255, 0.5), 0 0 60px rgba(0, 122, 255, 0.3)',
-            animation: 'none',
             '&::before': {
-              animation: 'none'
+              left: '100%'
             }
           },
-          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:active': {
+            transform: 'scale(1.05)'
+          },
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           boxShadow: '0 8px 32px rgba(0, 122, 255, 0.4), 0 0 40px rgba(0, 122, 255, 0.2)',
           zIndex: 1000
         }}
@@ -762,7 +763,6 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             fontSize: 56, 
             color: '#ffffff',
             filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2))',
-            animation: `${pulse} 2s ease-in-out infinite`,
             position: 'relative',
             zIndex: 1
           }} 
