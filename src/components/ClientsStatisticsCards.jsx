@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Paper, Typography, Box, Button, Avatar, Grid, TextField, InputAdornment, Chip } from '@mui/material';
+import { Paper, Typography, Box, Button, Avatar, Grid, TextField, InputAdornment, Chip, Pagination } from '@mui/material';
 import { 
   FileDownload as FileDownloadIcon,
   Visibility as VisibilityIcon,
@@ -45,6 +45,8 @@ const getAvatarColor = (name) => {
 
 const ClientsStatisticsCards = ({ data, currentContentType }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 8;
   
   // Group data by user
   const userStats = new Map();
@@ -84,6 +86,17 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
       client.district.toLowerCase().includes(query)
     );
   });
+
+  // Pagination
+  const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedClients = filteredClients.slice(startIndex, endIndex);
+
+  // Reset to page 1 when search changes
+  React.useEffect(() => {
+    setPage(1);
+  }, [searchQuery]);
 
   const handleExport = () => {
     const exportData = clients.map(c => ({
@@ -187,7 +200,7 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
       {/* Cards Grid */}
       <Box sx={{ p: 3 }}>
         <Grid container spacing={2}>
-          {filteredClients.map((client, index) => {
+          {paginatedClients.map((client, index) => {
             const avatarColor = getAvatarColor(client.userName);
             
             return (
@@ -329,7 +342,58 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
             </Typography>
           </Box>
         )}
+        
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+            <Pagination 
+              count={totalPages}
+              page={page}
+              onChange={(e, value) => setPage(value)}
+              color="primary"
+              size="large"
+              showFirstButton
+              showLastButton
+              sx={{
+                '& .MuiPaginationItem-root': {
+                  color: '#1d1d1f',
+                  fontWeight: 500,
+                  '&:hover': {
+                    background: 'rgba(0, 0, 0, 0.04)'
+                  },
+                  '&.Mui-selected': {
+                    background: '#007AFF',
+                    color: '#ffffff',
+                    fontWeight: 600,
+                    '&:hover': {
+                      background: '#0051D5'
+                    }
+                  }
+                }
+              }}
+            />
+          </Box>
+        )}
       </Box>
+      
+      {/* Footer Stats */}
+      {filteredClients.length > 0 && (
+        <Box sx={{ 
+          p: 2, 
+          borderTop: '0.5px solid rgba(0, 0, 0, 0.08)',
+          background: '#f5f5f7',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: 3
+        }}>
+          <Typography variant="caption" sx={{ color: '#86868b', fontWeight: 500 }}>
+            Показано {startIndex + 1}-{Math.min(endIndex, filteredClients.length)} из {filteredClients.length}
+          </Typography>
+          <Typography variant="caption" sx={{ color: '#86868b', fontWeight: 500 }}>
+            Всего клиентов: {clients.length}
+          </Typography>
+        </Box>
+      )}
     </Paper>
   );
 };
