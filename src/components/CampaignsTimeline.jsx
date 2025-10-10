@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Paper, Typography, Chip, LinearProgress, IconButton } from '@mui/material';
+import { Box, Paper, Typography, IconButton } from '@mui/material';
 import {
   Send as SendIcon,
   Visibility as VisibilityIcon,
   Message as MessageIcon,
-  TrendingUp as TrendingUpIcon,
   CalendarToday as CalendarIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon
@@ -290,9 +289,9 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
             <Paper
               key={index}
               sx={{
-                p: 2.5,
-                minWidth: '320px',
-                maxWidth: '320px',
+                p: 3,
+                minWidth: '360px',
+                maxWidth: '360px',
                 flexShrink: 0,
                 background: 'rgba(255, 255, 255, 0.7)',
                 backdropFilter: 'blur(10px)',
@@ -311,7 +310,7 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
               }}
             >
               {/* Campaign Name & Date */}
-              <Box sx={{ mb: 2 }}>
+              <Box sx={{ mb: 2.5 }}>
                 <Typography variant="body1" sx={{ color: '#1a2332', fontWeight: 800, mb: 0.5, fontSize: '1rem', lineHeight: 1.3 }}>
                   {campaign.campaignName}
                 </Typography>
@@ -321,84 +320,124 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                 </Typography>
               </Box>
 
-              {/* Compact Metrics */}
-              <Box sx={{ display: 'flex', gap: 1.5, mb: 2 }}>
-                <Box sx={{ flex: 1, textAlign: 'center', p: 1, borderRadius: 1, background: 'rgba(0, 217, 255, 0.1)' }}>
-                  <SendIcon sx={{ fontSize: 16, color: '#00d9ff', mb: 0.5 }} />
-                  <Typography variant="h6" sx={{ color: '#00d9ff', fontWeight: 700, fontSize: '1.1rem' }}>
-                    {campaign.smsSent > 999 ? `${(campaign.smsSent / 1000).toFixed(1)}k` : campaign.smsSent}
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
-                    Отправ.
-                  </Typography>
-                </Box>
-
-                <Box sx={{ flex: 1, textAlign: 'center', p: 1, borderRadius: 1, background: 'rgba(255, 107, 157, 0.1)' }}>
-                  <MessageIcon sx={{ fontSize: 16, color: '#ff6b9d', mb: 0.5 }} />
-                  <Typography variant="h6" sx={{ color: '#ff6b9d', fontWeight: 700, fontSize: '1.1rem' }}>
-                    {campaign.smsViewed > 999 ? `${(campaign.smsViewed / 1000).toFixed(1)}k` : campaign.smsViewed}
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
-                    Просм.
-                  </Typography>
-                </Box>
-
-                <Box sx={{ flex: 1, textAlign: 'center', p: 1, borderRadius: 1, background: 'rgba(100, 116, 255, 0.1)' }}>
-                  <VisibilityIcon sx={{ fontSize: 16, color: '#6474ff', mb: 0.5 }} />
-                  <Typography variant="h6" sx={{ color: '#6474ff', fontWeight: 700, fontSize: '1.1rem' }}>
-                    {campaign.pageViews}
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
-                    Визиты
-                  </Typography>
-                </Box>
-              </Box>
-
-              {/* Conversion Bar */}
-              <Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
-                  <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.5)', textTransform: 'uppercase', letterSpacing: 1 }}>
-                    Конверсия
-                  </Typography>
-                  <Chip
-                    label={`${campaign.conversionRate}%`}
-                    size="small"
-                    sx={{
-                      height: 20,
-                      fontSize: '0.7rem',
-                      fontWeight: 700,
-                      background: parseFloat(campaign.conversionRate) > 7
-                        ? '#10b981'
-                        : parseFloat(campaign.conversionRate) > 5
-                          ? '#f59e0b'
-                          : '#ef4444',
-                      color: '#ffffff',
-                      '& .MuiChip-label': { px: 1 }
-                    }}
-                  />
-                </Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={Math.min(parseFloat(campaign.conversionRate) * 10, 100)}
-                  sx={{
-                    height: 6,
-                    borderRadius: 3,
-                    backgroundColor: 'rgba(100, 116, 255, 0.1)',
-                    '& .MuiLinearProgress-bar': {
-                      background: parseFloat(campaign.conversionRate) > 7
-                        ? 'linear-gradient(90deg, #10b981, #059669)'
-                        : parseFloat(campaign.conversionRate) > 5
-                          ? 'linear-gradient(90deg, #f59e0b, #d97706)'
-                          : 'linear-gradient(90deg, #ef4444, #dc2626)',
-                      borderRadius: 3,
-                      boxShadow: parseFloat(campaign.conversionRate) > 7
-                        ? '0 0 8px rgba(16, 185, 129, 0.5)'
-                        : parseFloat(campaign.conversionRate) > 5
-                          ? '0 0 8px rgba(245, 158, 11, 0.5)'
-                          : '0 0 8px rgba(239, 68, 68, 0.5)'
+              {/* Vertical Metrics */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                {/* Отправлено СМС */}
+                <Box 
+                  sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between',
+                    p: 1.5, 
+                    borderRadius: 2, 
+                    background: 'linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 217, 255, 0.05))',
+                    border: '1px solid rgba(0, 217, 255, 0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, rgba(0, 217, 255, 0.15), rgba(0, 217, 255, 0.08))',
+                      transform: 'translateX(4px)',
+                      boxShadow: '0 4px 12px rgba(0, 217, 255, 0.2)'
                     }
                   }}
-                />
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Box sx={{ 
+                      width: 36, 
+                      height: 36, 
+                      borderRadius: 1.5, 
+                      background: 'rgba(0, 217, 255, 0.15)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <SendIcon sx={{ fontSize: 18, color: '#00d9ff' }} />
+                    </Box>
+                    <Typography variant="body2" sx={{ color: '#4b5563', fontWeight: 600 }}>
+                      Отправлено СМС
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" sx={{ color: '#00d9ff', fontWeight: 800, fontSize: '1.2rem' }}>
+                    {campaign.smsSent.toLocaleString('ru-RU')}
+                  </Typography>
+                </Box>
+
+                {/* Просмотров СМС */}
+                <Box 
+                  sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between',
+                    p: 1.5, 
+                    borderRadius: 2, 
+                    background: 'linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(255, 107, 157, 0.05))',
+                    border: '1px solid rgba(255, 107, 157, 0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(255, 107, 157, 0.08))',
+                      transform: 'translateX(4px)',
+                      boxShadow: '0 4px 12px rgba(255, 107, 157, 0.2)'
+                    }
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Box sx={{ 
+                      width: 36, 
+                      height: 36, 
+                      borderRadius: 1.5, 
+                      background: 'rgba(255, 107, 157, 0.15)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <MessageIcon sx={{ fontSize: 18, color: '#ff6b9d' }} />
+                    </Box>
+                    <Typography variant="body2" sx={{ color: '#4b5563', fontWeight: 600 }}>
+                      Просмотров СМС
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" sx={{ color: '#ff6b9d', fontWeight: 800, fontSize: '1.2rem' }}>
+                    {campaign.smsViewed.toLocaleString('ru-RU')}
+                  </Typography>
+                </Box>
+
+                {/* Просмотров страниц */}
+                <Box 
+                  sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between',
+                    p: 1.5, 
+                    borderRadius: 2, 
+                    background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.1), rgba(100, 116, 255, 0.05))',
+                    border: '1px solid rgba(100, 116, 255, 0.2)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.15), rgba(100, 116, 255, 0.08))',
+                      transform: 'translateX(4px)',
+                      boxShadow: '0 4px 12px rgba(100, 116, 255, 0.2)'
+                    }
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Box sx={{ 
+                      width: 36, 
+                      height: 36, 
+                      borderRadius: 1.5, 
+                      background: 'rgba(100, 116, 255, 0.15)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <VisibilityIcon sx={{ fontSize: 18, color: '#6474ff' }} />
+                    </Box>
+                    <Typography variant="body2" sx={{ color: '#4b5563', fontWeight: 600 }}>
+                      Просмотров страниц
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" sx={{ color: '#6474ff', fontWeight: 800, fontSize: '1.2rem' }}>
+                    {campaign.pageViews.toLocaleString('ru-RU')}
+                  </Typography>
+                </Box>
               </Box>
             </Paper>
           ))}
@@ -406,7 +445,7 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
 
         {campaigns.length === 0 && (
           <Box sx={{ textAlign: 'center', py: 6 }}>
-            <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.5)' }}>
+            <Typography variant="body1" sx={{ color: '#9ca3af', fontWeight: 500 }}>
               Нет данных о кампаниях
             </Typography>
           </Box>
