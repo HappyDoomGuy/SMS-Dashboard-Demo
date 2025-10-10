@@ -532,8 +532,8 @@ function App() {
         sx={{
           background: 'rgba(255, 255, 255, 0.8)',
           backdropFilter: 'saturate(180%) blur(20px)',
-          borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)',
-          boxShadow: 'none'
+          borderBottom: '1px solid rgba(0, 0, 0, 0.15)',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.06)'
         }}
       >
         <Toolbar sx={{ py: 2.5 }}>
@@ -608,8 +608,8 @@ function App() {
             borderRadius: 2,
             overflow: 'hidden',
             background: '#ffffff',
-            border: '0.5px solid rgba(0, 0, 0, 0.08)',
-            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
+            border: '1px solid rgba(0, 0, 0, 0.12)',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
           }}
         >
           <Tabs
@@ -684,13 +684,13 @@ function App() {
             borderRadius: 2,
             overflow: 'hidden',
             background: '#ffffff',
-            border: '0.5px solid rgba(0, 0, 0, 0.08)',
-            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
+            border: '1px solid rgba(0, 0, 0, 0.12)',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
           }}
         >
           <Box sx={{ 
             p: 2.5, 
-            borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)'
+            borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
           }}>
             <Typography variant="h6" sx={{ fontWeight: 600, color: '#1d1d1f', fontSize: '1.125rem' }}>
               Лог просмотров
@@ -818,7 +818,7 @@ function App() {
                       alignItems: 'flex-start',
                       paddingTop: '12px',
                       paddingBottom: '12px',
-                      borderBottom: '0.5px solid rgba(0, 0, 0, 0.06)',
+                      borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
                       color: '#1d1d1f'
                     },
                     '& .MuiDataGrid-columnHeader': {
@@ -826,7 +826,7 @@ function App() {
                       fontWeight: 600,
                       background: '#f5f5f7',
                       color: '#86868b',
-                      borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)',
+                      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
                       textTransform: 'uppercase',
                       letterSpacing: 0.5
                     },
@@ -849,10 +849,10 @@ function App() {
                     '& .MuiDataGrid-toolbarContainer': {
                       padding: '16px',
                       background: '#ffffff',
-                      borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)'
+                      borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
                     },
                     '& .MuiDataGrid-footerContainer': {
-                      borderTop: '0.5px solid rgba(0, 0, 0, 0.08)',
+                      borderTop: '1px solid rgba(0, 0, 0, 0.12)',
                       background: '#ffffff'
                     }
                   }}

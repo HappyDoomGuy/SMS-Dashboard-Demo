@@ -77,17 +77,18 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color, delay = 0 })
       sx={{ 
         height: '100%',
         background: '#ffffff',
-        border: '0.5px solid rgba(0, 0, 0, 0.08)',
+        border: '1px solid rgba(0, 0, 0, 0.12)',
         borderRadius: 2,
-        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
         transition: 'all 0.2s ease',
         position: 'relative',
         overflow: 'hidden',
         opacity: isVisible ? 1 : 0,
         transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
         '&:hover': {
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-          transform: 'translateY(-2px)'
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+          transform: 'translateY(-4px)',
+          borderColor: 'rgba(0, 0, 0, 0.2)'
         }
       }}
     >

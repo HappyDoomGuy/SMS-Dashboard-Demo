@@ -191,14 +191,14 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
         borderRadius: 2,
         overflow: 'hidden',
         background: '#ffffff',
-        border: '0.5px solid rgba(0, 0, 0, 0.08)',
-        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
+        border: '1px solid rgba(0, 0, 0, 0.12)',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
       }}
     >
       {/* Header with Navigation */}
       <Box sx={{ 
         p: 2.5, 
-        borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
@@ -290,16 +290,17 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                 maxWidth: '340px',
                 flexShrink: 0,
                 background: '#ffffff',
-                border: '0.5px solid rgba(0, 0, 0, 0.08)',
+                border: '1px solid rgba(0, 0, 0, 0.12)',
                 borderRadius: 2,
                 position: 'relative',
                 overflow: 'hidden',
                 animation: `${fadeIn} 0.3s ease-out both`,
                 transition: 'all 0.2s ease',
-                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
                 '&:hover': {
                   transform: 'translateY(-2px)',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)'
+                  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+                  borderColor: 'rgba(0, 0, 0, 0.2)'
                 }
               }}
             >
@@ -323,7 +324,7 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                     alignItems: 'center', 
                     justifyContent: 'space-between',
                     py: 1,
-                    borderBottom: '0.5px solid rgba(0, 0, 0, 0.06)'
+                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)'
                   }}
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -354,7 +355,7 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                     alignItems: 'center', 
                     justifyContent: 'space-between',
                     py: 1,
-                    borderBottom: '0.5px solid rgba(0, 0, 0, 0.06)'
+                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)'
                   }}
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

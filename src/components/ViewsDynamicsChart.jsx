@@ -82,21 +82,19 @@ const ViewsDynamicsChart = ({ data, currentContentType }) => {
       sx={{ 
         width: '100%',
         mb: 3,
-        borderRadius: 3,
+        borderRadius: 2,
         overflow: 'hidden',
-        background: 'rgba(255, 255, 255, 0.9)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(100, 116, 255, 0.1)',
-        boxShadow: '0 8px 32px rgba(100, 116, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
+        background: '#ffffff',
+        border: '1px solid rgba(0, 0, 0, 0.12)',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
       }}
     >
       <Box sx={{ 
         p: 2.5, 
-        borderBottom: '1px solid rgba(100, 116, 255, 0.1)',
-        background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.03) 0%, rgba(139, 149, 255, 0.02) 100%)'
+        borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
       }}>
-        <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a2332', fontSize: '1.1rem' }}>
-          📈 Динамика просмотров по дням
+        <Typography variant="h6" sx={{ fontWeight: 600, color: '#1d1d1f', fontSize: '1.125rem' }}>
+          Динамика просмотров по дням
         </Typography>
       </Box>
       

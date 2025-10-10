@@ -124,14 +124,14 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
         borderRadius: 2,
         overflow: 'hidden',
         background: '#ffffff',
-        border: '0.5px solid rgba(0, 0, 0, 0.08)',
-        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
+        border: '1px solid rgba(0, 0, 0, 0.12)',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
       }}
     >
       {/* Header */}
       <Box sx={{ 
         p: 2.5, 
-        borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
@@ -209,17 +209,18 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
                   sx={{
                     p: 2.5,
                     background: '#ffffff',
-                    border: '0.5px solid rgba(0, 0, 0, 0.08)',
+                    border: '1px solid rgba(0, 0, 0, 0.12)',
                     borderRadius: 2,
-                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
                     transition: 'all 0.2s ease',
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     '&:hover': {
-                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-                      transform: 'translateY(-2px)',
-                      borderColor: avatarColor
+                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+                      transform: 'translateY(-4px)',
+                      borderColor: avatarColor,
+                      borderWidth: '2px'
                     }
                   }}
                 >
@@ -301,7 +302,7 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
                     display: 'flex', 
                     gap: 1,
                     pt: 2,
-                    borderTop: '0.5px solid rgba(0, 0, 0, 0.06)'
+                    borderTop: '1px solid rgba(0, 0, 0, 0.1)'
                   }}>
                     <Box sx={{ flex: 1, textAlign: 'center' }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, mb: 0.5 }}>
@@ -315,7 +316,7 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
                       </Typography>
                     </Box>
                     
-                    <Box sx={{ width: '0.5px', background: 'rgba(0, 0, 0, 0.06)' }} />
+                    <Box sx={{ width: '1px', background: 'rgba(0, 0, 0, 0.1)' }} />
                     
                     <Box sx={{ flex: 1, textAlign: 'center' }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, mb: 0.5 }}>
@@ -380,7 +381,7 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
       {filteredClients.length > 0 && (
         <Box sx={{ 
           p: 2, 
-          borderTop: '0.5px solid rgba(0, 0, 0, 0.08)',
+          borderTop: '1px solid rgba(0, 0, 0, 0.12)',
           background: '#f5f5f7',
           display: 'flex',
           justifyContent: 'center',
