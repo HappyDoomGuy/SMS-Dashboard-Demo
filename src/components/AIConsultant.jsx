@@ -37,6 +37,26 @@ const pulse = keyframes`
   50% { transform: scale(1.05); }
 `;
 
+const breathe = keyframes`
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(0, 122, 255, 0.4), 0 0 40px rgba(0, 122, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(0, 122, 255, 0.6), 0 0 60px rgba(0, 122, 255, 0.4);
+  }
+`;
+
+const ripple = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+`;
+
 // Анимация цифровой пикселизации
 const scanLine = keyframes`
   0% {
@@ -718,56 +738,83 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         </Box>
       )}
 
-      {/* Floating Action Button */}
-      <Fab
-        color="primary"
-        aria-label="AI консультант"
-        onClick={handleOpen}
+      {/* Floating Action Button with Ripple Effect */}
+      <Box
         sx={{
           position: 'fixed',
           bottom: 32,
           right: 32,
           width: 80,
           height: 80,
-          background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
-          border: '3px solid rgba(255, 255, 255, 0.95)',
-          overflow: 'hidden',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: '-100%',
-            width: '100%',
-            height: '100%',
-            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)',
-            transition: 'left 0.6s ease'
-          },
-          '&:hover': {
-            background: 'linear-gradient(135deg, #0051D5 0%, #003DA5 100%)',
-            transform: 'scale(1.1)',
-            boxShadow: '0 12px 48px rgba(0, 122, 255, 0.5), 0 0 60px rgba(0, 122, 255, 0.3)',
-            '&::before': {
-              left: '100%'
-            }
-          },
-          '&:active': {
-            transform: 'scale(1.05)'
-          },
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          boxShadow: '0 8px 32px rgba(0, 122, 255, 0.4), 0 0 40px rgba(0, 122, 255, 0.2)',
           zIndex: 1000
         }}
       >
-        <PsychologyIcon 
-          sx={{ 
-            fontSize: 56, 
-            color: '#ffffff',
-            filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2))',
+        {/* Ripple rings */}
+        {[1, 2, 3].map((i) => (
+          <Box
+            key={i}
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '100%',
+              height: '100%',
+              border: '2px solid rgba(0, 122, 255, 0.4)',
+              borderRadius: '50%',
+              animation: `${ripple} ${2 + i * 0.5}s ease-out infinite`,
+              animationDelay: `${i * 0.7}s`
+            }}
+          />
+        ))}
+
+        <Fab
+          color="primary"
+          aria-label="AI консультант"
+          onClick={handleOpen}
+          sx={{
             position: 'relative',
-            zIndex: 1
-          }} 
-        />
-      </Fab>
+            width: 80,
+            height: 80,
+            background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+            border: '3px solid rgba(255, 255, 255, 0.95)',
+            animation: `${breathe} 3s ease-in-out infinite`,
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: '-100%',
+              width: '100%',
+              height: '100%',
+              background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)',
+              transition: 'left 0.6s ease'
+            },
+            '&:hover': {
+              background: 'linear-gradient(135deg, #0051D5 0%, #003DA5 100%)',
+              transform: 'scale(1.1)',
+              animation: 'none',
+              '&::before': {
+                left: '100%'
+              }
+            },
+            '&:active': {
+              transform: 'scale(1.05)'
+            },
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        >
+          <PsychologyIcon 
+            sx={{ 
+              fontSize: 56, 
+              color: '#ffffff',
+              filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2))',
+              position: 'relative',
+              zIndex: 1
+            }} 
+          />
+        </Fab>
+      </Box>
 
       {/* Dialog */}
       <Dialog
