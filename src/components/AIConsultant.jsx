@@ -163,24 +163,10 @@ const iconFloat = keyframes`
   }
 `;
 
-// Голографический анализ
-const hologramRing = keyframes`
+// Цифровая волна анализа
+const digitalWave = keyframes`
   0% {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(3);
-    opacity: 0;
-  }
-`;
-
-const verticalSweep = keyframes`
-  0% {
-    left: -10%;
+    transform: translateY(-100%);
     opacity: 0;
   }
   10% {
@@ -190,59 +176,75 @@ const verticalSweep = keyframes`
     opacity: 1;
   }
   100% {
-    left: 110%;
+    transform: translateY(100vh);
     opacity: 0;
   }
 `;
 
-const particleFloat = keyframes`
+const dataAnalysis = keyframes`
   0% {
-    transform: translate(0, 0) scale(1);
     opacity: 0;
+    transform: translateX(-50px);
   }
   20% {
-    opacity: 0.8;
+    opacity: 1;
+    transform: translateX(0);
   }
   80% {
-    opacity: 0.6;
+    opacity: 1;
+    transform: translateX(0);
   }
   100% {
-    transform: translate(var(--tx), var(--ty)) scale(0);
     opacity: 0;
+    transform: translateX(50px);
   }
 `;
 
-const hexagonPulse = keyframes`
-  0%, 100% {
-    opacity: 0.2;
-    transform: scale(1);
+const numberScroll = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
   }
   50% {
-    opacity: 0.6;
-    transform: scale(1.1);
-  }
-`;
-
-const scannerReveal = keyframes`
-  0% {
-    clip-path: circle(0% at 50% 50%);
-    opacity: 0;
-  }
-  20% {
     opacity: 1;
+    transform: translateY(0);
   }
   100% {
-    clip-path: circle(100% at 50% 50%);
-    opacity: 1;
+    opacity: 0;
+    transform: translateY(20px);
   }
 `;
 
-const dataOrbit = keyframes`
-  from {
-    transform: rotate(0deg) translateX(150px) rotate(0deg);
+const rippleExpand = keyframes`
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.8;
   }
-  to {
-    transform: rotate(360deg) translateX(150px) rotate(-360deg);
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+  }
+`;
+
+const progressBar = keyframes`
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+`;
+
+const pulseGlow = keyframes`
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    opacity: 0.6;
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+    opacity: 1;
   }
 `;
 
@@ -704,7 +706,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
 
   return (
     <>
-      {/* Holographic Analysis Scanning - Behind Modal */}
+      {/* Digital Wave Analysis - Behind Modal */}
       {scanning && (
         <Box
           sx={{
@@ -715,177 +717,184 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             bottom: 0,
             zIndex: 1200,
             pointerEvents: 'none',
-            background: 'radial-gradient(circle at 50% 50%, rgba(0, 122, 255, 0.02), transparent)',
-            animation: `${scannerReveal} 3s ease-out`
+            background: 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 122, 255, 0.02) 50%, rgba(0, 0, 0, 0) 100%)'
           }}
         >
-          {/* Central Hologram Rings */}
-          {[0, 1, 2, 3, 4].map((i) => (
-            <Box
-              key={`ring-${i}`}
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                width: '200px',
-                height: '200px',
-                border: `${2 - i * 0.3}px solid rgba(0, 255, 255, ${0.6 - i * 0.1})`,
-                borderRadius: '50%',
-                animation: `${hologramRing} ${2.5 + i * 0.4}s ease-out infinite`,
-                animationDelay: `${i * 0.4}s`
-              }}
-            />
-          ))}
-          
-          {/* Vertical Sweep Panels */}
-          {[0, 1, 2].map((i) => (
-            <Box
-              key={`sweep-${i}`}
-              sx={{
-                position: 'absolute',
-                top: 0,
-                bottom: 0,
-                width: '150px',
-                background: `linear-gradient(90deg, 
-                  transparent, 
-                  rgba(0, 255, 255, 0.1) 20%,
-                  rgba(0, 255, 255, 0.3) 50%,
-                  rgba(0, 255, 255, 0.1) 80%,
-                  transparent
-                )`,
-                animation: `${verticalSweep} ${3 + i * 0.5}s cubic-bezier(0.4, 0, 0.2, 1)`,
-                animationDelay: `${i * 0.8}s`,
-                boxShadow: '0 0 50px rgba(0, 255, 255, 0.3)',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  left: '50%',
-                  top: 0,
-                  bottom: 0,
-                  width: '2px',
-                  background: 'linear-gradient(180deg, transparent, #00FFFF 50%, transparent)',
-                  boxShadow: '0 0 20px rgba(0, 255, 255, 0.8)',
-                  transform: 'translateX(-50%)'
-                }
-              }}
-            />
-          ))}
-          
-          {/* Floating Particles */}
-          {[...Array(25)].map((_, i) => {
-            const angle = (i / 25) * 360;
-            const distance = 100 + Math.random() * 300;
-            const tx = Math.cos(angle * Math.PI / 180) * distance;
-            const ty = Math.sin(angle * Math.PI / 180) * distance;
-            
-            return (
-              <Box
-                key={`particle-${i}`}
-                sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  width: `${3 + Math.random() * 3}px`,
-                  height: `${3 + Math.random() * 3}px`,
-                  background: `rgba(0, 255, 255, ${0.5 + Math.random() * 0.5})`,
-                  borderRadius: '50%',
-                  boxShadow: '0 0 10px rgba(0, 255, 255, 0.8)',
-                  '--tx': `${tx}px`,
-                  '--ty': `${ty}px`,
-                  animation: `${particleFloat} ${2 + Math.random() * 1.5}s ease-out`,
-                  animationDelay: `${Math.random() * 0.8}s`
-                }}
-              />
-            );
-          })}
-          
-          {/* Hexagonal Pattern Overlay */}
+          {/* Main Digital Wave */}
           <Box
             sx={{
               position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '80%',
-              height: '80%',
-              backgroundImage: `
-                radial-gradient(circle, rgba(0, 122, 255, 0.1) 2px, transparent 2px)
-              `,
-              backgroundSize: '40px 40px',
-              backgroundPosition: '0 0, 20px 20px',
-              animation: `${hexagonPulse} 2s ease-in-out infinite`,
-              opacity: 0.3
+              left: 0,
+              right: 0,
+              height: '300px',
+              background: `linear-gradient(180deg,
+                transparent 0%,
+                rgba(0, 255, 255, 0.05) 20%,
+                rgba(0, 255, 255, 0.15) 40%,
+                rgba(0, 255, 255, 0.2) 50%,
+                rgba(0, 255, 255, 0.15) 60%,
+                rgba(0, 255, 255, 0.05) 80%,
+                transparent 100%
+              )`,
+              animation: `${digitalWave} 3s cubic-bezier(0.4, 0, 0.2, 1)`,
+              boxShadow: 'inset 0 0 100px rgba(0, 255, 255, 0.2)',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: '50%',
+                height: '2px',
+                background: 'linear-gradient(90deg, transparent, #00FFFF 50%, transparent)',
+                boxShadow: '0 0 30px rgba(0, 255, 255, 1)',
+                transform: 'translateY(-50%)'
+              }
             }}
           />
           
-          {/* Orbiting Data Points */}
-          {[0, 1, 2, 3].map((i) => (
+          {/* Data Analysis Indicators - Left Side */}
+          {[...Array(8)].map((_, i) => (
             <Box
-              key={`orbit-${i}`}
+              key={`left-data-${i}`}
+              sx={{
+                position: 'absolute',
+                left: '5%',
+                top: `${15 + i * 10}%`,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                animation: `${dataAnalysis} ${2 + i * 0.2}s ease-out`,
+                animationDelay: `${i * 0.3}s`
+              }}
+            >
+              <Box
+                sx={{
+                  width: `${80 + Math.random() * 120}px`,
+                  height: '2px',
+                  background: 'linear-gradient(90deg, #00FFFF, transparent)',
+                  boxShadow: '0 0 10px rgba(0, 255, 255, 0.6)'
+                }}
+              />
+              <Box
+                sx={{
+                  width: '8px',
+                  height: '8px',
+                  background: '#00FFFF',
+                  borderRadius: '50%',
+                  boxShadow: '0 0 15px rgba(0, 255, 255, 1)',
+                  animation: `${pulseGlow} 1.5s ease-in-out infinite`,
+                  animationDelay: `${i * 0.1}s`
+                }}
+              />
+            </Box>
+          ))}
+          
+          {/* Data Analysis Indicators - Right Side */}
+          {[...Array(8)].map((_, i) => (
+            <Box
+              key={`right-data-${i}`}
+              sx={{
+                position: 'absolute',
+                right: '5%',
+                top: `${20 + i * 10}%`,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                flexDirection: 'row-reverse',
+                animation: `${dataAnalysis} ${2.2 + i * 0.2}s ease-out`,
+                animationDelay: `${i * 0.3 + 0.2}s`
+              }}
+            >
+              <Box
+                sx={{
+                  width: `${80 + Math.random() * 120}px`,
+                  height: '2px',
+                  background: 'linear-gradient(270deg, #00FFFF, transparent)',
+                  boxShadow: '0 0 10px rgba(0, 255, 255, 0.6)'
+                }}
+              />
+              <Box
+                sx={{
+                  width: '8px',
+                  height: '8px',
+                  background: '#00FFFF',
+                  borderRadius: '50%',
+                  boxShadow: '0 0 15px rgba(0, 255, 255, 1)',
+                  animation: `${pulseGlow} 1.5s ease-in-out infinite`,
+                  animationDelay: `${i * 0.1 + 0.2}s`
+                }}
+              />
+            </Box>
+          ))}
+          
+          {/* Scrolling Numbers/Data */}
+          {[...Array(40)].map((_, i) => {
+            const numbers = ['01', '10', '11', '00', 'FF', 'A3', 'B7', 'C4', '3D', '9E'];
+            const randomNum = numbers[Math.floor(Math.random() * numbers.length)];
+            const leftPos = Math.random() * 100;
+            const delay = Math.random() * 2;
+            
+            return (
+              <Box
+                key={`number-${i}`}
+                sx={{
+                  position: 'absolute',
+                  left: `${leftPos}%`,
+                  top: '50%',
+                  color: 'rgba(0, 255, 255, 0.8)',
+                  fontSize: '12px',
+                  fontFamily: 'monospace',
+                  fontWeight: 'bold',
+                  animation: `${numberScroll} ${1.5 + Math.random()}s ease-in-out`,
+                  animationDelay: `${delay}s`,
+                  textShadow: '0 0 10px rgba(0, 255, 255, 1)',
+                  userSelect: 'none'
+                }}
+              >
+                {randomNum}
+              </Box>
+            );
+          })}
+          
+          {/* Progress Bar - Bottom */}
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 40,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '60%',
+              height: '3px',
+              background: 'rgba(0, 122, 255, 0.2)',
+              borderRadius: '2px',
+              overflow: 'hidden',
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                height: '100%',
+                background: 'linear-gradient(90deg, #007AFF, #00FFFF)',
+                boxShadow: '0 0 20px rgba(0, 255, 255, 0.8)',
+                animation: `${progressBar} 3s cubic-bezier(0.4, 0, 0.2, 1)`
+              }
+            }}
+          />
+          
+          {/* Ripple Effect from Center */}
+          {[0, 1, 2].map((i) => (
+            <Box
+              key={`ripple-${i}`}
               sx={{
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                width: '8px',
-                height: '8px',
-                background: '#00FFFF',
+                transform: 'translate(-50%, -50%)',
+                border: '1px solid rgba(0, 255, 255, 0.4)',
                 borderRadius: '50%',
-                boxShadow: '0 0 15px rgba(0, 255, 255, 1)',
-                animation: `${dataOrbit} ${4 + i}s linear infinite`,
-                animationDelay: `${i * -1}s`,
-                transformOrigin: 'center center',
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  width: '20px',
-                  height: '20px',
-                  border: '1px solid rgba(0, 255, 255, 0.4)',
-                  borderRadius: '50%',
-                  transform: 'translate(-50%, -50%)'
-                }
-              }}
-            />
-          ))}
-          
-          {/* Corner Analysis Indicators */}
-          {[
-            { top: 30, left: 30, rotate: 0 },
-            { top: 30, right: 30, rotate: 90 },
-            { bottom: 30, left: 30, rotate: -90 },
-            { bottom: 30, right: 30, rotate: 180 }
-          ].map((pos, i) => (
-            <Box
-              key={`indicator-${i}`}
-              sx={{
-                position: 'absolute',
-                ...pos,
-                width: '50px',
-                height: '50px',
-                animation: `${hexagonPulse} ${1.8 + i * 0.2}s ease-in-out infinite`,
-                animationDelay: `${i * 0.15}s`,
-                transform: `rotate(${pos.rotate}deg)`,
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '2px',
-                  background: 'linear-gradient(90deg, #00FFFF, transparent)',
-                  boxShadow: '0 0 10px rgba(0, 255, 255, 0.6)'
-                },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '2px',
-                  height: '100%',
-                  background: 'linear-gradient(180deg, #00FFFF, transparent)',
-                  boxShadow: '0 0 10px rgba(0, 255, 255, 0.6)'
-                }
+                animation: `${rippleExpand} ${2.5 + i * 0.5}s ease-out`,
+                animationDelay: `${i * 0.8}s`,
+                pointerEvents: 'none'
               }}
             />
           ))}
