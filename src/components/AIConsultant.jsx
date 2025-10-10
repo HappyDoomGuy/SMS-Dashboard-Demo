@@ -40,7 +40,33 @@ const pulse = keyframes`
 // Анимация сканирования
 const scanLine = keyframes`
   0% {
-    top: 0;
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+`;
+
+const scanPulse = keyframes`
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.6;
+  }
+`;
+
+const dataFlow = keyframes`
+  0% {
+    transform: translateY(0) scale(1);
     opacity: 0;
   }
   10% {
@@ -50,17 +76,17 @@ const scanLine = keyframes`
     opacity: 1;
   }
   100% {
-    top: 100%;
+    transform: translateY(-30px) scale(0.8);
     opacity: 0;
   }
 `;
 
-const scanPulse = keyframes`
+const glowPulse = keyframes`
   0%, 100% {
-    opacity: 0.3;
+    box-shadow: 0 0 20px rgba(0, 122, 255, 0.3), 0 0 40px rgba(0, 122, 255, 0.1);
   }
   50% {
-    opacity: 0.7;
+    box-shadow: 0 0 40px rgba(0, 122, 255, 0.6), 0 0 80px rgba(0, 122, 255, 0.3);
   }
 `;
 
@@ -367,8 +393,8 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
     // Запускаем эффект сканирования
     setScanning(true);
     
-    // Ждем 2 секунды для эффекта сканирования
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Ждем 2.5 секунды для эффекта сканирования
+    await new Promise(resolve => setTimeout(resolve, 2500));
     
     setScanning(false);
     setLoading(true);
@@ -522,7 +548,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
 
   return (
     <>
-      {/* Scanning Overlay */}
+      {/* Scanning Overlay - Behind Modal */}
       {scanning && (
         <Box
           sx={{
@@ -531,35 +557,66 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             left: 0,
             right: 0,
             bottom: 0,
-            zIndex: 9999,
+            zIndex: 1200, // Just below Dialog (1300)
             pointerEvents: 'none',
-            background: 'rgba(0, 122, 255, 0.03)'
+            background: 'linear-gradient(135deg, rgba(0, 122, 255, 0.02), rgba(88, 86, 214, 0.02))',
+            backdropFilter: 'blur(2px)'
           }}
         >
-          {/* Scanning Line */}
+          {/* Main Scanning Beam */}
           <Box
             sx={{
               position: 'absolute',
               left: 0,
               right: 0,
-              height: '3px',
-              background: 'linear-gradient(90deg, transparent, #007AFF, transparent)',
-              boxShadow: '0 0 20px #007AFF, 0 0 40px #007AFF',
-              animation: `${scanLine} 2s ease-in-out`,
-              '&::before': {
-                content: '""',
+              top: 0,
+              height: '200px',
+              animation: `${scanLine} 2.5s cubic-bezier(0.4, 0, 0.2, 1)`,
+              pointerEvents: 'none'
+            }}
+          >
+            {/* Primary scan line */}
+            <Box
+              sx={{
                 position: 'absolute',
-                top: '-50px',
                 left: 0,
                 right: 0,
+                top: '100px',
+                height: '2px',
+                background: 'linear-gradient(90deg, transparent 0%, #007AFF 20%, #007AFF 80%, transparent 100%)',
+                boxShadow: '0 0 30px rgba(0, 122, 255, 0.8), 0 0 60px rgba(0, 122, 255, 0.4)',
+                filter: 'blur(0.5px)'
+              }}
+            />
+            
+            {/* Glow above */}
+            <Box
+              sx={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: 0,
                 height: '100px',
-                background: 'linear-gradient(180deg, transparent, rgba(0, 122, 255, 0.1), transparent)',
-                filter: 'blur(10px)'
-              }
-            }}
-          />
+                background: 'linear-gradient(180deg, transparent 0%, rgba(0, 122, 255, 0.15) 100%)',
+                filter: 'blur(20px)'
+              }}
+            />
+            
+            {/* Glow below */}
+            <Box
+              sx={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: '100px',
+                height: '100px',
+                background: 'linear-gradient(180deg, rgba(0, 122, 255, 0.15) 0%, transparent 100%)',
+                filter: 'blur(20px)'
+              }}
+            />
+          </Box>
           
-          {/* Scanning Grid Overlay */}
+          {/* Tech Grid Pattern */}
           <Box
             sx={{
               position: 'absolute',
@@ -568,75 +625,108 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               right: 0,
               bottom: 0,
               backgroundImage: `
-                linear-gradient(rgba(0, 122, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 122, 255, 0.05) 1px, transparent 1px)
+                linear-gradient(rgba(0, 122, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 122, 255, 0.03) 1px, transparent 1px)
               `,
-              backgroundSize: '50px 50px',
-              animation: `${scanPulse} 2s ease-in-out`
+              backgroundSize: '40px 40px',
+              animation: `${scanPulse} 2.5s ease-in-out`
             }}
           />
           
-          {/* Corner Markers */}
+          {/* Hexagonal Grid Overlay */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `
+                radial-gradient(circle at 20px 20px, rgba(0, 122, 255, 0.05) 2px, transparent 2px),
+                radial-gradient(circle at 60px 60px, rgba(88, 86, 214, 0.05) 2px, transparent 2px)
+              `,
+              backgroundSize: '80px 80px',
+              animation: `${scanPulse} 2.5s ease-in-out 0.3s`
+            }}
+          />
+          
+          {/* Data Particles */}
+          {[...Array(12)].map((_, i) => (
+            <Box
+              key={i}
+              sx={{
+                position: 'absolute',
+                left: `${(i * 8.33) + 5}%`,
+                bottom: 0,
+                width: '2px',
+                height: '20px',
+                background: `linear-gradient(180deg, ${i % 2 === 0 ? '#007AFF' : '#5856D6'}, transparent)`,
+                animation: `${dataFlow} ${1.5 + (i * 0.1)}s ease-in-out infinite`,
+                animationDelay: `${i * 0.15}s`,
+                opacity: 0.6
+              }}
+            />
+          ))}
+          
+          {/* Corner HUD Elements */}
           {[
-            { top: 20, left: 20 },
-            { top: 20, right: 20 },
-            { bottom: 20, left: 20 },
-            { bottom: 20, right: 20 }
+            { top: 30, left: 30, rotate: 0 },
+            { top: 30, right: 30, rotate: 90 },
+            { bottom: 30, left: 30, rotate: 270 },
+            { bottom: 30, right: 30, rotate: 180 }
           ].map((pos, i) => (
             <Box
               key={i}
               sx={{
                 position: 'absolute',
                 ...pos,
-                width: 40,
-                height: 40,
-                borderTop: pos.top !== undefined ? '2px solid #007AFF' : 'none',
-                borderBottom: pos.bottom !== undefined ? '2px solid #007AFF' : 'none',
-                borderLeft: pos.left !== undefined ? '2px solid #007AFF' : 'none',
-                borderRight: pos.right !== undefined ? '2px solid #007AFF' : 'none',
-                animation: `${scanPulse} 2s ease-in-out`,
-                boxShadow: '0 0 10px rgba(0, 122, 255, 0.5)'
+                width: 60,
+                height: 60,
+                transform: `rotate(${pos.rotate}deg)`,
+                animation: `${glowPulse} 2s ease-in-out infinite`,
+                animationDelay: `${i * 0.2}s`,
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '30px',
+                  height: '2px',
+                  background: '#007AFF',
+                  boxShadow: '0 0 10px rgba(0, 122, 255, 0.6)'
+                },
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '2px',
+                  height: '30px',
+                  background: '#007AFF',
+                  boxShadow: '0 0 10px rgba(0, 122, 255, 0.6)'
+                }
               }}
             />
           ))}
           
-          {/* Scanning Text */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              textAlign: 'center',
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
-              padding: '24px 40px',
-              borderRadius: 3,
-              boxShadow: '0 10px 40px rgba(0, 122, 255, 0.2)',
-              border: '1px solid rgba(0, 122, 255, 0.3)'
-            }}
-          >
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                color: '#1d1d1f', 
-                fontWeight: 600, 
-                mb: 1,
-                fontSize: '1.125rem'
+          {/* Radar circles */}
+          {[1, 2, 3].map((i) => (
+            <Box
+              key={i}
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: `${i * 200}px`,
+                height: `${i * 200}px`,
+                border: '1px solid rgba(0, 122, 255, 0.2)',
+                borderRadius: '50%',
+                animation: `${scanPulse} ${2 + i * 0.5}s ease-in-out infinite`,
+                animationDelay: `${i * 0.3}s`
               }}
-            >
-              Сканирование данных...
-            </Typography>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: '#86868b',
-                fontSize: '0.875rem'
-              }}
-            >
-              Анализирую {data.length} записей
-            </Typography>
-          </Box>
+            />
+          ))}
         </Box>
       )}
 
