@@ -285,9 +285,9 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
             <Paper
               key={index}
               sx={{
-                p: 2.5,
-                minWidth: '340px',
-                maxWidth: '340px',
+                p: 0,
+                minWidth: '280px',
+                maxWidth: '280px',
                 flexShrink: 0,
                 background: '#ffffff',
                 border: '1px solid rgba(0, 0, 0, 0.12)',
@@ -300,112 +300,99 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                 '&:hover': {
                   transform: 'translateY(-2px)',
                   boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
-                  borderColor: 'rgba(0, 0, 0, 0.2)'
+                  borderColor: '#007AFF'
                 }
               }}
             >
-              {/* Campaign Name & Date */}
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="body1" sx={{ color: '#1d1d1f', fontWeight: 600, mb: 0.5, fontSize: '1rem', lineHeight: 1.3 }}>
+              {/* Header */}
+              <Box sx={{ 
+                p: 2, 
+                background: '#f5f5f7',
+                borderBottom: '1px solid rgba(0, 0, 0, 0.08)'
+              }}>
+                <Typography variant="body1" sx={{ color: '#1d1d1f', fontWeight: 600, mb: 0.5, fontSize: '0.9375rem', lineHeight: 1.3 }}>
                   {campaign.campaignName}
                 </Typography>
-                <Typography variant="caption" sx={{ color: '#86868b', display: 'flex', alignItems: 'center', gap: 0.5, fontWeight: 400 }}>
-                  <CalendarIcon sx={{ fontSize: 12 }} />
+                <Typography variant="caption" sx={{ color: '#86868b', display: 'flex', alignItems: 'center', gap: 0.5, fontWeight: 400, fontSize: '0.75rem' }}>
+                  <CalendarIcon sx={{ fontSize: 11 }} />
                   {campaign.latestDate ? campaign.latestDate.toLocaleDateString('ru-RU') : 'Нет данных'}
                 </Typography>
               </Box>
 
-              {/* Vertical Metrics */}
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                {/* Отправлено СМС */}
-                <Box 
-                  sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'space-between',
-                    py: 1,
-                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)'
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Box sx={{ 
-                      width: 32, 
-                      height: 32, 
-                      borderRadius: '50%', 
-                      background: '#34C75915',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      <SendIcon sx={{ fontSize: 16, color: '#34C759' }} />
-                    </Box>
-                    <Typography variant="body2" sx={{ color: '#86868b', fontWeight: 400, fontSize: '0.875rem' }}>
-                      Отправлено СМС
-                    </Typography>
-                  </Box>
-                  <Typography variant="body1" sx={{ color: '#1d1d1f', fontWeight: 600 }}>
+              {/* Metrics Grid */}
+              <Box sx={{ p: 2, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1.5 }}>
+                {/* Отправлено */}
+                <Box sx={{ 
+                  p: 1.5, 
+                  background: '#f5f5f7',
+                  borderRadius: 1.5,
+                  textAlign: 'center'
+                }}>
+                  <SendIcon sx={{ fontSize: 20, color: '#34C759', mb: 0.5 }} />
+                  <Typography variant="h6" sx={{ color: '#1d1d1f', fontWeight: 600, fontSize: '1.125rem', mb: 0.25 }}>
                     {campaign.smsSent.toLocaleString('ru-RU')}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#86868b', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                    Отправлено
                   </Typography>
                 </Box>
 
                 {/* Просмотров СМС */}
-                <Box 
-                  sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'space-between',
-                    py: 1,
-                    borderBottom: '1px solid rgba(0, 0, 0, 0.08)'
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Box sx={{ 
-                      width: 32, 
-                      height: 32, 
-                      borderRadius: '50%', 
-                      background: '#FF950015',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      <MessageIcon sx={{ fontSize: 16, color: '#FF9500' }} />
-                    </Box>
-                    <Typography variant="body2" sx={{ color: '#86868b', fontWeight: 400, fontSize: '0.875rem' }}>
-                      Просмотров СМС
-                    </Typography>
-                  </Box>
-                  <Typography variant="body1" sx={{ color: '#1d1d1f', fontWeight: 600 }}>
+                <Box sx={{ 
+                  p: 1.5, 
+                  background: '#f5f5f7',
+                  borderRadius: 1.5,
+                  textAlign: 'center'
+                }}>
+                  <MessageIcon sx={{ fontSize: 20, color: '#FF9500', mb: 0.5 }} />
+                  <Typography variant="h6" sx={{ color: '#1d1d1f', fontWeight: 600, fontSize: '1.125rem', mb: 0.25 }}>
                     {campaign.smsViewed.toLocaleString('ru-RU')}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#86868b', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                    Просм. СМС
                   </Typography>
                 </Box>
 
                 {/* Просмотров страниц */}
-                <Box 
-                  sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'space-between',
-                    py: 1
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Box sx={{ 
-                      width: 32, 
-                      height: 32, 
-                      borderRadius: '50%', 
-                      background: '#007AFF15',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      <VisibilityIcon sx={{ fontSize: 16, color: '#007AFF' }} />
-                    </Box>
-                    <Typography variant="body2" sx={{ color: '#86868b', fontWeight: 400, fontSize: '0.875rem' }}>
-                      Просмотров страниц
-                    </Typography>
-                  </Box>
-                  <Typography variant="body1" sx={{ color: '#1d1d1f', fontWeight: 600 }}>
+                <Box sx={{ 
+                  p: 1.5, 
+                  background: '#f5f5f7',
+                  borderRadius: 1.5,
+                  textAlign: 'center'
+                }}>
+                  <VisibilityIcon sx={{ fontSize: 20, color: '#007AFF', mb: 0.5 }} />
+                  <Typography variant="h6" sx={{ color: '#1d1d1f', fontWeight: 600, fontSize: '1.125rem', mb: 0.25 }}>
                     {campaign.pageViews.toLocaleString('ru-RU')}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#86868b', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                    Страниц
+                  </Typography>
+                </Box>
+
+                {/* Конверсия */}
+                <Box sx={{ 
+                  p: 1.5, 
+                  background: '#f5f5f7',
+                  borderRadius: 1.5,
+                  textAlign: 'center'
+                }}>
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      color: parseFloat(campaign.conversionRate) > 7 
+                        ? '#34C759' 
+                        : parseFloat(campaign.conversionRate) > 5 
+                          ? '#FF9500' 
+                          : '#FF3B30',
+                      fontWeight: 700,
+                      fontSize: '1.5rem',
+                      mb: 0.25
+                    }}
+                  >
+                    {campaign.conversionRate}%
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#86868b', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                    Конверсия
                   </Typography>
                 </Box>
               </Box>
