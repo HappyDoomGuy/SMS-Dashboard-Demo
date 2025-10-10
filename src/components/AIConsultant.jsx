@@ -100,6 +100,27 @@ const glowPulse = keyframes`
   }
 `;
 
+const gridReveal = keyframes`
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  51% {
+    transform-origin: bottom;
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+`;
+
 const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -573,6 +594,24 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             backdropFilter: 'blur(2px)'
           }}
         >
+          {/* Revealed Grid Behind Beam */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `
+                repeating-linear-gradient(0deg, rgba(0, 122, 255, 0.15) 0px, rgba(0, 122, 255, 0.15) 1px, transparent 1px, transparent 30px),
+                repeating-linear-gradient(90deg, rgba(0, 122, 255, 0.15) 0px, rgba(0, 122, 255, 0.15) 1px, transparent 1px, transparent 30px),
+                repeating-linear-gradient(45deg, rgba(88, 86, 214, 0.08) 0px, rgba(88, 86, 214, 0.08) 1px, transparent 1px, transparent 60px),
+                repeating-linear-gradient(-45deg, rgba(88, 86, 214, 0.08) 0px, rgba(88, 86, 214, 0.08) 1px, transparent 1px, transparent 60px)
+              `,
+              animation: `${gridReveal} 4s cubic-bezier(0.4, 0, 0.2, 1)`
+            }}
+          />
+
           {/* Main Scanning Beam */}
           <Box
             sx={{
@@ -582,7 +621,8 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               top: 0,
               height: '200px',
               animation: `${scanLine} 4s cubic-bezier(0.4, 0, 0.2, 1)`,
-              pointerEvents: 'none'
+              pointerEvents: 'none',
+              zIndex: 2
             }}
           >
             {/* Primary scan line */}
@@ -622,6 +662,24 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 height: '100px',
                 background: 'linear-gradient(180deg, rgba(0, 122, 255, 0.15) 0%, transparent 100%)',
                 filter: 'blur(20px)'
+              }}
+            />
+            
+            {/* Grid highlight following beam */}
+            <Box
+              sx={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: '50px',
+                height: '100px',
+                backgroundImage: `
+                  repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.3) 0px, rgba(0, 255, 255, 0.3) 1px, transparent 1px, transparent 30px),
+                  repeating-linear-gradient(90deg, rgba(0, 255, 255, 0.3) 0px, rgba(0, 255, 255, 0.3) 1px, transparent 1px, transparent 30px)
+                `,
+                opacity: 0.6,
+                filter: 'blur(1px)',
+                mixBlendMode: 'screen'
               }}
             />
           </Box>
