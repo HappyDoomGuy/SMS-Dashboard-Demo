@@ -17,6 +17,15 @@ body {
   min-height: 100vh;
 }
 
+/* Prevent body padding when modal opens (fixes fixed element shift) */
+body[style*="overflow: hidden"] {
+  padding-right: 0 !important;
+}
+
+.MuiModal-root {
+  padding-right: 0 !important;
+}
+
 /* Apple-style scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

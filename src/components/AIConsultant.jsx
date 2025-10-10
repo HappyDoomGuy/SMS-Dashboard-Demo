@@ -732,6 +732,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         onClose={handleClose}
         maxWidth="md"
         fullWidth
+        disableScrollLock={true}
         TransitionProps={{
           timeout: 500
         }}
