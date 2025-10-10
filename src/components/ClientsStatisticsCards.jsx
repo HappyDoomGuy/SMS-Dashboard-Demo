@@ -120,6 +120,7 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
     <Paper 
       sx={{ 
         width: '100%',
+        mt: 3,
         mb: 3,
         borderRadius: 2,
         overflow: 'hidden',
