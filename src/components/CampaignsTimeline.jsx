@@ -109,13 +109,14 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
     .sort((a, b) => {
       if (!a.latestDate) return 1;
       if (!b.latestDate) return -1;
-      return b.latestDate - a.latestDate;
+      return a.latestDate - b.latestDate; // Old to new (ascending)
     });
 
-  // Scroll to newest (first) campaign on mount or content type change
+  // Scroll to newest (last) campaign on mount or content type change
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft = 0;
+    if (scrollContainerRef.current && campaigns.length > 0) {
+      // Scroll to the end (newest campaign on the right)
+      scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
     }
   }, [currentContentType, campaigns.length]);
 
@@ -319,21 +320,35 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                 </Typography>
               </Box>
 
-              {/* Metrics Grid */}
-              <Box sx={{ p: 2, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1.5 }}>
+              {/* Metrics - Vertical Stack */}
+              <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                 {/* Отправлено */}
                 <Box sx={{ 
                   p: 1.5, 
                   background: '#f5f5f7',
                   borderRadius: 1.5,
-                  textAlign: 'center'
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
                 }}>
-                  <SendIcon sx={{ fontSize: 20, color: '#34C759', mb: 0.5 }} />
-                  <Typography variant="h6" sx={{ color: '#1d1d1f', fontWeight: 600, fontSize: '1.125rem', mb: 0.25 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ 
+                      width: 32, 
+                      height: 32, 
+                      borderRadius: '50%', 
+                      background: '#34C75920',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <SendIcon sx={{ fontSize: 18, color: '#34C759' }} />
+                    </Box>
+                    <Typography variant="body2" sx={{ color: '#86868b', fontSize: '0.8125rem', fontWeight: 400 }}>
+                      Отправлено СМС
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" sx={{ color: '#1d1d1f', fontWeight: 600, fontSize: '1.125rem' }}>
                     {campaign.smsSent.toLocaleString('ru-RU')}
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: '#86868b', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                    Отправлено
                   </Typography>
                 </Box>
 
@@ -342,14 +357,28 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                   p: 1.5, 
                   background: '#f5f5f7',
                   borderRadius: 1.5,
-                  textAlign: 'center'
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
                 }}>
-                  <MessageIcon sx={{ fontSize: 20, color: '#FF9500', mb: 0.5 }} />
-                  <Typography variant="h6" sx={{ color: '#1d1d1f', fontWeight: 600, fontSize: '1.125rem', mb: 0.25 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ 
+                      width: 32, 
+                      height: 32, 
+                      borderRadius: '50%', 
+                      background: '#FF950020',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <MessageIcon sx={{ fontSize: 18, color: '#FF9500' }} />
+                    </Box>
+                    <Typography variant="body2" sx={{ color: '#86868b', fontSize: '0.8125rem', fontWeight: 400 }}>
+                      Просмотров СМС
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" sx={{ color: '#1d1d1f', fontWeight: 600, fontSize: '1.125rem' }}>
                     {campaign.smsViewed.toLocaleString('ru-RU')}
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: '#86868b', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                    Просм. СМС
                   </Typography>
                 </Box>
 
@@ -358,41 +387,28 @@ const CampaignsTimeline = ({ data, currentContentType }) => {
                   p: 1.5, 
                   background: '#f5f5f7',
                   borderRadius: 1.5,
-                  textAlign: 'center'
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
                 }}>
-                  <VisibilityIcon sx={{ fontSize: 20, color: '#007AFF', mb: 0.5 }} />
-                  <Typography variant="h6" sx={{ color: '#1d1d1f', fontWeight: 600, fontSize: '1.125rem', mb: 0.25 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ 
+                      width: 32, 
+                      height: 32, 
+                      borderRadius: '50%', 
+                      background: '#007AFF20',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <VisibilityIcon sx={{ fontSize: 18, color: '#007AFF' }} />
+                    </Box>
+                    <Typography variant="body2" sx={{ color: '#86868b', fontSize: '0.8125rem', fontWeight: 400 }}>
+                      Просмотров страниц
+                    </Typography>
+                  </Box>
+                  <Typography variant="h6" sx={{ color: '#1d1d1f', fontWeight: 600, fontSize: '1.125rem' }}>
                     {campaign.pageViews.toLocaleString('ru-RU')}
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: '#86868b', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                    Страниц
-                  </Typography>
-                </Box>
-
-                {/* Конверсия */}
-                <Box sx={{ 
-                  p: 1.5, 
-                  background: '#f5f5f7',
-                  borderRadius: 1.5,
-                  textAlign: 'center'
-                }}>
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
-                      color: parseFloat(campaign.conversionRate) > 7 
-                        ? '#34C759' 
-                        : parseFloat(campaign.conversionRate) > 5 
-                          ? '#FF9500' 
-                          : '#FF3B30',
-                      fontWeight: 700,
-                      fontSize: '1.5rem',
-                      mb: 0.25
-                    }}
-                  >
-                    {campaign.conversionRate}%
-                  </Typography>
-                  <Typography variant="caption" sx={{ color: '#86868b', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                    Конверсия
                   </Typography>
                 </Box>
               </Box>
