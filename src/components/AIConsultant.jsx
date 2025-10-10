@@ -70,23 +70,53 @@ const glowPulse = keyframes`
   }
 `;
 
-const orbitRing = keyframes`
+const energyWave = keyframes`
   0% {
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
   }
   100% {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0;
   }
 `;
 
-const particleFloat = keyframes`
+const particleSpark = keyframes`
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+`;
+
+const hologramShift = keyframes`
   0%, 100% {
-    transform: translateY(0);
-    opacity: 0.6;
+    transform: translateX(0) translateY(0);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translateX(1px) translateY(-1px);
+    opacity: 0.9;
   }
   50% {
-    transform: translateY(-8px);
-    opacity: 1;
+    transform: translateX(-1px) translateY(1px);
+    opacity: 0.7;
+  }
+  75% {
+    transform: translateX(1px) translateY(1px);
+    opacity: 0.9;
   }
 `;
 
@@ -780,60 +810,80 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         </Box>
       )}
 
-      {/* Floating Action Button with Orbit Ring */}
+      {/* Floating Action Button with Energy Field */}
       <Box
         sx={{
           position: 'fixed',
           bottom: 32,
           right: 32,
-          width: 80,
-          height: 80,
-          zIndex: 1000
+          width: 140,
+          height: 140,
+          zIndex: 1000,
+          pointerEvents: 'none'
         }}
       >
-        {/* Rotating orbit ring */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            width: '110px',
-            height: '110px',
-            border: '2px dashed rgba(0, 122, 255, 0.3)',
-            borderRadius: '50%',
-            animation: `${orbitRing} 8s linear infinite`,
-            pointerEvents: 'none'
-          }}
-        />
-        
-        {/* Floating particles on orbit */}
-        {[0, 120, 240].map((angle, i) => (
+        {/* Energy waves */}
+        {[0, 1, 2].map((i) => (
           <Box
-            key={i}
+            key={`wave-${i}`}
             sx={{
               position: 'absolute',
               top: '50%',
               left: '50%',
-              width: '110px',
-              height: '110px',
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none',
-              animation: `${orbitRing} 8s linear infinite`,
-              animationDelay: `${i * 0.3}s`,
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: '50%',
-                width: '6px',
-                height: '6px',
-                background: '#007AFF',
-                borderRadius: '50%',
-                transform: 'translateX(-50%)',
-                boxShadow: '0 0 10px rgba(0, 122, 255, 0.8)',
-                animation: `${particleFloat} 2s ease-in-out infinite`,
-                animationDelay: `${i * 0.5}s`
-              }
+              width: '80px',
+              height: '80px',
+              border: '2px solid rgba(0, 122, 255, 0.5)',
+              borderRadius: '50%',
+              animation: `${energyWave} ${2.5 + i * 0.3}s ease-out infinite`,
+              animationDelay: `${i * 0.8}s`,
+              pointerEvents: 'none'
+            }}
+          />
+        ))}
+        
+        {/* Hologram scan lines */}
+        {[0, 1, 2, 3].map((i) => (
+          <Box
+            key={`scan-${i}`}
+            sx={{
+              position: 'absolute',
+              top: `${35 + i * 15}%`,
+              left: '15%',
+              width: '70%',
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.6), transparent)',
+              animation: `${hologramShift} ${1.5 + i * 0.2}s ease-in-out infinite`,
+              animationDelay: `${i * 0.15}s`,
+              pointerEvents: 'none'
+            }}
+          />
+        ))}
+        
+        {/* Energy particles */}
+        {[
+          { x: 70, y: 25, delay: 0 },
+          { x: 105, y: 35, delay: 0.4 },
+          { x: 120, y: 70, delay: 0.8 },
+          { x: 105, y: 105, delay: 1.2 },
+          { x: 70, y: 115, delay: 1.6 },
+          { x: 35, y: 105, delay: 2.0 },
+          { x: 20, y: 70, delay: 2.4 },
+          { x: 35, y: 35, delay: 2.8 }
+        ].map((particle, i) => (
+          <Box
+            key={`particle-${i}`}
+            sx={{
+              position: 'absolute',
+              top: particle.y,
+              left: particle.x,
+              width: '4px',
+              height: '4px',
+              background: '#007AFF',
+              borderRadius: '50%',
+              boxShadow: '0 0 10px rgba(0, 122, 255, 1), 0 0 4px rgba(255, 255, 255, 0.8)',
+              animation: `${particleSpark} 3s ease-in-out infinite`,
+              animationDelay: `${particle.delay}s`,
+              pointerEvents: 'none'
             }}
           />
         ))}
@@ -844,10 +894,12 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           onClick={handleOpen}
           sx={{
             position: 'absolute',
-            top: 0,
-            left: 0,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
             width: 80,
             height: 80,
+            pointerEvents: 'auto',
             background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
             border: '3px solid rgba(255, 255, 255, 0.95)',
             animation: `${materialize} 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s backwards, ${glowPulse} 3s ease-in-out 1.7s infinite`,
@@ -865,13 +917,13 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             },
             '&:hover': {
               background: 'linear-gradient(135deg, #0051D5 0%, #003DA5 100%)',
-              transform: 'scale(1.1)',
+              transform: 'translate(-50%, -50%) scale(1.1)',
               '&::before': {
                 left: '100%'
               }
             },
             '&:active': {
-              transform: 'scale(1.05)'
+              transform: 'translate(-50%, -50%) scale(1.05)'
             },
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
           }}
