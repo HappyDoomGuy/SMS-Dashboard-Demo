@@ -83,6 +83,9 @@ const energyWave = keyframes`
     transform: translate(-50%, -50%) scale(0.8);
     opacity: 0;
   }
+  10% {
+    opacity: 0.6;
+  }
   50% {
     opacity: 0.6;
   }
@@ -93,8 +96,11 @@ const energyWave = keyframes`
 `;
 
 const hologramShift = keyframes`
-  0%, 100% {
+  0% {
     transform: translateX(0) translateY(0);
+    opacity: 0;
+  }
+  10% {
     opacity: 0.7;
   }
   25% {
@@ -108,6 +114,10 @@ const hologramShift = keyframes`
   75% {
     transform: translateX(1px) translateY(1px);
     opacity: 0.9;
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+    opacity: 0.7;
   }
 `;
 
@@ -854,7 +864,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               border: '2px solid rgba(0, 122, 255, 0.5)',
               borderRadius: '50%',
               animation: `${energyWave} ${2.5 + i * 0.3}s ease-out infinite`,
-              animationDelay: `${i * 0.8 + 1.1}s`,
+              animationDelay: `${i * 0.8 + 0.5}s`,
               pointerEvents: 'none'
             }}
           />
@@ -872,7 +882,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               height: '1px',
               background: 'linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.6), transparent)',
               animation: `${hologramShift} ${1.5 + i * 0.2}s ease-in-out infinite`,
-              animationDelay: `${i * 0.15 + 1.1}s`,
+              animationDelay: `${i * 0.15 + 0.5}s`,
               pointerEvents: 'none'
             }}
           />
