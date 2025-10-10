@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { Refresh as RefreshIcon, FileDownload as FileDownloadIcon } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 import { apiService, dataUtils } from './services/api';
 import StatisticsCards from './components/StatisticsCards';
 import CampaignsTable from './components/CampaignsTable';
@@ -25,6 +26,14 @@ import ClientsStatisticsCards from './components/ClientsStatisticsCards';
 import AIConsultant from './components/AIConsultant';
 import config, { getCoverageColor } from './config';
 import { exportDataGridToExcel } from './utils/exportToExcel';
+import dashboardStorage from './utils/localStorage';
+import {
+  StatisticsCardsSkeleton,
+  TableSkeleton,
+  ClientCardsSkeleton,
+  ChartSkeleton,
+  CampaignsTimelineSkeleton
+} from './components/SkeletonLoaders';
 
 function TabPanel({ children, value, index, ...other }) {
   return (
@@ -49,10 +58,16 @@ function TabPanel({ children, value, index, ...other }) {
   );
 }
 
-function CustomToolbar({ rows, columns, contentType }) {
+function CustomToolbar({ rows, columns, contentType, enqueueSnackbar }) {
   const handleExport = () => {
-    const filename = `${contentType}_лог_просмотров_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}`;
-    exportDataGridToExcel(rows, columns, filename);
+    try {
+      const filename = `${contentType}_лог_просмотров_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}`;
+      exportDataGridToExcel(rows, columns, filename);
+      enqueueSnackbar('Файл успешно экспортирован', { variant: 'success' });
+    } catch (error) {
+      console.error('Export error:', error);
+      enqueueSnackbar('Ошибка при экспорте файла', { variant: 'error' });
+    }
   };
 
   return (
@@ -112,9 +127,10 @@ function CustomToolbar({ rows, columns, contentType }) {
 }
 
 function App() {
+  const { enqueueSnackbar } = useSnackbar();
   const [data, setData] = useState([]);
   const [contentTypes, setContentTypes] = useState([]);
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(() => dashboardStorage.getSelectedTab());
   const [sortModel, setSortModel] = useState([{ field: 'date', sort: 'desc' }]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -124,6 +140,11 @@ function App() {
   useEffect(() => {
     loadData();
   }, []);
+
+  // Save selected tab to localStorage
+  useEffect(() => {
+    dashboardStorage.setSelectedTab(selectedTab);
+  }, [selectedTab]);
 
   const loadData = async (e) => {
     if (e) {
@@ -142,9 +163,15 @@ function App() {
       setData(combinedData);
       setContentTypes(types);
       setLastUpdate(new Date());
+
+      // Show success notification (only on manual refresh)
+      if (e) {
+        enqueueSnackbar('Данные успешно обновлены', { variant: 'success' });
+      }
     } catch (err) {
       setError('Ошибка загрузки данных');
       console.error('Error loading data:', err);
+      enqueueSnackbar('Ошибка загрузки данных. Попробуйте еще раз.', { variant: 'error' });
     } finally {
       setLoading(false);
     }
@@ -676,28 +703,34 @@ function App() {
         </Paper>
 
         {/* Statistics Cards */}
-        {filteredData.length > 0 && (
+        {loading ? (
+          <StatisticsCardsSkeleton />
+        ) : filteredData.length > 0 ? (
           <StatisticsCards 
             data={filteredData} 
             currentContentType={contentTypes[selectedTab]} 
           />
-        )}
+        ) : null}
 
         {/* Campaigns Timeline */}
-        {filteredData.length > 0 && (
+        {loading ? (
+          <CampaignsTimelineSkeleton />
+        ) : filteredData.length > 0 ? (
           <CampaignsTimeline 
             data={filteredData} 
             currentContentType={contentTypes[selectedTab]} 
           />
-        )}
+        ) : null}
 
         {/* Views Dynamics Chart */}
-        {filteredData.length > 0 && (
+        {loading ? (
+          <ChartSkeleton />
+        ) : filteredData.length > 0 ? (
           <ViewsDynamicsChart 
             data={filteredData} 
             currentContentType={contentTypes[selectedTab]} 
           />
-        )}
+        ) : null}
 
         {/* Data Table */}
         <Paper 
@@ -751,6 +784,7 @@ function App() {
                         rows={filteredData} 
                         columns={columns} 
                         contentType={contentTypes[selectedTab]}
+                        enqueueSnackbar={enqueueSnackbar}
                       />
                     ),
                   }}
@@ -886,12 +920,14 @@ function App() {
         </Paper>
 
         {/* Clients Statistics Cards */}
-        {filteredData.length > 0 && (
+        {loading ? (
+          <ClientCardsSkeleton />
+        ) : filteredData.length > 0 ? (
           <ClientsStatisticsCards 
             data={filteredData} 
             currentContentType={contentTypes[selectedTab]} 
           />
-        )}
+        ) : null}
 
         {/* AI Consultant - Floating Button */}
         {filteredData.length > 0 && contentTypes[selectedTab] && (

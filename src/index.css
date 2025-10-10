@@ -38,3 +38,52 @@ body {
   background: rgba(0, 0, 0, 0.3);
   background-clip: content-box;
 }
+
+/* Notistack Toast Styling - Apple Style */
+.notistack-MuiContent-success {
+  background: #ffffff !important;
+  color: #1d1d1f !important;
+  border: 1px solid rgba(52, 199, 89, 0.3) !important;
+  border-left: 4px solid #34C759 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 500 !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+.notistack-MuiContent-error {
+  background: #ffffff !important;
+  color: #1d1d1f !important;
+  border: 1px solid rgba(255, 59, 48, 0.3) !important;
+  border-left: 4px solid #FF3B30 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 500 !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+.notistack-MuiContent-warning {
+  background: #ffffff !important;
+  color: #1d1d1f !important;
+  border: 1px solid rgba(255, 149, 0, 0.3) !important;
+  border-left: 4px solid #FF9500 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 500 !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+.notistack-MuiContent-info {
+  background: #ffffff !important;
+  color: #1d1d1f !important;
+  border: 1px solid rgba(0, 122, 255, 0.3) !important;
+  border-left: 4px solid #007AFF !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 500 !important;
+  backdrop-filter: blur(20px) !important;
+}

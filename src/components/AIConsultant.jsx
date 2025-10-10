@@ -19,6 +19,7 @@ import {
   Description as DescriptionIcon,
   PictureAsPdf as PictureAsPdfIcon
 } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 import ReactMarkdown from 'react-markdown';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -164,6 +165,7 @@ const iconFloat = keyframes`
 `;
 
 const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState('');
@@ -217,8 +219,10 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
 
       const filename = `Анализ_${contentType}_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.pdf`;
       pdf.save(filename);
+      enqueueSnackbar('PDF успешно сохранен', { variant: 'success' });
     } catch (err) {
       console.error('Error exporting to PDF:', err);
+      enqueueSnackbar('Ошибка при экспорте в PDF', { variant: 'error' });
       setError(`Ошибка при экспорте в PDF: ${err.message}`);
     } finally {
       setExporting(false);
@@ -270,8 +274,10 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
+      enqueueSnackbar('Файл Word успешно сохранен', { variant: 'success' });
     } catch (err) {
       console.error('Error exporting to Word:', err);
+      enqueueSnackbar('Ошибка при экспорте в Word', { variant: 'error' });
       setError(`Ошибка при экспорте в Word: ${err.message}`);
     } finally {
       setExporting(false);
@@ -600,12 +606,14 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
       if (result.candidates && result.candidates[0] && result.candidates[0].content) {
         const analysisText = result.candidates[0].content.parts[0].text;
         setAnalysis(analysisText);
+        enqueueSnackbar('Анализ успешно завершен', { variant: 'success' });
       } else {
         throw new Error('Неверный формат ответа от API');
       }
     } catch (err) {
       console.error('Error analyzing data:', err);
       setError(`Ошибка при анализе данных: ${err.message}`);
+      enqueueSnackbar('Ошибка при анализе данных', { variant: 'error' });
     } finally {
       setLoading(false);
     }

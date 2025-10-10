@@ -9,6 +9,7 @@ import {
   LocationOn as LocationOnIcon,
   LocalHospital as LocalHospitalIcon
 } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
@@ -44,6 +45,7 @@ const getAvatarColor = (name) => {
 };
 
 const ClientsStatisticsCards = ({ data, currentContentType }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
   const itemsPerPage = 8;
@@ -99,21 +101,27 @@ const ClientsStatisticsCards = ({ data, currentContentType }) => {
   }, [searchQuery]);
 
   const handleExport = () => {
-    const exportData = clients.map(c => ({
-      'ФИО': c.userName,
-      'Специальность': c.specialty,
-      'Место работы': c.workplace,
-      'Район': c.district,
-      'Просмотров страниц': c.pageViews,
-      'Время просмотров': formatTime(c.totalTime)
-    }));
-    
-    const ws = XLSX.utils.json_to_sheet(exportData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Клиенты');
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const filename = `${currentContentType}_статистика_по_клиентам_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.xlsx`;
-    saveAs(new Blob([wbout], { type: 'application/octet-stream' }), filename);
+    try {
+      const exportData = clients.map(c => ({
+        'ФИО': c.userName,
+        'Специальность': c.specialty,
+        'Место работы': c.workplace,
+        'Район': c.district,
+        'Просмотров страниц': c.pageViews,
+        'Время просмотров': formatTime(c.totalTime)
+      }));
+      
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Клиенты');
+      const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const filename = `${currentContentType}_статистика_по_клиентам_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.xlsx`;
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), filename);
+      enqueueSnackbar('Файл успешно экспортирован', { variant: 'success' });
+    } catch (error) {
+      console.error('Export error:', error);
+      enqueueSnackbar('Ошибка при экспорте файла', { variant: 'error' });
+    }
   };
 
   return (
