@@ -125,7 +125,12 @@ function App() {
     loadData();
   }, []);
 
-  const loadData = async () => {
+  const loadData = async (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
     try {
       setLoading(true);
       setError(null);
@@ -564,6 +569,7 @@ function App() {
             </Typography>
           )}
           <Button
+            type="button"
             startIcon={<RefreshIcon />}
             onClick={loadData}
             disabled={loading}
