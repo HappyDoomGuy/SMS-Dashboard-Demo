@@ -76,77 +76,47 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color, delay = 0 })
     <Card 
       sx={{ 
         height: '100%',
-        background: 'rgba(255, 255, 255, 0.8)',
-        backdropFilter: 'blur(20px)',
-        border: `2px solid ${color}30`,
-        borderRadius: 3,
-        boxShadow: `0 8px 32px ${color}15, 0 1px 3px rgba(0, 0, 0, 0.05)`,
-        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        background: '#ffffff',
+        border: '0.5px solid rgba(0, 0, 0, 0.08)',
+        borderRadius: 2,
+        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+        transition: 'all 0.2s ease',
         position: 'relative',
         overflow: 'hidden',
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: '-100%',
-          width: '100%',
-          height: '100%',
-          background: `linear-gradient(90deg, transparent, ${color}10, transparent)`,
-          animation: `${shimmer} 4s ease-in-out infinite`,
-        },
-        '&::after': {
-          content: '""',
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '4px',
-          background: `linear-gradient(90deg, ${color}, ${color}AA, ${color})`,
-          boxShadow: `0 0 20px ${color}80`,
-        },
+        transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
         '&:hover': {
-          transform: 'translateY(-12px) scale(1.03)',
-          boxShadow: `0 20px 60px ${color}30, 0 0 40px ${color}20`,
-          borderColor: color,
-          '& .icon-box': {
-            animation: `${floatAnimation} 1.5s ease-in-out infinite`,
-            transform: 'rotate(5deg)',
-            boxShadow: `0 8px 40px ${color}60`
-          }
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+          transform: 'translateY(-2px)'
         }
       }}
     >
-      <CardContent sx={{ p: 3.5, position: 'relative', zIndex: 1 }}>
+      <CardContent sx={{ p: 3, position: 'relative' }}>
         {/* Title */}
         <Typography 
           variant="caption" 
           sx={{ 
-            color: '#6b7280',
-            fontWeight: 800,
+            color: '#86868b',
+            fontWeight: 500,
             textTransform: 'uppercase',
-            letterSpacing: 2.5,
-            fontSize: '0.65rem',
+            letterSpacing: 1,
+            fontSize: '0.75rem',
             display: 'block',
-            mb: 3
+            mb: 1.5
           }}
         >
           {title}
         </Typography>
         
-        {/* Icon and Value */}
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2.5 }}>
+        {/* Value and Icon */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
           <Typography 
             variant="h3" 
             sx={{ 
-              fontWeight: 900,
-              background: `linear-gradient(135deg, #1a2332, ${color})`,
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              fontWeight: 600,
+              color: '#1d1d1f',
               lineHeight: 1,
-              fontSize: '2.75rem',
+              fontSize: '2.5rem',
               letterSpacing: -1
             }}
           >
@@ -154,60 +124,20 @@ const StatisticCard = ({ title, value, subtitle, icon: Icon, color, delay = 0 })
           </Typography>
           
           <Box 
-            className="icon-box"
             sx={{ 
-              width: 75,
-              height: 75,
-              borderRadius: 3,
-              background: `linear-gradient(135deg, ${color}15, ${color}05)`,
+              width: 48,
+              height: 48,
+              borderRadius: '50%',
+              background: `${color}15`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              flexShrink: 0,
-              border: `2px solid ${color}30`,
-              boxShadow: `0 4px 20px ${color}20`,
-              transition: 'all 0.4s ease',
-              position: 'relative',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                inset: -2,
-                borderRadius: 3,
-                padding: '2px',
-                background: `linear-gradient(135deg, ${color}, transparent)`,
-                mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                maskComposite: 'exclude',
-                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                WebkitMaskComposite: 'xor',
-                opacity: 0.5
-              }
+              flexShrink: 0
             }}
           >
-            <Icon sx={{ fontSize: 42, color: color, filter: `drop-shadow(0 2px 8px ${color}50)` }} />
+            <Icon sx={{ fontSize: 24, color: color }} />
           </Box>
         </Box>
-
-        {/* Minimal progress line */}
-        <Box
-          sx={{
-            height: 3,
-            borderRadius: 3,
-            background: `linear-gradient(90deg, ${color}, ${color}AA, ${color})`,
-            boxShadow: `0 0 12px ${color}60, 0 2px 8px ${color}30`,
-            position: 'relative',
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              right: 0,
-              top: -2,
-              width: 8,
-              height: 7,
-              borderRadius: '50%',
-              background: color,
-              boxShadow: `0 0 12px ${color}`
-            }
-          }}
-        />
       </CardContent>
     </Card>
   );

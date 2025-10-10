@@ -528,10 +528,10 @@ function App() {
         position="static" 
         elevation={0}
         sx={{
-          background: 'rgba(255, 255, 255, 0.7)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(100, 116, 255, 0.15)',
-          boxShadow: '0 4px 30px rgba(100, 116, 255, 0.1)'
+          background: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'saturate(180%) blur(20px)',
+          borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)',
+          boxShadow: 'none'
         }}
       >
         <Toolbar sx={{ py: 2.5 }}>
@@ -540,13 +540,10 @@ function App() {
             component="div" 
             sx={{ 
               flexGrow: 1,
-              fontWeight: 800,
+              fontWeight: 600,
               letterSpacing: -0.5,
-              background: 'linear-gradient(135deg, #1a2332 0%, #6474ff 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              fontSize: '1.75rem'
+              color: '#1d1d1f',
+              fontSize: '1.5rem'
             }}
           >
             {config.company.displayName}
@@ -555,9 +552,9 @@ function App() {
             <Typography 
               variant="body2" 
               sx={{ 
-                color: '#6b7280',
+                color: '#86868b',
                 mr: 3,
-                fontWeight: 500,
+                fontWeight: 400,
                 fontSize: '0.875rem'
               }}
             >
@@ -570,19 +567,22 @@ function App() {
             disabled={loading}
             variant="contained"
             sx={{
-              borderRadius: 2,
+              borderRadius: '980px',
               px: 3,
-              py: 1.2,
-              fontWeight: 700,
+              py: 1,
+              fontWeight: 500,
               textTransform: 'none',
-              background: 'linear-gradient(135deg, #6474ff 0%, #8b95ff 100%)',
-              boxShadow: '0 4px 14px rgba(100, 116, 255, 0.4)',
+              background: '#007AFF',
+              color: '#fff',
+              boxShadow: 'none',
               '&:hover': {
-                background: 'linear-gradient(135deg, #5060e0 0%, #7a84ff 100%)',
-                boxShadow: '0 6px 20px rgba(100, 116, 255, 0.5)',
-                transform: 'translateY(-2px)'
+                background: '#0051D5',
+                boxShadow: 'none'
               },
-              transition: 'all 0.3s ease'
+              '&:active': {
+                transform: 'scale(0.98)'
+              },
+              transition: 'all 0.2s ease'
             }}
           >
             Обновить
@@ -603,12 +603,11 @@ function App() {
           sx={{
             width: '100%',
             mb: 3,
-            borderRadius: 3,
+            borderRadius: 2,
             overflow: 'hidden',
-            background: 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(100, 116, 255, 0.1)',
-            boxShadow: '0 8px 32px rgba(100, 116, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)'
+            background: '#ffffff',
+            border: '0.5px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
           }}
         >
           <Tabs
@@ -618,36 +617,26 @@ function App() {
             variant="fullWidth"
                     sx={{
                       '& .MuiTab-root': {
-                        fontSize: '1.15rem',
-                        fontWeight: 600,
+                        fontSize: '1rem',
+                        fontWeight: 500,
                         textTransform: 'none',
-                        minHeight: 70,
-                        py: 2.5,
-                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        color: '#9ca3af',
+                        minHeight: 56,
+                        py: 2,
+                        transition: 'all 0.2s ease',
+                        color: '#86868b',
                         position: 'relative',
                         '&:hover': {
-                          color: '#6474ff',
-                          background: 'rgba(100, 116, 255, 0.04)'
+                          color: '#1d1d1f'
                         },
                         '&.Mui-selected': {
-                          color: '#1a2332',
-                          fontWeight: 800,
-                          '&::after': {
-                            content: '""',
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            height: '4px',
-                            background: 'linear-gradient(90deg, #6474ff, #8b95ff)',
-                            boxShadow: '0 -2px 10px rgba(100, 116, 255, 0.4)',
-                            borderRadius: '4px 4px 0 0'
-                          }
+                          color: '#1d1d1f',
+                          fontWeight: 600
                         }
                       },
               '& .MuiTabs-indicator': {
-                height: 0
+                height: 2,
+                background: '#007AFF',
+                borderRadius: '2px 2px 0 0'
               }
             }}
           >

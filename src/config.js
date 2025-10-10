@@ -66,17 +66,17 @@ export const config = {
     'default': 1 // Для остальных типов контента
   },
 
-  // ===== НАСТРОЙКИ ЦВЕТОВОЙ СХЕМЫ =====
+  // ===== НАСТРОЙКИ ЦВЕТОВОЙ СХЕМЫ (Apple Style) =====
   colors: {
     statistics: {
-      pageViews: '#6474ff',      // Premium blue
-      smsSent: '#00d9ff',        // Cyan
-      totalTime: '#a78bfa',      // Purple
-      smsViewed: '#ff6b9d',      // Pink
+      pageViews: '#007AFF',      // Apple Blue
+      smsSent: '#34C759',        // Apple Green
+      totalTime: '#5856D6',      // Apple Purple
+      smsViewed: '#FF9500',      // Apple Orange
       avgViewPercent: {
-        high: '#10b981',         // Emerald (≥70%)
-        medium: '#f59e0b',       // Amber (≥50%)
-        low: '#ef4444'           // Red (<50%)
+        high: '#34C759',         // Apple Green (≥70%)
+        medium: '#FF9500',       // Apple Orange (≥50%)
+        low: '#FF3B30'           // Apple Red (<50%)
       }
     }
   },
