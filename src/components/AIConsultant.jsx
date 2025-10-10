@@ -37,46 +37,42 @@ const pulse = keyframes`
   50% { transform: scale(1.05); }
 `;
 
-// Анимация сканирования (вниз и обратно вверх)
+// Анимация цифровой пикселизации
 const scanLine = keyframes`
   0% {
-    transform: translateY(-100%);
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+`;
+
+const pixelReveal = keyframes`
+  0% {
+    clip-path: inset(0 0 100% 0);
     opacity: 0;
   }
   5% {
     opacity: 1;
   }
-  45% {
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(100vh);
-    opacity: 1;
-  }
-  55% {
-    opacity: 1;
-  }
-  95% {
-    opacity: 1;
-  }
   100% {
-    transform: translateY(-100%);
-    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
   }
 `;
 
-const scanPulse = keyframes`
+const pixelFlicker = keyframes`
   0%, 100% {
-    opacity: 0.2;
+    opacity: 0.7;
   }
   50% {
-    opacity: 0.6;
+    opacity: 1;
   }
 `;
 
-const dataFlow = keyframes`
+const dataStream = keyframes`
   0% {
-    transform: translateY(0) scale(1);
+    transform: translateX(-100%);
     opacity: 0;
   }
   10% {
@@ -86,44 +82,20 @@ const dataFlow = keyframes`
     opacity: 1;
   }
   100% {
-    transform: translateY(-30px) scale(0.8);
+    transform: translateX(100%);
     opacity: 0;
   }
 `;
 
-const glowPulse = keyframes`
+const glitchEffect = keyframes`
   0%, 100% {
-    box-shadow: 0 0 20px rgba(0, 122, 255, 0.3), 0 0 40px rgba(0, 122, 255, 0.1);
+    transform: translate(0, 0);
   }
-  50% {
-    box-shadow: 0 0 40px rgba(0, 122, 255, 0.6), 0 0 80px rgba(0, 122, 255, 0.3);
+  33% {
+    transform: translate(-2px, 0);
   }
-`;
-
-const gridTrail = keyframes`
-  0% {
-    mask-position: 0% 0%;
-  }
-  50% {
-    mask-position: 0% 100%;
-  }
-  100% {
-    mask-position: 0% 200%;
-  }
-`;
-
-const gridFade = keyframes`
-  0% {
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
+  66% {
+    transform: translate(2px, 0);
   }
 `;
 
@@ -427,11 +399,11 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
   };
 
   const analyzeData = async () => {
-    // Запускаем эффект сканирования
+    // Запускаем эффект цифровой пикселизации
     setScanning(true);
     
-    // Ждем 4 секунды для эффекта сканирования (вниз и вверх)
-    await new Promise(resolve => setTimeout(resolve, 4000));
+    // Ждем 3 секунды для эффекта сканирования
+    await new Promise(resolve => setTimeout(resolve, 3000));
     
     setScanning(false);
     setLoading(true);
@@ -585,7 +557,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
 
   return (
     <>
-      {/* Scanning Overlay - Behind Modal */}
+      {/* Digital Pixelization Scanning - Behind Modal */}
       {scanning && (
         <Box
           sx={{
@@ -594,107 +566,12 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             left: 0,
             right: 0,
             bottom: 0,
-            zIndex: 1200, // Just below Dialog (1300)
+            zIndex: 1200,
             pointerEvents: 'none',
-            background: 'linear-gradient(135deg, rgba(0, 122, 255, 0.02), rgba(88, 86, 214, 0.02))',
-            backdropFilter: 'blur(2px)'
+            background: 'rgba(0, 0, 0, 0.02)'
           }}
         >
-          {/* Main Scanning Beam */}
-          <Box
-            sx={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              top: 0,
-              height: '300px',
-              animation: `${scanLine} 4s cubic-bezier(0.4, 0, 0.2, 1)`,
-              pointerEvents: 'none',
-              zIndex: 2
-            }}
-          >
-            {/* Primary scan line */}
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: '150px',
-                height: '3px',
-                background: 'linear-gradient(90deg, transparent 0%, #007AFF 20%, #00FFFF 50%, #007AFF 80%, transparent 100%)',
-                boxShadow: '0 0 40px rgba(0, 255, 255, 0.9), 0 0 80px rgba(0, 122, 255, 0.6)',
-                filter: 'blur(0.5px)'
-              }}
-            />
-            
-            {/* Cyberpunk Grid Trail - Following Beam */}
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: '150px',
-                height: '100vh',
-                backgroundImage: `
-                  repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.4) 0px, rgba(0, 255, 255, 0.4) 2px, transparent 2px, transparent 25px),
-                  repeating-linear-gradient(90deg, rgba(0, 255, 255, 0.4) 0px, rgba(0, 255, 255, 0.4) 2px, transparent 2px, transparent 25px),
-                  repeating-linear-gradient(45deg, rgba(0, 122, 255, 0.2) 0px, rgba(0, 122, 255, 0.2) 1px, transparent 1px, transparent 50px),
-                  repeating-linear-gradient(-45deg, rgba(88, 86, 214, 0.2) 0px, rgba(88, 86, 214, 0.2) 1px, transparent 1px, transparent 50px)
-                `,
-                opacity: 0.8,
-                filter: 'blur(0.5px)',
-                boxShadow: '0 -20px 60px rgba(0, 255, 255, 0.3)',
-                animation: `${gridFade} 4s ease-in-out`
-              }}
-            />
-            
-            {/* Glow above beam */}
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: 0,
-                height: '150px',
-                background: 'linear-gradient(180deg, transparent 0%, rgba(0, 122, 255, 0.2) 70%, rgba(0, 255, 255, 0.3) 100%)',
-                filter: 'blur(25px)'
-              }}
-            />
-            
-            {/* Glow below beam */}
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: '150px',
-                height: '150px',
-                background: 'linear-gradient(180deg, rgba(0, 255, 255, 0.3) 0%, rgba(0, 122, 255, 0.2) 30%, transparent 100%)',
-                filter: 'blur(25px)'
-              }}
-            />
-            
-            {/* Digital glitch lines */}
-            {[0, 20, 40, 60, 80].map((offset, i) => (
-              <Box
-                key={i}
-                sx={{
-                  position: 'absolute',
-                  left: `${offset}%`,
-                  right: 0,
-                  top: '145px',
-                  height: '1px',
-                  width: `${10 + i * 5}%`,
-                  background: `rgba(0, 255, 255, ${0.3 + i * 0.1})`,
-                  boxShadow: `0 0 ${5 + i * 2}px rgba(0, 255, 255, 0.6)`,
-                  animation: `${gridFade} 4s ease-in-out`,
-                  animationDelay: `${i * 0.1}s`
-                }}
-              />
-            ))}
-          </Box>
-          
-          {/* Tech Grid Pattern */}
+          {/* Pixelated Grid Overlay - Reveals as scanned */}
           <Box
             sx={{
               position: 'absolute',
@@ -703,105 +580,138 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               right: 0,
               bottom: 0,
               backgroundImage: `
-                linear-gradient(rgba(0, 122, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 122, 255, 0.03) 1px, transparent 1px)
+                repeating-linear-gradient(0deg, 
+                  rgba(0, 122, 255, 0.15) 0px, 
+                  rgba(0, 122, 255, 0.15) 1px, 
+                  transparent 1px, 
+                  transparent 8px
+                ),
+                repeating-linear-gradient(90deg, 
+                  rgba(0, 122, 255, 0.15) 0px, 
+                  rgba(0, 122, 255, 0.15) 1px, 
+                  transparent 1px, 
+                  transparent 8px
+                )
               `,
-              backgroundSize: '40px 40px',
-              animation: `${scanPulse} 4s ease-in-out`
+              backgroundSize: '8px 8px',
+              animation: `${pixelReveal} 3s cubic-bezier(0.4, 0, 0.2, 1)`,
+              opacity: 0.6
             }}
           />
           
-          {/* Hexagonal Grid Overlay */}
+          {/* Scanning Beam */}
           <Box
             sx={{
               position: 'absolute',
-              top: 0,
               left: 0,
               right: 0,
-              bottom: 0,
-              backgroundImage: `
-                radial-gradient(circle at 20px 20px, rgba(0, 122, 255, 0.05) 2px, transparent 2px),
-                radial-gradient(circle at 60px 60px, rgba(88, 86, 214, 0.05) 2px, transparent 2px)
-              `,
-              backgroundSize: '80px 80px',
-              animation: `${scanPulse} 4s ease-in-out 0.5s`
+              top: 0,
+              height: '4px',
+              background: 'linear-gradient(90deg, transparent, #007AFF 30%, #00FFFF 50%, #007AFF 70%, transparent)',
+              boxShadow: '0 0 30px rgba(0, 255, 255, 1), 0 0 60px rgba(0, 122, 255, 0.8), 0 0 100px rgba(0, 122, 255, 0.4)',
+              animation: `${scanLine} 3s cubic-bezier(0.4, 0, 0.2, 1)`,
+              zIndex: 3
             }}
           />
           
-          {/* Data Particles */}
-          {[...Array(12)].map((_, i) => (
+          {/* Pixel Blocks Trail */}
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 0,
+              height: '100vh',
+              backgroundImage: `
+                repeating-linear-gradient(0deg, 
+                  rgba(0, 255, 255, 0.2) 0px, 
+                  rgba(0, 255, 255, 0.2) 2px, 
+                  transparent 2px, 
+                  transparent 16px
+                ),
+                repeating-linear-gradient(90deg, 
+                  rgba(0, 255, 255, 0.2) 0px, 
+                  rgba(0, 255, 255, 0.2) 2px, 
+                  transparent 2px, 
+                  transparent 16px
+                )
+              `,
+              backgroundSize: '16px 16px',
+              animation: `${pixelReveal} 3s cubic-bezier(0.4, 0, 0.2, 1), ${pixelFlicker} 0.5s ease-in-out infinite`,
+              mixBlendMode: 'screen'
+            }}
+          />
+          
+          {/* Digital Data Streams */}
+          {[...Array(8)].map((_, i) => (
             <Box
               key={i}
               sx={{
                 position: 'absolute',
-                left: `${(i * 8.33) + 5}%`,
-                bottom: 0,
-                width: '2px',
-                height: '20px',
-                background: `linear-gradient(180deg, ${i % 2 === 0 ? '#007AFF' : '#5856D6'}, transparent)`,
-                animation: `${dataFlow} ${1.5 + (i * 0.1)}s ease-in-out infinite`,
-                animationDelay: `${i * 0.15}s`,
-                opacity: 0.6
+                top: `${i * 12.5}%`,
+                left: 0,
+                right: 0,
+                height: '1px',
+                background: `linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.6), transparent)`,
+                animation: `${dataStream} ${2 + i * 0.2}s ease-in-out`,
+                animationDelay: `${i * 0.3}s`,
+                opacity: 0.5
               }}
             />
           ))}
           
-          {/* Corner HUD Elements */}
+          {/* Pixel Glitch Effect */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `
+                repeating-linear-gradient(0deg, 
+                  rgba(0, 122, 255, 0.1) 0px, 
+                  transparent 1px, 
+                  transparent 4px
+                )
+              `,
+              animation: `${glitchEffect} 0.3s steps(3) infinite`,
+              mixBlendMode: 'overlay'
+            }}
+          />
+          
+          {/* Corner Scanners */}
           {[
-            { top: 30, left: 30, rotate: 0 },
-            { top: 30, right: 30, rotate: 90 },
-            { bottom: 30, left: 30, rotate: 270 },
-            { bottom: 30, right: 30, rotate: 180 }
+            { top: 20, left: 20 },
+            { top: 20, right: 20 },
+            { bottom: 20, left: 20 },
+            { bottom: 20, right: 20 }
           ].map((pos, i) => (
             <Box
               key={i}
               sx={{
                 position: 'absolute',
                 ...pos,
-                width: 60,
-                height: 60,
-                transform: `rotate(${pos.rotate}deg)`,
-                animation: `${glowPulse} 2s ease-in-out infinite`,
-                animationDelay: `${i * 0.2}s`,
+                width: 50,
+                height: 50,
+                border: '2px solid #007AFF',
+                borderRadius: '2px',
+                opacity: 0.6,
+                animation: `${pixelFlicker} 1s ease-in-out infinite`,
+                animationDelay: `${i * 0.25}s`,
+                boxShadow: '0 0 15px rgba(0, 122, 255, 0.5)',
                 '&::before': {
                   content: '""',
                   position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '30px',
-                  height: '2px',
-                  background: '#007AFF',
-                  boxShadow: '0 0 10px rgba(0, 122, 255, 0.6)'
-                },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '2px',
-                  height: '30px',
-                  background: '#007AFF',
-                  boxShadow: '0 0 10px rgba(0, 122, 255, 0.6)'
+                  top: pos.top !== undefined ? -2 : 'auto',
+                  bottom: pos.bottom !== undefined ? -2 : 'auto',
+                  left: pos.left !== undefined ? -2 : 'auto',
+                  right: pos.right !== undefined ? -2 : 'auto',
+                  width: pos.left !== undefined || pos.right !== undefined ? '20px' : '2px',
+                  height: pos.top !== undefined || pos.bottom !== undefined ? '20px' : '2px',
+                  background: '#00FFFF',
+                  boxShadow: '0 0 10px rgba(0, 255, 255, 0.8)'
                 }
-              }}
-            />
-          ))}
-          
-          {/* Radar circles */}
-          {[1, 2, 3].map((i) => (
-            <Box
-              key={i}
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: `${i * 200}px`,
-                height: `${i * 200}px`,
-                border: '1px solid rgba(0, 122, 255, 0.2)',
-                borderRadius: '50%',
-                animation: `${scanPulse} ${3 + i * 0.7}s ease-in-out infinite`,
-                animationDelay: `${i * 0.5}s`
               }}
             />
           ))}
