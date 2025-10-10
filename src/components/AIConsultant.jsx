@@ -831,10 +831,25 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                   fontSize: '1.1rem',
                   fontWeight: 800,
                   boxShadow: '0 8px 32px rgba(100, 116, 255, 0.3)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)',
+                    transition: 'left 0.6s ease'
+                  },
                   '&:hover': {
                     background: 'linear-gradient(135deg, #5060e0 0%, #7a84ff 100%)',
                     boxShadow: '0 12px 48px rgba(100, 116, 255, 0.4)',
-                    transform: 'translateY(-3px)'
+                    transform: 'translateY(-3px)',
+                    '&::before': {
+                      left: '100%'
+                    }
                   },
                   transition: 'all 0.3s ease'
                 }}
@@ -1016,8 +1031,23 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                   textTransform: 'none',
                   color: '#007AFF',
                   fontWeight: 500,
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.2), transparent)',
+                    transition: 'left 0.6s ease'
+                  },
                   '&:hover': {
-                    background: 'rgba(0, 122, 255, 0.08)'
+                    background: 'rgba(0, 122, 255, 0.08)',
+                    '&::before': {
+                      left: '100%'
+                    }
                   }
                 }}
               >
