@@ -100,24 +100,30 @@ const glowPulse = keyframes`
   }
 `;
 
-const gridReveal = keyframes`
+const gridTrail = keyframes`
   0% {
-    opacity: 0;
-    transform: scaleY(0);
-    transform-origin: top;
+    mask-position: 0% 0%;
   }
   50% {
-    opacity: 1;
-    transform: scaleY(1);
-    transform-origin: top;
-  }
-  51% {
-    transform-origin: bottom;
+    mask-position: 0% 100%;
   }
   100% {
+    mask-position: 0% 200%;
+  }
+`;
+
+const gridFade = keyframes`
+  0% {
+    opacity: 0;
+  }
+  10% {
     opacity: 1;
-    transform: scaleY(1);
-    transform-origin: bottom;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 `;
 
@@ -594,24 +600,6 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             backdropFilter: 'blur(2px)'
           }}
         >
-          {/* Revealed Grid Behind Beam */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundImage: `
-                repeating-linear-gradient(0deg, rgba(0, 122, 255, 0.15) 0px, rgba(0, 122, 255, 0.15) 1px, transparent 1px, transparent 30px),
-                repeating-linear-gradient(90deg, rgba(0, 122, 255, 0.15) 0px, rgba(0, 122, 255, 0.15) 1px, transparent 1px, transparent 30px),
-                repeating-linear-gradient(45deg, rgba(88, 86, 214, 0.08) 0px, rgba(88, 86, 214, 0.08) 1px, transparent 1px, transparent 60px),
-                repeating-linear-gradient(-45deg, rgba(88, 86, 214, 0.08) 0px, rgba(88, 86, 214, 0.08) 1px, transparent 1px, transparent 60px)
-              `,
-              animation: `${gridReveal} 4s cubic-bezier(0.4, 0, 0.2, 1)`
-            }}
-          />
-
           {/* Main Scanning Beam */}
           <Box
             sx={{
@@ -619,7 +607,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               left: 0,
               right: 0,
               top: 0,
-              height: '200px',
+              height: '300px',
               animation: `${scanLine} 4s cubic-bezier(0.4, 0, 0.2, 1)`,
               pointerEvents: 'none',
               zIndex: 2
@@ -631,57 +619,79 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 position: 'absolute',
                 left: 0,
                 right: 0,
-                top: '100px',
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent 0%, #007AFF 20%, #007AFF 80%, transparent 100%)',
-                boxShadow: '0 0 30px rgba(0, 122, 255, 0.8), 0 0 60px rgba(0, 122, 255, 0.4)',
+                top: '150px',
+                height: '3px',
+                background: 'linear-gradient(90deg, transparent 0%, #007AFF 20%, #00FFFF 50%, #007AFF 80%, transparent 100%)',
+                boxShadow: '0 0 40px rgba(0, 255, 255, 0.9), 0 0 80px rgba(0, 122, 255, 0.6)',
                 filter: 'blur(0.5px)'
               }}
             />
             
-            {/* Glow above */}
+            {/* Cyberpunk Grid Trail - Following Beam */}
+            <Box
+              sx={{
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: '150px',
+                height: '100vh',
+                backgroundImage: `
+                  repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.4) 0px, rgba(0, 255, 255, 0.4) 2px, transparent 2px, transparent 25px),
+                  repeating-linear-gradient(90deg, rgba(0, 255, 255, 0.4) 0px, rgba(0, 255, 255, 0.4) 2px, transparent 2px, transparent 25px),
+                  repeating-linear-gradient(45deg, rgba(0, 122, 255, 0.2) 0px, rgba(0, 122, 255, 0.2) 1px, transparent 1px, transparent 50px),
+                  repeating-linear-gradient(-45deg, rgba(88, 86, 214, 0.2) 0px, rgba(88, 86, 214, 0.2) 1px, transparent 1px, transparent 50px)
+                `,
+                opacity: 0.8,
+                filter: 'blur(0.5px)',
+                boxShadow: '0 -20px 60px rgba(0, 255, 255, 0.3)',
+                animation: `${gridFade} 4s ease-in-out`
+              }}
+            />
+            
+            {/* Glow above beam */}
             <Box
               sx={{
                 position: 'absolute',
                 left: 0,
                 right: 0,
                 top: 0,
-                height: '100px',
-                background: 'linear-gradient(180deg, transparent 0%, rgba(0, 122, 255, 0.15) 100%)',
-                filter: 'blur(20px)'
+                height: '150px',
+                background: 'linear-gradient(180deg, transparent 0%, rgba(0, 122, 255, 0.2) 70%, rgba(0, 255, 255, 0.3) 100%)',
+                filter: 'blur(25px)'
               }}
             />
             
-            {/* Glow below */}
+            {/* Glow below beam */}
             <Box
               sx={{
                 position: 'absolute',
                 left: 0,
                 right: 0,
-                top: '100px',
-                height: '100px',
-                background: 'linear-gradient(180deg, rgba(0, 122, 255, 0.15) 0%, transparent 100%)',
-                filter: 'blur(20px)'
+                top: '150px',
+                height: '150px',
+                background: 'linear-gradient(180deg, rgba(0, 255, 255, 0.3) 0%, rgba(0, 122, 255, 0.2) 30%, transparent 100%)',
+                filter: 'blur(25px)'
               }}
             />
             
-            {/* Grid highlight following beam */}
-            <Box
-              sx={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: '50px',
-                height: '100px',
-                backgroundImage: `
-                  repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.3) 0px, rgba(0, 255, 255, 0.3) 1px, transparent 1px, transparent 30px),
-                  repeating-linear-gradient(90deg, rgba(0, 255, 255, 0.3) 0px, rgba(0, 255, 255, 0.3) 1px, transparent 1px, transparent 30px)
-                `,
-                opacity: 0.6,
-                filter: 'blur(1px)',
-                mixBlendMode: 'screen'
-              }}
-            />
+            {/* Digital glitch lines */}
+            {[0, 20, 40, 60, 80].map((offset, i) => (
+              <Box
+                key={i}
+                sx={{
+                  position: 'absolute',
+                  left: `${offset}%`,
+                  right: 0,
+                  top: '145px',
+                  height: '1px',
+                  width: `${10 + i * 5}%`,
+                  background: `rgba(0, 255, 255, ${0.3 + i * 0.1})`,
+                  boxShadow: `0 0 ${5 + i * 2}px rgba(0, 255, 255, 0.6)`,
+                  animation: `${gridFade} 4s ease-in-out`,
+                  animationDelay: `${i * 0.1}s`
+                }}
+              />
+            ))}
           </Box>
           
           {/* Tech Grid Pattern */}
