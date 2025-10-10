@@ -21,19 +21,19 @@ function ClientsToolbar({ rows, columns, contentType }) {
 
   return (
     <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
-      <GridToolbarColumnsButton sx={{ color: '#374151', fontWeight: 600 }} />
-      <GridToolbarFilterButton sx={{ color: '#374151', fontWeight: 600 }} />
-      <GridToolbarDensitySelector sx={{ color: '#374151', fontWeight: 600 }} />
+      <GridToolbarColumnsButton sx={{ color: '#86868b', fontWeight: 400, textTransform: 'none' }} />
+      <GridToolbarFilterButton sx={{ color: '#86868b', fontWeight: 400, textTransform: 'none' }} />
+      <GridToolbarDensitySelector sx={{ color: '#86868b', fontWeight: 400, textTransform: 'none' }} />
       <Button
         startIcon={<FileDownloadIcon />}
         onClick={handleExport}
         size="small"
         sx={{
           textTransform: 'none',
-          fontWeight: 700,
-          color: '#6474ff',
+          fontWeight: 500,
+          color: '#007AFF',
           '&:hover': {
-            background: 'rgba(100, 116, 255, 0.1)'
+            background: 'rgba(0, 122, 255, 0.08)'
           }
         }}
       >
@@ -45,27 +45,29 @@ function ClientsToolbar({ rows, columns, contentType }) {
         sx={{ 
           minWidth: 200,
           '& .MuiInputBase-root': {
-            color: '#1a2332',
+            color: '#1d1d1f',
+            fontSize: '0.875rem',
             '& input': {
-              color: '#1a2332'
+              color: '#1d1d1f'
             }
           },
           '& .MuiInputBase-input::placeholder': {
-            color: '#9ca3af',
+            color: '#86868b',
             opacity: 1
           },
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(100, 116, 255, 0.2)'
+            borderColor: 'rgba(0, 0, 0, 0.12)',
+            borderRadius: '8px'
           },
           '& .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(100, 116, 255, 0.4)'
+            borderColor: 'rgba(0, 0, 0, 0.24)'
           },
           '& .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#6474ff',
-            boxShadow: '0 0 0 3px rgba(100, 116, 255, 0.1)'
+            borderColor: '#007AFF',
+            borderWidth: '1px'
           },
           '& .MuiSvgIcon-root': {
-            color: '#6b7280'
+            color: '#86868b'
           }
         }}
       />

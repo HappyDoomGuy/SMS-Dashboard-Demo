@@ -761,52 +761,50 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         fullWidth
         PaperProps={{
           sx: {
-            borderRadius: 4,
+            borderRadius: 3,
             minHeight: '70vh',
             maxHeight: '90vh',
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(20px)',
-            border: '2px solid rgba(100, 116, 255, 0.2)',
-            boxShadow: '0 24px 80px rgba(100, 116, 255, 0.2)'
+            background: '#ffffff',
+            border: '0.5px solid rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)'
           }
         }}
       >
         <DialogTitle
           sx={{
-            background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.08) 0%, rgba(139, 149, 255, 0.05) 100%)',
-            borderBottom: '2px solid rgba(100, 116, 255, 0.15)',
-            color: '#1a2332',
+            background: '#ffffff',
+            borderBottom: '0.5px solid rgba(0, 0, 0, 0.08)',
+            color: '#1d1d1f',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            py: 3,
+            py: 2.5,
             position: 'relative'
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Box sx={{
-              width: 48,
-              height: 48,
-              borderRadius: 2,
-              background: 'linear-gradient(135deg, #6474ff, #8b95ff)',
+              width: 44,
+              height: 44,
+              borderRadius: '50%',
+              background: '#007AFF',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 20px rgba(100, 116, 255, 0.4)'
+              justifyContent: 'center'
             }}>
-              <AutoAwesomeIcon sx={{ color: '#ffffff', fontSize: 28 }} />
+              <AutoAwesomeIcon sx={{ color: '#ffffff', fontSize: 24 }} />
             </Box>
-            <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: -0.5 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, letterSpacing: -0.3 }}>
               ИИ Консультант
             </Typography>
           </Box>
           <IconButton
             onClick={handleClose}
             sx={{
-              color: '#6b7280',
+              color: '#86868b',
               '&:hover': {
-                background: 'rgba(100, 116, 255, 0.1)',
-                color: '#1a2332'
+                background: 'rgba(0, 122, 255, 0.08)',
+                color: '#1d1d1f'
               }
             }}
           >
@@ -814,7 +812,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           </IconButton>
         </DialogTitle>
 
-        <DialogContent sx={{ p: 4, background: 'rgba(248, 250, 252, 0.5)' }}>
+        <DialogContent sx={{ p: 4, background: '#f5f5f7' }}>
           {!analysis && !loading && !error && (
             <Box
               sx={{
@@ -922,65 +920,61 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               ref={contentRef}
               sx={{
                 p: 4,
-                background: 'rgba(255, 255, 255, 0.7)',
-                backdropFilter: 'blur(10px)',
-                border: '2px solid rgba(100, 116, 255, 0.15)',
-                borderRadius: 3,
-                boxShadow: '0 4px 24px rgba(100, 116, 255, 0.1)',
+                background: '#ffffff',
+                border: '0.5px solid rgba(0, 0, 0, 0.08)',
+                borderRadius: 2,
+                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
                 '& h1': { 
-                  fontSize: '1.9rem', 
-                  fontWeight: 800, 
+                  fontSize: '1.75rem', 
+                  fontWeight: 700, 
                   mt: 3, 
                   mb: 2,
-                  color: '#1a2332',
-                  borderBottom: '3px solid rgba(100, 116, 255, 0.2)',
-                  paddingBottom: '12px',
-                  background: 'linear-gradient(135deg, #1a2332, #6474ff)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
+                  color: '#1d1d1f',
+                  borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                  paddingBottom: '12px'
                 },
                 '& h2': { 
-                  fontSize: '1.5rem', 
-                  fontWeight: 700, 
+                  fontSize: '1.375rem', 
+                  fontWeight: 600, 
                   mt: 3, 
                   mb: 1.5,
-                  color: '#1a2332'
+                  color: '#1d1d1f'
                 },
                 '& h3': { 
-                  fontSize: '1.2rem', 
-                  fontWeight: 700, 
+                  fontSize: '1.125rem', 
+                  fontWeight: 600, 
                   mt: 2, 
                   mb: 1,
-                  color: '#374151'
+                  color: '#1d1d1f'
                 },
                 '& p': { 
                   mb: 1.5, 
-                  lineHeight: 1.8,
-                  color: '#4b5563',
-                  fontSize: '0.95rem'
+                  lineHeight: 1.7,
+                  color: '#1d1d1f',
+                  fontSize: '0.9375rem'
                 },
                 '& ul, & ol': { 
                   pl: 3, 
                   mb: 2,
-                  color: '#4b5563'
+                  color: '#1d1d1f'
                 },
                 '& li': { 
-                  mb: 1,
-                  color: '#4b5563'
+                  mb: 0.8,
+                  color: '#1d1d1f'
                 },
                 '& strong': { 
-                  fontWeight: 800,
-                  color: '#6474ff'
+                  fontWeight: 600,
+                  color: '#007AFF'
                 },
                 '& code': {
-                  background: 'rgba(100, 116, 255, 0.1)',
-                  color: '#1a2332',
-                  padding: '4px 10px',
-                  borderRadius: 1.5,
+                  background: '#f5f5f7',
+                  color: '#1d1d1f',
+                  padding: '3px 8px',
+                  borderRadius: 1,
                   fontSize: '0.9em',
-                  border: '1px solid rgba(100, 116, 255, 0.2)',
-                  fontWeight: 600
+                  border: '0.5px solid rgba(0, 0, 0, 0.1)',
+                  fontFamily: 'SF Mono, Monaco, monospace',
+                  fontWeight: 500
                 }
               }}
             >
@@ -991,8 +985,8 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
 
         <DialogActions sx={{ 
           p: 3, 
-          borderTop: '2px solid rgba(100, 116, 255, 0.15)',
-          background: 'linear-gradient(135deg, rgba(100, 116, 255, 0.03) 0%, rgba(139, 149, 255, 0.02) 100%)',
+          borderTop: '0.5px solid rgba(0, 0, 0, 0.08)',
+          background: '#ffffff',
           gap: 1.5
         }}>
           {analysis && (
@@ -1001,20 +995,13 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 startIcon={<DescriptionIcon />}
                 onClick={exportToWord}
                 disabled={exporting}
-                variant="outlined"
                 sx={{ 
                   textTransform: 'none',
-                  borderColor: 'rgba(0, 217, 255, 0.5)',
-                  color: '#00d9ff',
-                  fontWeight: 700,
-                  borderWidth: 2,
+                  color: '#007AFF',
+                  fontWeight: 500,
                   '&:hover': {
-                    borderColor: '#00d9ff',
-                    background: 'rgba(0, 217, 255, 0.1)',
-                    boxShadow: '0 4px 20px rgba(0, 217, 255, 0.3)',
-                    transform: 'translateY(-2px)'
-                  },
-                  transition: 'all 0.3s ease'
+                    background: 'rgba(0, 122, 255, 0.08)'
+                  }
                 }}
               >
                 Сохранить как Word
@@ -1023,20 +1010,13 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 startIcon={<PictureAsPdfIcon />}
                 onClick={exportToPDF}
                 disabled={exporting}
-                variant="outlined"
                 sx={{ 
                   textTransform: 'none',
-                  borderColor: 'rgba(255, 107, 157, 0.5)',
-                  color: '#ff6b9d',
-                  fontWeight: 700,
-                  borderWidth: 2,
+                  color: '#007AFF',
+                  fontWeight: 500,
                   '&:hover': {
-                    borderColor: '#ff6b9d',
-                    background: 'rgba(255, 107, 157, 0.1)',
-                    boxShadow: '0 4px 20px rgba(255, 107, 157, 0.3)',
-                    transform: 'translateY(-2px)'
-                  },
-                  transition: 'all 0.3s ease'
+                    background: 'rgba(0, 122, 255, 0.08)'
+                  }
                 }}
               >
                 Сохранить как PDF
@@ -1048,10 +1028,10 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 disabled={loading || exporting}
                 sx={{ 
                   textTransform: 'none',
-                  color: '#6474ff',
-                  fontWeight: 700,
+                  color: '#007AFF',
+                  fontWeight: 500,
                   '&:hover': {
-                    background: 'rgba(100, 116, 255, 0.1)'
+                    background: 'rgba(0, 122, 255, 0.08)'
                   }
                 }}
               >
@@ -1063,11 +1043,11 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             onClick={handleClose} 
             sx={{ 
               textTransform: 'none',
-              color: '#6b7280',
-              fontWeight: 700,
+              color: '#86868b',
+              fontWeight: 500,
               '&:hover': {
-                background: 'rgba(100, 116, 255, 0.1)',
-                color: '#1a2332'
+                background: 'rgba(0, 122, 255, 0.08)',
+                color: '#1d1d1f'
               }
             }}
           >
