@@ -57,9 +57,9 @@ function CustomToolbar({ rows, columns, contentType }) {
 
   return (
     <GridToolbarContainer sx={{ p: 2, gap: 1 }}>
-      <GridToolbarColumnsButton sx={{ color: '#86868b', fontWeight: 400, textTransform: 'none' }} />
-      <GridToolbarFilterButton sx={{ color: '#86868b', fontWeight: 400, textTransform: 'none' }} />
-      <GridToolbarDensitySelector sx={{ color: '#86868b', fontWeight: 400, textTransform: 'none' }} />
+      <GridToolbarColumnsButton sx={{ color: '#1d1d1f', fontWeight: 400, textTransform: 'none' }} />
+      <GridToolbarFilterButton sx={{ color: '#1d1d1f', fontWeight: 400, textTransform: 'none' }} />
+      <GridToolbarDensitySelector sx={{ color: '#1d1d1f', fontWeight: 400, textTransform: 'none' }} />
       <Button
         startIcon={<FileDownloadIcon />}
         onClick={handleExport}
@@ -67,10 +67,9 @@ function CustomToolbar({ rows, columns, contentType }) {
         sx={{
           textTransform: 'none',
           fontWeight: 400,
-          color: '#86868b',
+          color: '#1d1d1f',
           '&:hover': {
-            background: 'rgba(0, 0, 0, 0.04)',
-            color: '#1d1d1f'
+            background: 'rgba(0, 0, 0, 0.04)'
           }
         }}
       >
