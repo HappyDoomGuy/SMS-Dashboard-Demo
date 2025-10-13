@@ -652,8 +652,8 @@ ${dataForAnalysis.abTestAnalysis.map((test, i) =>
       <Box
         sx={{
           position: 'fixed',
-          bottom: 32,
-          right: 200,
+          bottom: 192,
+          right: 32,
           width: 140,
           height: 140,
           zIndex: 1000,
