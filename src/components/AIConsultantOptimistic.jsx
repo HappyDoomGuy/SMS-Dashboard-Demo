@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import {
   Close as CloseIcon,
-  Psychology as PsychologyIcon,
+  LightMode as LightModeIcon,
   AutoAwesome as AutoAwesomeIcon,
   Description as DescriptionIcon,
   PictureAsPdf as PictureAsPdfIcon
@@ -70,15 +70,15 @@ const buttonScale = keyframes`
 const glowPulse = keyframes`
   0%, 100% {
     box-shadow: 
-      0 0 20px rgba(0, 122, 255, 0.3),
-      0 0 40px rgba(0, 122, 255, 0.15),
-      0 8px 32px rgba(0, 122, 255, 0.2);
+      0 0 20px rgba(255, 193, 7, 0.3),
+      0 0 40px rgba(255, 193, 7, 0.15),
+      0 8px 32px rgba(255, 193, 7, 0.2);
   }
   50% {
     box-shadow: 
-      0 0 30px rgba(0, 122, 255, 0.5),
-      0 0 60px rgba(0, 122, 255, 0.25),
-      0 8px 32px rgba(0, 122, 255, 0.3);
+      0 0 30px rgba(255, 193, 7, 0.5),
+      0 0 60px rgba(255, 193, 7, 0.25),
+      0 8px 32px rgba(255, 193, 7, 0.3);
   }
 `;
 
@@ -164,7 +164,7 @@ const iconFloat = keyframes`
   }
 `;
 
-const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
+const AIConsultantOptimistic = ({ data, contentType, campaignsData, clientsData }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -199,17 +199,15 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         format: 'a4'
       });
 
-      const imgWidth = 190; // A4 width minus margins
-      const pageHeight = 277; // A4 height minus margins
+      const imgWidth = 190;
+      const pageHeight = 277;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
       let position = 10;
 
-      // Add first page
       pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
-      // Add more pages if needed
       while (heightLeft > 0) {
         position = heightLeft - imgHeight + 10;
         pdf.addPage();
@@ -217,7 +215,7 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         heightLeft -= pageHeight;
       }
 
-      const filename = `Анализ_${contentType}_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.pdf`;
+      const filename = `Позитивный_Анализ_${contentType}_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.pdf`;
       pdf.save(filename);
       enqueueSnackbar('PDF успешно сохранен', { variant: 'success' });
     } catch (err) {
@@ -234,7 +232,6 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
     
     setExporting(true);
     try {
-      // Convert markdown to HTML
       const htmlContent = `
         <!DOCTYPE html>
         <html>
@@ -253,7 +250,7 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
           </style>
         </head>
         <body>
-          <h1>Маркетинговый анализ - ${contentType}</h1>
+          <h1>Позитивный анализ - ${contentType}</h1>
           <p><strong>Дата создания:</strong> ${new Date().toLocaleString('ru-RU')}</p>
           <hr/>
           ${analysis.replace(/\n/g, '<br/>')}
@@ -261,7 +258,6 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         </html>
       `;
 
-      // Create blob and download
       const blob = new Blob([htmlContent], { 
         type: 'application/msword' 
       });
@@ -269,7 +265,7 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `Анализ_${contentType}_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.doc`;
+      link.download = `Позитивный_Анализ_${contentType}_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.doc`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -285,7 +281,6 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
   };
 
   const prepareDataForAnalysis = () => {
-    // Функция для парсинга дат (та же, что в App.jsx)
     const parseDate = (dateString) => {
       if (!dateString) return null;
       
@@ -293,14 +288,12 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       let date = null;
       let match = null;
       
-      // Format 1: DD.MM.YYYY HH:MM:SS (Russian format with time)
       match = cleanDate.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})/);
       if (match) {
         const [, day, month, year, hour, minute, second] = match;
         date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
       }
       
-      // Format 2: DD.MM.YYYY (date only)
       if (!date || isNaN(date.getTime())) {
         match = cleanDate.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
         if (match) {
@@ -309,7 +302,6 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         }
       }
       
-      // Format 3: YYYY-MM-DD HH:MM:SS (ISO format)
       if (!date || isNaN(date.getTime())) {
         match = cleanDate.match(/(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})/);
         if (match) {
@@ -318,7 +310,6 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         }
       }
       
-      // Format 4: YYYY-MM-DD (ISO date only)
       if (!date || isNaN(date.getTime())) {
         match = cleanDate.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
         if (match) {
@@ -327,16 +318,13 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         }
       }
       
-      // Fallback: try native Date parsing
       if (!date || isNaN(date.getTime())) {
         date = new Date(dateString);
       }
       
-      // If still invalid, return null
       return (!date || isNaN(date.getTime())) ? null : date;
     };
 
-    // Общая статистика
     const totalRecords = data.length;
     const totalTime = data.reduce((sum, item) => sum + (item.timeSec || 0), 0);
     const avgTime = totalRecords > 0 ? (totalTime / totalRecords).toFixed(2) : 0;
@@ -346,7 +334,6 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       ? (viewPercents.reduce((sum, p) => sum + p, 0) / viewPercents.length).toFixed(2) 
       : 0;
 
-    // Статистика по кампаниям
     const campaignsStats = campaignsData.map(c => ({
       name: c.campaignName,
       date: c.latestDate,
@@ -356,7 +343,6 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       conversionRate: ((c.pageViews / c.smsSent) * 100).toFixed(2)
     }));
 
-    // Топ-5 активных клиентов
     const topClients = clientsData
       .sort((a, b) => b.pageViews - a.pageViews)
       .slice(0, 5)
@@ -368,22 +354,18 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         totalTime: c.totalTimeFormatted
       }));
 
-    // Распределение по специальностям
     const specialtyDistribution = {};
     clientsData.forEach(client => {
       const specialty = client.specialty || 'Не указано';
       specialtyDistribution[specialty] = (specialtyDistribution[specialty] || 0) + 1;
     });
 
-    // Динамика просмотров по дням (с валидацией дат)
     const dailyViews = {};
     data.forEach(item => {
       if (!item.date) return;
       
-      // Используем нашу функцию парсинга
       const dateObj = parseDate(item.date);
       
-      // Проверяем валидность
       if (dateObj) {
         const formattedDate = dateObj.toLocaleDateString('ru-RU');
         dailyViews[formattedDate] = (dailyViews[formattedDate] || 0) + 1;
@@ -401,7 +383,6 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       views: dailyViews[date]
     }));
     
-    // Добавляем статистику по дням недели
     const dayOfWeekStats = { 'Пн': 0, 'Вт': 0, 'Ср': 0, 'Чт': 0, 'Пт': 0, 'Сб': 0, 'Вс': 0 };
     const dayNames = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
     data.forEach(item => {
@@ -413,7 +394,6 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
       }
     });
     
-    // Добавляем статистику по часам
     const hourlyStats = {};
     data.forEach(item => {
       if (!item.date) return;
@@ -440,30 +420,7 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
         first: sortedDates[0] || 'Нет данных',
         last: sortedDates[sortedDates.length - 1] || 'Нет данных',
         totalDays: sortedDates.length
-      },
-      // Фильтруем данные за последние 30 дней
-      recentRecords: (() => {
-        const now = new Date();
-        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-        
-        return data
-          .filter(item => {
-            if (!item.date) return false;
-            const itemDate = new Date(item.date);
-            return !isNaN(itemDate.getTime()) && itemDate >= thirtyDaysAgo;
-          })
-          .map(item => ({
-            date: item.date,
-            campaignName: item.campaignName,
-            userName: item.userName,
-            specialty: item.specialty,
-            workplace: item.workplace,
-            district: item.district,
-            timeSec: item.timeSec,
-            viewPercent: item.viewPercent,
-            videoName: item.videoName
-          }));
-      })()
+      }
     };
   };
 
@@ -475,12 +432,23 @@ const AIConsultant = ({ data, contentType, campaignsData, clientsData }) => {
     try {
       const dataForAnalysis = prepareDataForAnalysis();
 
-      const prompt = `Ты — опытный маркетинговый аналитик фармацевтической индустрии. Проанализируй данные SMS-кампании для препарата "${dataForAnalysis.contentType}" и дай подробные рекомендации.
+      const prompt = `Ты — маркетинговый консультант-стратег фармацевтической индустрии. Твоя задача — дать ПРАКТИЧЕСКИЕ РЕКОМЕНДАЦИИ по улучшению SMS-кампании для препарата "${dataForAnalysis.contentType}".
+
+**ВАЖНЫЕ ПРАВИЛА:**
+- ❌ НЕ давай оценок текущим показателям (НЕ говори "хорошо" или "плохо")
+- ❌ НЕ анализируй конверсию как "высокую" или "низкую"
+- ❌ НЕ оценивай эффективность кампаний
+- ✅ ФОКУСИРУЙСЯ только на рекомендациях и советах
+- ✅ Предлагай конкретные действия для улучшения
+- ✅ Давай практические стратегии повышения конверсии
+- ✅ Объясняй КАК улучшить, а не ЧТО плохо
+- ✅ Используй формат: "Для повышения X рекомендую Y"
+- ✅ Тон: консультативный, практичный, ориентированный на действия
 
 **ВАЖНО:** 
 - НЕ указывай дату анализа от себя, используй ТОЛЬКО даты из предоставленных данных
-- НЕ используй таблицы в своем ответе (они плохо отображаются)
-- Все данные представляй в виде структурированных списков с маркерами или номерами
+- НЕ используй таблицы в своем ответе
+- Все данные представляй в виде структурированных списков
 - Используй форматирование: жирный текст, заголовки, списки, но БЕЗ таблиц
 
 **ДАННЫЕ ДЛЯ АНАЛИЗА:**
@@ -497,7 +465,7 @@ ${dataForAnalysis.campaigns.map(c =>
   `- ${c.name} (${c.date}): Отправлено ${c.smsSent} SMS, просмотрено ${c.smsViewed} SMS, ${c.pageViews} просмотров страниц, конверсия ${c.conversionRate}%`
 ).join('\n')}
 
-**Топ-5 активных клиентов:**
+**Топ-5 самых вовлеченных клиентов:**
 ${dataForAnalysis.topClients.map((c, i) => 
   `${i + 1}. ${c.name} (${c.specialty}, ${c.workplace}): ${c.pageViews} просмотров, время: ${c.totalTime}`
 ).join('\n')}
@@ -509,70 +477,59 @@ ${Object.entries(dataForAnalysis.specialtyDistribution)
   .map(([specialty, count]) => `- ${specialty}: ${count} клиентов`)
   .join('\n')}
 
-**Динамика просмотров по дням (все ${dataForAnalysis.dateRange.totalDays} дней):**
+**Динамика просмотров по дням:**
 ${dataForAnalysis.viewsDynamics.map(d => `- ${d.date}: ${d.views} просмотров`).join('\n')}
 
 **Статистика по дням недели:**
 ${Object.entries(dataForAnalysis.dayOfWeekStats).map(([day, count]) => `- ${day}: ${count} просмотров`).join('\n')}
 
-**Статистика по часам (топ-10 активных часов):**
+**Статистика по часам (топ-10):**
 ${Object.entries(dataForAnalysis.hourlyStats)
   .sort((a, b) => b[1] - a[1])
   .slice(0, 10)
   .map(([hour, count]) => `- ${hour}:00 - ${count} просмотров`)
   .join('\n')}
 
-**ПОЛНЫЙ НАБОР ДАННЫХ (все ${dataForAnalysis.totalRecords} записей в формате JSON):**
-
-\`\`\`json
-${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
-\`\`\`
-
-Анализируй ВСЕ эти записи для получения полной картины.
-
 **ЗАДАНИЕ:**
-Проанализируй эти данные и предоставь:
+На основе этих данных дай ПРАКТИЧЕСКИЕ РЕКОМЕНДАЦИИ (БЕЗ оценок):
 
-1. **Общий анализ эффективности кампании** (2-3 абзаца):
-   - Оценка общей эффективности SMS-кампаний
-   - Ключевые показатели (конверсия, вовлеченность, время просмотра)
-   - Тренды и паттерны в данных
+1. **Стратегии повышения конверсии** (3-5 рекомендаций):
+   - Как увеличить количество просмотров SMS
+   - Способы повышения переходов на страницу
+   - Методы увеличения времени просмотра видео
+   - Тактики для улучшения вовлеченности
 
-2. **Анализ по кампаниям** (в виде списка):
-   - Для каждой кампании предоставь структурированную информацию в формате:
-     * **Название кампании** (дата)
-     * Отправлено: [число] SMS
-     * Просмотрено: [число] SMS
-     * Просмотров страниц: [число]
-     * Конверсия: [%]
-   - Какие кампании показали лучшие результаты и почему
-   - Какие кампании требуют оптимизации
-   - Сравнение эффективности разных волн рассылок
+2. **Рекомендации по кампаниям** (для каждой кампании):
+   - Что можно улучшить в следующей волне
+   - Как оптимизировать текст SMS
+   - Идеи для повышения отклика
+   - Предложения по таргетингу
 
-3. **Анализ аудитории**:
-   - Какие специальности наиболее активны
-   - Характеристики наиболее вовлеченных клиентов
-   - Потенциальные сегменты для таргетинга
+3. **Работа с аудиторией** (конкретные действия):
+   - Как лучше работать с активными специальностями
+   - Способы вовлечения менее активных сегментов
+   - Идеи персонализации для разных врачей
+   - Стратегии удержания внимания
 
-4. **Временной анализ** (используй ВСЕ предоставленные данные):
-   - Динамика вовлеченности по дням (анализируй все ${dataForAnalysis.dateRange.totalDays} дней)
-   - Анализ по дням недели (какие дни наиболее активны)
-   - Анализ по часам (оптимальное время для рассылок)
-   - Тренды роста/снижения активности
-   - Выявление пиковых периодов активности
+4. **Оптимизация времени и частоты**:
+   - Рекомендации по дням недели для рассылок
+   - Оптимальные часы для отправки SMS
+   - Частота контакта с аудиторией
+   - График проведения кампаний
 
-5. **Конкретные маркетинговые рекомендации** (минимум 5):
-   - Как улучшить конверсию
-   - Какие сегменты аудитории развивать
-   - Оптимизация контента и таймингов
-   - Персонализация подхода
-   - Метрики для отслеживания
+5. **Улучшение контента**:
+   - Идеи для повышения интереса к видео
+   - Рекомендации по длине и формату контента
+   - Способы сделать материал более привлекательным
+   - Предложения по структуре информации
 
-6. **План действий на следующий месяц**:
-   - Приоритетные задачи
-   - Ожидаемые результаты
+6. **Практический план на следующий месяц**:
+   - Конкретные шаги для улучшения результатов
+   - Приоритетные действия
+   - Что внедрить в первую очередь
+   - Как отслеживать эффективность изменений
 
-Ответ должен быть структурированным, использовать маркдаун, содержать конкретные цифры из данных и быть практически применимым.`;
+ВАЖНО: Не давай оценок! Только рекомендации и советы. Формат: "Рекомендую...", "Предлагаю...", "Для улучшения стоит..."`;
 
       const requestBody = {
         contents: [{
@@ -581,7 +538,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
           }]
         }],
         generationConfig: {
-          temperature: 0.7,
+          temperature: 0.75,
           topK: 40,
           topP: 0.95,
           maxOutputTokens: 8192,
@@ -606,7 +563,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
       if (result.candidates && result.candidates[0] && result.candidates[0].content) {
         const analysisText = result.candidates[0].content.parts[0].text;
         setAnalysis(analysisText);
-        enqueueSnackbar('Анализ успешно завершен', { variant: 'success' });
+        enqueueSnackbar('Рекомендации готовы!', { variant: 'success' });
       } else {
         throw new Error('Неверный формат ответа от API');
       }
@@ -626,7 +583,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         sx={{
           position: 'fixed',
           bottom: 32,
-          right: 32,
+          right: 200,
           width: 140,
           height: 140,
           zIndex: 1000,
@@ -645,7 +602,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               transform: 'translate(-50%, -50%)',
               width: '80px',
               height: '80px',
-              border: '1.5px solid rgba(0, 122, 255, 0.4)',
+              border: '1.5px solid rgba(255, 193, 7, 0.4)',
               borderRadius: '50%',
               animation: `${energyWave} ${3.5 + i * 0.5}s cubic-bezier(0.4, 0, 0.2, 1) infinite`,
               animationDelay: `${i * 1.2 + 0.8}s`,
@@ -664,7 +621,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               left: '15%',
               width: '70%',
               height: '0.5px',
-              background: 'linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.4), transparent)',
+              background: 'linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.4), transparent)',
               animation: `${hologramShift} ${2.5 + i * 0.3}s cubic-bezier(0.4, 0, 0.6, 1) infinite`,
               animationDelay: `${i * 0.2 + 0.8}s`,
               pointerEvents: 'none'
@@ -674,8 +631,8 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
         
 
         <Fab
-          color="primary"
-          aria-label="AI консультант"
+          color="warning"
+          aria-label="AI консультант позитивный"
           onClick={handleOpen}
           sx={{
             position: 'absolute',
@@ -685,7 +642,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             width: 80,
             height: 80,
             pointerEvents: 'auto',
-            background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+            background: 'linear-gradient(135deg, #FFC107 0%, #FFD54F 100%)',
             border: '3px solid rgba(255, 255, 255, 0.95)',
             animation: `${buttonScale} 1.6s cubic-bezier(0.34, 1.2, 0.64, 1) 0.6s backwards, ${glowPulse} 4s cubic-bezier(0.4, 0, 0.6, 1) 2s infinite`,
             overflow: 'visible',
@@ -701,7 +658,8 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               zIndex: 2
             },
             '&:hover': {
-              background: 'linear-gradient(135deg, #0051D5 0%, #003DA5 100%)',
+              background: 'linear-gradient(135deg, #FFB300 0%, #FFC107 100%)',
+              boxShadow: '0 12px 48px rgba(255, 193, 7, 0.4)',
               transform: 'translate(-50%, -50%) scale(1.1)',
               '&::before': {
                 left: '100%'
@@ -713,7 +671,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
           }}
         >
-          <PsychologyIcon 
+          <LightModeIcon 
             sx={{ 
               fontSize: 56, 
               color: '#ffffff',
@@ -773,15 +731,15 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               width: 44,
               height: 44,
               borderRadius: '50%',
-              background: '#007AFF',
+              background: 'linear-gradient(135deg, #FFC107 0%, #FFD54F 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <AutoAwesomeIcon sx={{ color: '#ffffff', fontSize: 24 }} />
+              <LightModeIcon sx={{ color: '#ffffff', fontSize: 24 }} />
             </Box>
             <Typography variant="h6" sx={{ fontWeight: 600, letterSpacing: -0.3 }}>
-              ИИ Консультант
+              ИИ Консультант — Советник
             </Typography>
           </Box>
           <IconButton
@@ -789,7 +747,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             sx={{
               color: '#86868b',
               '&:hover': {
-                background: 'rgba(0, 122, 255, 0.08)',
+                background: 'rgba(255, 193, 7, 0.08)',
                 color: '#1d1d1f'
               }
             }}
@@ -810,12 +768,12 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 textAlign: 'center'
               }}
             >
-              <PsychologyIcon sx={{ fontSize: 80, color: '#6474ff', mb: 3, filter: 'drop-shadow(0 4px 20px rgba(100, 116, 255, 0.3))' }} />
+              <LightModeIcon sx={{ fontSize: 80, color: '#FFC107', mb: 3, filter: 'drop-shadow(0 4px 20px rgba(255, 193, 7, 0.3))' }} />
               <Typography variant="h6" sx={{ mb: 1, fontWeight: 800, color: '#1a2332' }}>
-                Готов проанализировать данные кампании "{contentType}"
+                Готов дать рекомендации по кампании "{contentType}"
               </Typography>
               <Typography variant="body2" sx={{ mb: 4, color: '#6b7280', maxWidth: '400px', lineHeight: 1.6 }}>
-                Нажмите кнопку ниже, чтобы получить подробный анализ и рекомендации от ИИ
+                Нажмите кнопку ниже, чтобы получить практические советы по улучшению конверсии и эффективности
               </Typography>
               <Button
                 variant="contained"
@@ -823,14 +781,14 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 startIcon={<AutoAwesomeIcon />}
                 onClick={analyzeData}
                 sx={{
-                  background: 'linear-gradient(135deg, #6474ff 0%, #8b95ff 100%)',
+                  background: 'linear-gradient(135deg, #FFC107 0%, #FFD54F 100%)',
                   px: 5,
                   py: 1.8,
                   borderRadius: 2.5,
                   textTransform: 'none',
                   fontSize: '1.1rem',
                   fontWeight: 800,
-                  boxShadow: '0 8px 32px rgba(100, 116, 255, 0.3)',
+                  boxShadow: '0 8px 32px rgba(255, 193, 7, 0.3)',
                   position: 'relative',
                   overflow: 'hidden',
                   '&::before': {
@@ -844,8 +802,8 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                     transition: 'left 0.6s ease'
                   },
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #5060e0 0%, #7a84ff 100%)',
-                    boxShadow: '0 12px 48px rgba(100, 116, 255, 0.4)',
+                    background: 'linear-gradient(135deg, #FFB300 0%, #FFC107 100%)',
+                    boxShadow: '0 12px 48px rgba(255, 193, 7, 0.4)',
                     transform: 'translateY(-3px)',
                     '&::before': {
                       left: '100%'
@@ -854,7 +812,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                   transition: 'all 0.3s ease'
                 }}
               >
-                Начать анализ
+                Получить рекомендации
               </Button>
             </Box>
           )}
@@ -871,10 +829,10 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
             >
               <AnimatedLogo size={120} showParticles={true} />
               <Typography variant="h6" sx={{ mb: 1, mt: 4, color: '#1a2332', fontWeight: 700 }}>
-                Анализирую данные...
+                Формирую рекомендации...
               </Typography>
               <Typography variant="body2" sx={{ color: '#6b7280' }}>
-                ИИ консультант обрабатывает информацию о кампании
+                ИИ готовит практические советы по улучшению
               </Typography>
             </Box>
           )}
@@ -959,7 +917,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 },
                 '& strong': { 
                   fontWeight: 600,
-                  color: '#007AFF'
+                  color: '#FFA000'
                 },
                 '& code': {
                   background: '#f5f5f7',
@@ -992,10 +950,10 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 disabled={exporting}
                 sx={{ 
                   textTransform: 'none',
-                  color: '#007AFF',
+                  color: '#FFA000',
                   fontWeight: 500,
                   '&:hover': {
-                    background: 'rgba(0, 122, 255, 0.08)'
+                    background: 'rgba(255, 193, 7, 0.08)'
                   }
                 }}
               >
@@ -1007,10 +965,10 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 disabled={exporting}
                 sx={{ 
                   textTransform: 'none',
-                  color: '#007AFF',
+                  color: '#FFA000',
                   fontWeight: 500,
                   '&:hover': {
-                    background: 'rgba(0, 122, 255, 0.08)'
+                    background: 'rgba(255, 193, 7, 0.08)'
                   }
                 }}
               >
@@ -1023,7 +981,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                 disabled={loading || exporting}
                 sx={{ 
                   textTransform: 'none',
-                  color: '#007AFF',
+                  color: '#FFA000',
                   fontWeight: 500,
                   position: 'relative',
                   overflow: 'hidden',
@@ -1034,18 +992,18 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
                     left: '-100%',
                     width: '100%',
                     height: '100%',
-                    background: 'linear-gradient(90deg, transparent, rgba(0, 122, 255, 0.2), transparent)',
+                    background: 'linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.2), transparent)',
                     transition: 'left 0.6s ease'
                   },
                   '&:hover': {
-                    background: 'rgba(0, 122, 255, 0.08)',
+                    background: 'rgba(255, 193, 7, 0.08)',
                     '&::before': {
                       left: '100%'
                     }
                   }
                 }}
               >
-                Повторить анализ
+Обновить рекомендации
               </Button>
             </>
           )}
@@ -1056,7 +1014,7 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
               color: '#86868b',
               fontWeight: 500,
               '&:hover': {
-                background: 'rgba(0, 122, 255, 0.08)',
+                background: 'rgba(255, 193, 7, 0.08)',
                 color: '#1d1d1f'
               }
             }}
@@ -1069,5 +1027,5 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
   );
 };
 
-export default AIConsultant;
+export default AIConsultantOptimistic;
 

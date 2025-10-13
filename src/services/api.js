@@ -232,16 +232,19 @@ export const apiService = {
         }
       });
 
-      // Create campaign lookup map by distribution ID
+      // Create campaign lookup map by distribution ID and A/B group
       // Filter: only include campaigns from Delta Medical
       const campaignMap = new Map();
       campaignsData.forEach(campaign => {
         const source = campaign['Название таблицы (Источник)'] || '';
         const distributionId = campaign['ID дистрибуции'];
+        const abGroup = campaign['Группа (A/B)'] || '';
         
         // Only include campaigns from allowed sources (e.g., Delta Medical)
         if (distributionId && isAllowedCampaignSource(source)) {
-          campaignMap.set(distributionId, campaign);
+          // Create key: "distributionId|abGroup" for A/B testing support
+          const key = abGroup ? `${distributionId}|${abGroup}` : distributionId;
+          campaignMap.set(key, campaign);
         }
       });
 
@@ -258,9 +261,18 @@ export const apiService = {
             userData = phoneMap.get(normalizedPhone.substring(3));
           }
 
-          // Find campaign data by distribution type
+          // Find campaign data by distribution type and A/B group
           const distributionType = smsRecord['Тип дистрибуции'] || '';
-          const campaignData = campaignMap.get(distributionType);
+          const additionalInfo = smsRecord['Доп сведения (utm_test)'] || '';
+          
+          // Try to find campaign data with A/B group first, then without
+          let campaignData = null;
+          if (additionalInfo) {
+            campaignData = campaignMap.get(`${distributionType}|${additionalInfo}`);
+          }
+          if (!campaignData) {
+            campaignData = campaignMap.get(distributionType);
+          }
 
           return {
             id: index + 1,
@@ -272,14 +284,15 @@ export const apiService = {
             sessionId: smsRecord['SessionID'] || '',
             viewPercent: parseInt(smsRecord['% просмотра']) || 0,
             distributionType: distributionType,
-            additionalInfo: smsRecord['Доп сведения (utm_test)'] || '',
+            additionalInfo: additionalInfo,
+            abGroup: additionalInfo, // A/B группа из utm_test
             // User data
             userName: userData ? userData['ФИО'] : '',
             specialty: userData ? userData['Специальность'] : '',
             workplace: userData ? userData['Место работы'] : '',
             district: userData ? userData['Район'] : '',
             hasUserData: !!userData,
-            // Campaign data
+            // Campaign data (с учетом A/B группы)
             campaignName: campaignData ? campaignData['Название кампании'] : '',
             smsText: campaignData ? campaignData['Текст SMS'] : '',
             contactCount: campaignData ? parseInt(campaignData['Кол-во обычных контактов']) || 0 : 0,

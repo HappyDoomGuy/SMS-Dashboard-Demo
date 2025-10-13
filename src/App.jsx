@@ -7,7 +7,6 @@ import {
   Tabs,
   Typography,
   Paper,
-  CircularProgress,
   Alert,
   Toolbar,
   Button,
@@ -24,6 +23,8 @@ import CampaignsTimeline from './components/CampaignsTimeline';
 import ViewsDynamicsChart from './components/ViewsDynamicsChart';
 import ClientsStatisticsCards from './components/ClientsStatisticsCards';
 import AIConsultant from './components/AIConsultant';
+import AIConsultantOptimistic from './components/AIConsultantOptimistic';
+import AnimatedLogo from './components/AnimatedLogo';
 import config, { getCoverageColor } from './config';
 import { exportDataGridToExcel } from './utils/exportToExcel';
 import dashboardStorage from './utils/localStorage';
@@ -457,6 +458,24 @@ function App() {
       sortable: true
     },
     {
+      field: 'abGroup',
+      headerName: 'Группа A/B',
+      width: 100,
+      sortable: true,
+      renderCell: (params) => (
+        <Typography 
+          variant="body2" 
+          sx={{ 
+            color: params.value ? '#1d1d1f' : '#86868b',
+            fontStyle: params.value ? 'normal' : 'italic',
+            fontWeight: params.value ? 600 : 'normal'
+          }}
+        >
+          {params.value || '—'}
+        </Typography>
+      )
+    },
+    {
       field: 'smsText',
       headerName: 'Текст SMS',
       width: 400,
@@ -546,12 +565,35 @@ function App() {
       <Box
         sx={{
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '100vh'
+          height: '100vh',
+          background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
         }}
       >
-        <CircularProgress />
+        <AnimatedLogo size={150} showParticles={true} />
+        <Typography 
+          variant="h5" 
+          sx={{ 
+            mt: 4, 
+            color: '#1a2332', 
+            fontWeight: 700,
+            textAlign: 'center'
+          }}
+        >
+          Загрузка данных...
+        </Typography>
+        <Typography 
+          variant="body2" 
+          sx={{ 
+            mt: 1, 
+            color: '#6b7280',
+            textAlign: 'center'
+          }}
+        >
+          Пожалуйста, подождите
+        </Typography>
       </Box>
     );
   }
@@ -754,16 +796,20 @@ function App() {
           
           {contentTypes.map((type, index) => (
             <TabPanel key={type} value={selectedTab} index={index}>
-              <Box sx={{ height: '65vh', width: '100%' }}>
+              <Box sx={{ height: '70vh', width: '100%' }}>
                 <DataGrid
                   rows={filteredData}
                   columns={columns}
                   disableSelectionOnClick
-                  hideFooter={true}
+                  pagination
+                  pageSizeOptions={[25, 50, 100, 200]}
                   sortingMode="client"
                   filterMode="client"
                   disableVirtualization={false}
                   initialState={{
+                    pagination: {
+                      paginationModel: { pageSize: 100, page: 0 }
+                    },
                     sorting: {
                       sortModel: [{ field: 'date', sort: 'desc' }]
                     }
@@ -803,6 +849,11 @@ function App() {
                     toolbarExportCSV: 'Скачать как CSV',
                     
                     // Pagination
+                    MuiTablePagination: {
+                      labelRowsPerPage: 'Строк на странице:',
+                      labelDisplayedRows: ({ from, to, count }) =>
+                        `${from}–${to} из ${count !== -1 ? count : `больше чем ${to}`}`,
+                    },
                     footerRowSelected: (count) =>
                       count !== 1
                         ? `${count.toLocaleString()} строк выбрано`
@@ -932,6 +983,18 @@ function App() {
         {/* AI Consultant - Floating Button */}
         {filteredData.length > 0 && contentTypes[selectedTab] && (
           <AIConsultant 
+            key={selectedTab} // Сбрасывает состояние при смене вкладки
+            data={filteredData}
+            contentType={contentTypes[selectedTab]}
+            campaignsData={aiCampaignsData}
+            clientsData={aiClientsData}
+          />
+        )}
+
+        {/* AI Consultant Optimistic - Floating Button */}
+        {filteredData.length > 0 && contentTypes[selectedTab] && (
+          <AIConsultantOptimistic
+            key={`optimistic-${selectedTab}`} // Сбрасывает состояние при смене вкладки
             data={filteredData}
             contentType={contentTypes[selectedTab]}
             campaignsData={aiCampaignsData}
