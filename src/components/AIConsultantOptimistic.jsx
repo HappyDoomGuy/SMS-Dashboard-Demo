@@ -659,7 +659,7 @@ ${dataForAnalysis.abTestAnalysis.map((test, i) =>
       <Box
         sx={{
           position: 'fixed',
-          bottom: 192,
+          bottom: 32,
           right: 32,
           width: 140,
           height: 140,

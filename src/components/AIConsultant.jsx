@@ -625,13 +625,14 @@ ${JSON.stringify(dataForAnalysis.allRecords, null, 2)}
       <Box
         sx={{
           position: 'fixed',
-          bottom: 32,
+          bottom: 192,
           right: 32,
           width: 140,
           height: 140,
           zIndex: 1000,
           pointerEvents: 'none',
-          animation: `${materialize} 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards`
+          animation: `${materialize} 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.2s backwards`,
+          display: 'none'
         }}
       >
         {/* Energy waves */}
